@@ -1,0 +1,131 @@
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { DIRECTIONS } from '../lib/directions';
+import DirectionCard from '../components/DirectionCard';
+import ContentCard from '../components/ContentCard';
+import { supabase } from '../lib/supabaseClient';
+
+export default function Home() {
+  const [latestNews, setLatestNews] = useState<any[]>([]);
+  const [loadingNews, setLoadingNews] = useState(true);
+
+  useEffect(() => {
+    async function loadLatestNews() {
+      const { data } = await supabase
+        .from('content')
+        .select('id, type, title, slug, published_at, direction_id')
+        .eq('status', 'published')
+        .eq('type', 'news')
+        .order('published_at', { ascending: false })
+        .limit(3);
+
+      if (data) {
+        // Получаем названия направлений
+        const directionIds = data.map((item) => item.direction_id).filter(Boolean);
+        if (directionIds.length > 0) {
+          const { data: directions } = await supabase
+            .from('directions')
+            .select('id, title')
+            .in('id', directionIds);
+
+          const directionsMap = new Map((directions || []).map((d: any) => [d.id, d.title]));
+
+          const enriched = data.map((item: any) => ({
+            ...item,
+            direction_title: item.direction_id ? directionsMap.get(item.direction_id) : undefined,
+          }));
+
+          setLatestNews(enriched);
+        } else {
+          setLatestNews(data);
+        }
+      }
+      setLoadingNews(false);
+    }
+
+    loadLatestNews();
+  }, []);
+
+  return (
+    <main className="min-h-screen bg-oss-dark text-white">
+      <section className="bg-oss-red py-20">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6">
+            Объединённый совет студентов ДВФУ
+          </h1>
+          <p className="text-lg md:text-xl max-w-3xl mx-auto text-white/90">
+            Высший орган студенческого самоуправления ДВФУ. Решаем правовые,
+            инфраструктурные, стипендиальные, адаптационные и консультационные вопросы.
+          </p>
+          <div className="mt-10 flex flex-wrap justify-center gap-4">
+            <Link href="/appeal" className="px-6 py-3 bg-white text-oss-red font-semibold rounded-xl">
+              Подать обращение
+            </Link>
+            <Link href="/appeal/status" className="px-6 py-3 border border-white/80 rounded-xl">
+              Проверить статус
+            </Link>
+            <Link href="/statistics" className="px-6 py-3 border border-white/80 rounded-xl">
+              Статистика
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="max-w-6xl mx-auto px-6 py-12">
+        <div className="flex items-end justify-between gap-4 flex-wrap">
+          <div>
+            <h2 className="text-2xl font-semibold">Направления</h2>
+            <p className="mt-2 text-white/70 max-w-2xl">
+              Цвет каждого раздела — часть навигации: он помогает быстро понять, в каком блоке вы находитесь.
+            </p>
+          </div>
+          <Link href="/directions" className="text-white/70 hover:text-white transition">
+            Все направления →
+          </Link>
+        </div>
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+          {DIRECTIONS.map((d) => (
+            <DirectionCard key={d.slug} d={d} />
+          ))}
+        </div>
+      </section>
+
+      <section className="max-w-6xl mx-auto px-6 pb-16">
+        <div className="flex items-end justify-between gap-4 flex-wrap mb-6">
+          <div>
+            <h2 className="text-2xl font-semibold">Новости и гайды</h2>
+            <p className="mt-2 text-white/70 max-w-2xl">
+              Публикуем актуальную информацию и инструкции по направлениям. Цель — чтобы часть вопросов решалась без обращения.
+            </p>
+          </div>
+          <Link href="/content" className="text-white/70 hover:text-white transition">
+            Все материалы →
+          </Link>
+        </div>
+
+        {loadingNews ? (
+          <div className="text-center text-white/50 py-8">Загрузка новостей...</div>
+        ) : latestNews.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {latestNews.map((item) => (
+              <ContentCard
+                key={item.id}
+                title={item.title}
+                slug={item.slug}
+                type={item.type}
+                direction={item.direction_title}
+                publishedAt={item.published_at}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-3xl border border-white/10 bg-white/5 p-8 md:p-10 text-center text-white/50">
+            Пока нет опубликованных новостей
+          </div>
+        )}
+      </section>
+    </main>
+  );
+}

@@ -1,0 +1,247 @@
+'use client';
+
+import React, { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { supabase } from '../../lib/supabaseClient';
+import { DIRECTIONS } from '../../lib/directions';
+
+export default function AppealPage() {
+  const params = useSearchParams();
+  const presetDirection = params.get('direction');
+
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [contact, setContact] = useState('');
+  const [selectedDirection, setSelectedDirection] = useState<string>(presetDirection || '');
+  const [isAnonymous, setIsAnonymous] = useState(false);
+  const [submittedToken, setSubmittedToken] = useState<string | null>(null);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  function validate(): boolean {
+    const newErrors: Record<string, string> = {};
+
+    if (!title.trim()) {
+      newErrors.title = 'Укажите тему обращения';
+    } else if (title.trim().length < 5) {
+      newErrors.title = 'Тема должна быть не менее 5 символов';
+    }
+
+    if (!description.trim()) {
+      newErrors.description = 'Опишите ситуацию';
+    } else if (description.trim().length < 20) {
+      newErrors.description = 'Описание должно быть не менее 20 символов';
+    }
+
+    if (!contact.trim()) {
+      newErrors.contact = 'Укажите контакт для связи';
+    } else if (!/^[\w\.-]+@[\w\.-]+\.\w+$|^@[\w]+$/.test(contact.trim())) {
+      newErrors.contact = 'Укажите email или Telegram (@username)';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }
+
+  async function submit() {
+    if (!validate()) return;
+
+    setIsSubmitting(true);
+    setErrors({});
+
+    try {
+      // Определяем тип контакта
+      const contactType = contact.trim().startsWith('@') ? 'telegram' : 'email';
+
+      // Получаем direction_id если выбрано направление
+      let directionId = null;
+      if (selectedDirection) {
+        const { data: directionData, error: dirError } = await supabase
+          .from('directions')
+          .select('id')
+          .eq('slug', selectedDirection)
+          .eq('is_active', true)
+          .single();
+
+        if (!dirError && directionData) {
+          directionId = directionData.id;
+        }
+      }
+
+      const { data, error } = await supabase
+        .from('appeals')
+        .insert({
+          title: title.trim(),
+          description: description.trim(),
+          contact_value: contact.trim(),
+          contact_type: contactType,
+          direction_id: directionId,
+          is_anonymous: isAnonymous,
+        })
+        .select('public_token')
+        .single();
+
+      if (error) {
+        setErrors({ submit: error.message || 'Ошибка при отправке обращения. Попробуйте позже.' });
+        setIsSubmitting(false);
+        return;
+      }
+
+      if (data) {
+        setSubmittedToken(data.public_token);
+      }
+    } catch (err) {
+      setErrors({ submit: 'Произошла ошибка. Попробуйте позже.' });
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  if (submittedToken) {
+    return (
+      <main className="max-w-2xl mx-auto px-6 py-16">
+        <div className="rounded-3xl border border-white/10 bg-white/5 p-8 text-center">
+          <h1 className="text-3xl font-semibold">Обращение принято</h1>
+          <p className="mt-4 text-white/70">
+            Ваше обращение зарегистрировано. Сохраните код для проверки статуса:
+          </p>
+          <code className="mt-6 block rounded-xl bg-oss-dark border border-white/20 p-4 text-lg font-mono break-all">
+            {submittedToken}
+          </code>
+          <p className="mt-4 text-sm text-white/60">
+            Вы можете проверить статус на странице{' '}
+            <a href="/appeal/status" className="underline text-oss-red">
+              проверки статуса
+            </a>
+          </p>
+        </div>
+      </main>
+    );
+  }
+
+  const selectedDirectionObj = DIRECTIONS.find((d) => d.slug === selectedDirection);
+
+  return (
+    <main className="max-w-2xl mx-auto px-6 py-16">
+      <h1 className="text-3xl font-semibold">Подать обращение</h1>
+      <p className="mt-3 text-white/70">
+        Опишите проблему — мы направим её в нужный комитет.
+      </p>
+
+      <div className="mt-8 space-y-5">
+        {presetDirection && selectedDirectionObj && (
+          <div className="rounded-xl border border-white/20 bg-white/5 p-4">
+            <div className="text-sm text-white/60">Направление</div>
+            <div className="mt-1 font-medium">{selectedDirectionObj.title}</div>
+          </div>
+        )}
+
+        {!presetDirection && (
+          <div>
+            <label className="block text-sm font-medium mb-2">Направление (опционально)</label>
+            <select
+              className="w-full rounded-xl bg-white/10 p-3 border border-white/20"
+              value={selectedDirection}
+              onChange={(e) => setSelectedDirection(e.target.value)}
+            >
+              <option value="">Не знаю / Другое</option>
+              {DIRECTIONS.map((d) => (
+                <option key={d.slug} value={d.slug}>
+                  {d.title}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        <div>
+          <label className="block text-sm font-medium mb-2">
+            Краткая тема <span className="text-red-400">*</span>
+          </label>
+          <input
+            className={`w-full rounded-xl bg-white/10 p-3 border ${
+              errors.title ? 'border-red-500' : 'border-white/20'
+            }`}
+            placeholder="Например: Не пришла стипендия"
+            value={title}
+            onChange={(e) => {
+              setTitle(e.target.value);
+              if (errors.title) setErrors({ ...errors, title: '' });
+            }}
+          />
+          {errors.title && <p className="mt-1 text-sm text-red-400">{errors.title}</p>}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-2">
+            Описание ситуации <span className="text-red-400">*</span>
+          </label>
+          <textarea
+            className={`w-full rounded-xl bg-white/10 p-3 h-32 border ${
+              errors.description ? 'border-red-500' : 'border-white/20'
+            }`}
+            placeholder="Опишите подробно вашу ситуацию, что произошло, когда, какие документы есть..."
+            value={description}
+            onChange={(e) => {
+              setDescription(e.target.value);
+              if (errors.description) setErrors({ ...errors, description: '' });
+            }}
+          />
+          {errors.description && <p className="mt-1 text-sm text-red-400">{errors.description}</p>}
+          <p className="mt-1 text-xs text-white/50">Минимум 20 символов</p>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-2">
+            Контакт для связи <span className="text-red-400">*</span>
+          </label>
+          <input
+            className={`w-full rounded-xl bg-white/10 p-3 border ${
+              errors.contact ? 'border-red-500' : 'border-white/20'
+            }`}
+            placeholder="email@example.com или @telegram_username"
+            value={contact}
+            onChange={(e) => {
+              setContact(e.target.value);
+              if (errors.contact) setErrors({ ...errors, contact: '' });
+            }}
+          />
+          {errors.contact && <p className="mt-1 text-sm text-red-400">{errors.contact}</p>}
+          <p className="mt-1 text-xs text-white/50">Email или Telegram (@username)</p>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <input
+            type="checkbox"
+            id="anonymous"
+            checked={isAnonymous}
+            onChange={(e) => setIsAnonymous(e.target.checked)}
+            className="w-5 h-5 rounded border-white/20 bg-white/10"
+          />
+          <label htmlFor="anonymous" className="text-sm text-white/80">
+            Подать анонимно
+          </label>
+        </div>
+        {isAnonymous && (
+          <p className="text-xs text-white/60 -mt-3">
+            Примечание: анонимные обращения сложнее обрабатывать, так как мы не сможем уточнить детали напрямую.
+          </p>
+        )}
+
+        {errors.submit && (
+          <div className="rounded-xl border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-400">
+            {errors.submit}
+          </div>
+        )}
+
+        <button
+          onClick={submit}
+          disabled={isSubmitting}
+          className="w-full rounded-xl bg-oss-red py-3 font-semibold hover:bg-oss-red/90 transition disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isSubmitting ? 'Отправка...' : 'Отправить обращение'}
+        </button>
+      </div>
+    </main>
+  );
+}
