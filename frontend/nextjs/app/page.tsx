@@ -95,7 +95,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-oss-dark dark:bg-oss-dark light:bg-gray-50 text-white dark:text-white light:text-gray-900">
+    <main className="min-h-screen bg-oss-dark text-white">
       <section className="bg-oss-red py-20">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <div className="flex justify-center mb-8">
