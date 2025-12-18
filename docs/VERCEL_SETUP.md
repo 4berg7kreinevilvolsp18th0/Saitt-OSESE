@@ -145,3 +145,4 @@ Automatic Deployments: Enabled ✅
 - [Next.js on Vercel](https://vercel.com/docs/frameworks/nextjs)
 - [Environment Variables](https://vercel.com/docs/projects/environment-variables)
 
+
