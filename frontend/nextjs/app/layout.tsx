@@ -1,6 +1,7 @@
 import './globals.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import ThemeProvider from '../components/ThemeProvider';
 import type { Metadata } from 'next';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://oss-dvfu.vercel.app';
@@ -73,16 +74,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ru">
+    <html lang="ru" suppressHydrationWarning>
       <head>
         <link rel="canonical" href={siteUrl} />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
       </head>
-      <body className="bg-oss-dark text-white antialiased">
-        <Header />
-        {children}
-        <Footer />
+      <body className="bg-oss-dark dark:bg-oss-dark light:bg-gray-50 text-white dark:text-white light:text-gray-900 antialiased transition-colors">
+        <ThemeProvider>
+          <Header />
+          {children}
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );
