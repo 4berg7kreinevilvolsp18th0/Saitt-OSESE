@@ -54,25 +54,25 @@ pnpm dev
 
 Сайт будет доступен по адресу [http://localhost:3000](http://localhost:3000)
 
-### Деплой на Vercel
+### Deployment
 
-Подробная инструкция по деплою находится в [`docs/DEPLOY.md`](docs/DEPLOY.md)
+See **[Deployment Guide](docs/deployment.md)** for step-by-step instructions.
 
-**Кратко:**
-1. Создайте репозиторий на GitHub и загрузите код
-2. Подключите репозиторий к Vercel
-3. Настройте переменные окружения в Vercel
-4. Деплой произойдёт автоматически
+Quick version:
+1. Push code to GitHub
+2. Connect repository to Vercel
+3. Set environment variables
+4. Deploy happens automatically
 
-### Редактирование контента
+### Content Editing
 
-Для неопытных пользователей создано простое руководство: [`docs/EDITING_GUIDE.md`](docs/EDITING_GUIDE.md)
+See **[Content Editing Guide](docs/content-editing.md)** for how to add/edit content.
 
-**Быстрый старт:**
-1. Войдите в админ-панель: `/admin/login`
-2. Перейдите в "Контент": `/admin/content`
-3. Нажмите "Создать материал" или выберите существующий для редактирования
-4. Заполните форму и сохраните
+Quick start:
+1. Go to `/admin/login`
+2. Click "Контент"
+3. Create or edit content
+4. Save and publish
 
 ## 📁 Структура проекта
 
