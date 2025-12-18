@@ -1,44 +1,84 @@
-import fs from 'fs';
-import path from 'path';
-import { notFound } from 'next/navigation';
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { useParams, notFound } from 'next/navigation';
 import Badge from '../../../components/Badge';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { supabase } from '../../../lib/supabaseClient';
 
-export default function ContentItem({ params }: { params: { slug: string } }) {
-  // Try to find in news or guides
-  const newsPath = path.join(process.cwd(), 'content/news', `${params.slug}.md`);
-  const guidesPath = path.join(process.cwd(), 'content/guides', `${params.slug}.md`);
+export default function ContentItem() {
+  const params = useParams();
+  const slug = params.slug as string;
+  const [content, setContent] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  let filePath: string | null = null;
-  let contentType: 'news' | 'guide' = 'news';
+  useEffect(() => {
+    loadContent();
+  }, [slug]);
 
-  if (fs.existsSync(newsPath)) {
-    filePath = newsPath;
-    contentType = 'news';
-  } else if (fs.existsSync(guidesPath)) {
-    filePath = guidesPath;
-    contentType = 'guide';
+  async function loadContent() {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const { data, error: fetchError } = await supabase
+        .from('content')
+        .select('id, type, title, slug, body, published_at, direction_id')
+        .eq('slug', slug)
+        .eq('status', 'published')
+        .single();
+
+      if (fetchError || !data) {
+        setError('Контент не найден');
+        return;
+      }
+
+      setContent(data);
+    } catch (err) {
+      setError('Произошла ошибка при загрузке');
+    } finally {
+      setLoading(false);
+    }
   }
 
-  if (!filePath) {
-    notFound();
+  if (loading) {
+    return (
+      <main className="max-w-4xl mx-auto px-6 py-12">
+        <div className="text-center text-white/50">Загрузка...</div>
+      </main>
+    );
   }
 
-  const content = fs.readFileSync(filePath, 'utf8');
-  const lines = content.split('\n');
-  const title = lines.find((line) => line.startsWith('# '))?.replace('# ', '') || params.slug;
-  const body = content.replace(/^# .*$/m, '').trim(); // Remove title from body
+  if (error || !content) {
+    return (
+      <main className="max-w-4xl mx-auto px-6 py-12">
+        <div className="rounded-xl border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-400">
+          {error || 'Контент не найден'}
+        </div>
+      </main>
+    );
+  }
+
+  const contentType = content.type as 'news' | 'guide' | 'faq';
+  const title = content.title || slug;
+  const body = content.body || '';
 
   return (
     <main className="max-w-4xl mx-auto px-6 py-12">
       <article>
         <div className="mb-6">
-          <Badge variant={contentType === 'news' ? 'info' : 'success'}>
-            {contentType === 'news' ? 'Новость' : 'Гайд'}
+          <Badge variant={contentType === 'news' ? 'info' : contentType === 'guide' ? 'success' : 'warning'}>
+            {contentType === 'news' ? 'Новость' : contentType === 'guide' ? 'Гайд' : 'FAQ'}
           </Badge>
         </div>
         <h1 className="text-4xl font-bold mb-8">{title}</h1>
+        {content.published_at && (
+          <p className="text-white/50 mb-8">
+            Опубликовано: {new Date(content.published_at).toLocaleDateString('ru-RU')}
+          </p>
+        )}
         <div className="prose prose-invert prose-lg max-w-none text-white/80 markdown-content">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
