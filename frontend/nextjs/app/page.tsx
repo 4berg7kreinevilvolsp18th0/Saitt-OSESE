@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { DIRECTIONS } from '../lib/directions';
 import DirectionCard from '../components/DirectionCard';
 import ContentCard from '../components/ContentCard';
+import Logo from '../components/Logo';
 import { supabase } from '../lib/supabaseClient';
 
 export default function Home() {
