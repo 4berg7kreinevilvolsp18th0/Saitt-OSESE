@@ -25,13 +25,16 @@ export default function Home() {
       try {
         // Безопасный запрос с обработкой ошибок
         const { data, error: contentError } = await safeSupabaseQuery(
-          () => supabase
-            .from('content')
-            .select('id, type, title, slug, published_at, direction_id')
-            .eq('status', 'published')
-            .eq('type', 'news')
-            .order('published_at', { ascending: false })
-            .limit(3),
+          async () => {
+            const result = await supabase
+              .from('content')
+              .select('id, type, title, slug, published_at, direction_id')
+              .eq('status', 'published')
+              .eq('type', 'news')
+              .order('published_at', { ascending: false })
+              .limit(3);
+            return result;
+          },
           'Ошибка загрузки новостей'
         );
 
@@ -46,10 +49,13 @@ export default function Home() {
           const directionIds = data.map((item) => item.direction_id).filter(Boolean);
           if (directionIds.length > 0) {
             const { data: directions, error: dirError } = await safeSupabaseQuery(
-              () => supabase
-                .from('directions')
-                .select('id, title')
-                .in('id', directionIds),
+              async () => {
+                const result = await supabase
+                  .from('directions')
+                  .select('id, title')
+                  .in('id', directionIds);
+                return result;
+              },
               'Ошибка загрузки направлений'
             );
 
