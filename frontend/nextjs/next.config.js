@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  // Убрали output: 'standalone' для правильной работы на Vercel
   images: {
     domains: [],
   },
