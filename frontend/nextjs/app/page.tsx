@@ -54,7 +54,7 @@ export default function Home() {
       <section className="bg-oss-red py-20">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <div className="flex justify-center mb-8">
-            <Logo size={120} color="#FFFFFF" />
+            <Logo size={120} color="#FFFFFF" useImage={true} />
           </div>
           <h1 className="text-3xl md:text-5xl font-bold mb-4">
             ОБЪЕДИНЕННЫЙ СОВЕТ СТУДЕНТОВ
