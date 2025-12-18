@@ -25,7 +25,7 @@ a {
 
 /* Markdown content styles */
 .markdown-content {
-  @apply text-white/80 dark:text-white/80;
+  @apply text-white/80;
 }
 
 .light .markdown-content {
@@ -69,8 +69,16 @@ a {
   @apply bg-white/10 px-1.5 py-0.5 rounded text-sm font-mono;
 }
 
+.light .markdown-content code {
+  @apply bg-gray-100 text-gray-800;
+}
+
 .markdown-content pre {
   @apply bg-white/5 p-4 rounded-xl overflow-x-auto my-4;
+}
+
+.light .markdown-content pre {
+  @apply bg-gray-100;
 }
 
 .markdown-content pre code {
@@ -85,6 +93,10 @@ a {
   @apply border-l-4 border-white/20 pl-4 italic my-4 text-white/70;
 }
 
+.light .markdown-content blockquote {
+  @apply border-gray-300 text-gray-600;
+}
+
 .markdown-content table {
   @apply w-full border-collapse my-4;
 }
@@ -94,6 +106,15 @@ a {
   @apply border border-white/20 px-4 py-2;
 }
 
+.light .markdown-content th,
+.light .markdown-content td {
+  @apply border-gray-300;
+}
+
 .markdown-content th {
   @apply bg-white/5 font-semibold;
+}
+
+.light .markdown-content th {
+  @apply bg-gray-100 text-gray-900;
 }
