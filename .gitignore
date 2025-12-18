@@ -60,3 +60,6 @@ ENV/
 # Supabase
 .supabase/
 
+# GitHub Actions (keep workflows)
+!.github/workflows/
+
