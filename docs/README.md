@@ -1,57 +1,67 @@
-# Документация проекта сайта ОСС ДВФУ
+# Documentation Index
 
-Этот документ содержит техническую и операционную документацию проекта.
+Simple guides to help you work with the OSS DVFU website.
 
-## Структура документации
+## Start Here
 
-- **README.md** (этот файл) — общий обзор документации
-- **TECH_SPEC.md** — техническая спецификация
-- **# PROJECT_STATE_AND_NEXT_STEPS.md** — текущее состояние проекта и планы развития
-- **TODO.md** — список задач и чек-лист
-- **WORKPLAN.md** — план работ по этапам
-- **BRAND.md** — правила бренда и дизайна
-- **OPERATIONS.md** — операционные процедуры
-- **DASHBOARDS.md** — описание дашбордов и аналитики
-- **BACKLOG.md** — backlog функций
+**[Getting Started](getting-started.md)**  
+Set up the project on your computer and run it locally. Takes about 15 minutes.
 
-## Быстрый доступ
+## Main Guides
 
-### Для разработчиков
-1. Начните с [TECH_SPEC.md](./TECH_SPEC.md) для понимания архитектуры
-2. Изучите [TODO.md](./TODO.md) для списка задач
-3. Следуйте [WORKPLAN.md](./WORKPLAN.md) для поэтапной разработки
+**[Deployment](deployment.md)**  
+Put your site online using Vercel. Step-by-step instructions.
 
-### Для дизайнеров
-1. Изучите [BRAND.md](./BRAND.md) для правил бренда
-2. Посмотрите цветовую палитру в `frontend/nextjs/tailwind.config.js`
+**[Database Setup](database.md)**  
+Configure Supabase (the database). How to create tables, add users, set up roles.
 
-### Для операторов/администраторов
-1. Изучите [OPERATIONS.md](./OPERATIONS.md) для ежедневных операций
-2. Посмотрите [DASHBOARDS.md](./DASHBOARDS.md) для работы с аналитикой
+**[Content Editing](content-editing.md)**  
+How to add and edit news, guides, and other content. Written for non-technical users.
 
-### Для руководства
-1. Изучите [# PROJECT_STATE_AND_NEXT_STEPS.md](./#%20PROJECT_STATE_AND_NEXT_STEPS.md) для понимания состояния проекта
-2. Посмотрите [BACKLOG.md](./BACKLOG.md) для планов развития
+**[Troubleshooting](troubleshooting.md)**  
+Common problems and how to fix them. 404 errors, database issues, build problems.
 
-## Основные концепции
+**[Features](features.md)**  
+Overview of site features: dark/light theme, Telegram integration, logo, etc.
 
-### Единое окно
-Сайт построен как "единое окно" для студентов: не нужно угадывать, куда писать. Система помогает выбрать направление и подать обращение.
+## Specific Topics
 
-### Роли и доступ
-- `student` — внешний пользователь (без аккаунта)
-- `member` — член ОСС
-- `lead` — руководитель направления
-- `board` — руководство ОСС
-- `staff` — аппарат (техподдержка)
+**[Telegram Setup](telegram-setup.md)**  
+Connect the site to Telegram channel @oss_dvfu to show real posts.
 
-### Безопасность
-Доступ контролируется через Supabase RLS (Row Level Security) на уровне базы данных.
+## Technical Docs
 
-### Прозрачность
-Публичная статистика показывает агрегированные данные без персональной информации.
+For developers working on the codebase:
 
-## Контакты
+- `TECH_SPEC.md` - Technical architecture
+- `BRAND.md` - Design system and colors
+- `OPERATIONS.md` - Operational procedures
+- `DASHBOARDS.md` - Analytics dashboards
 
-Для вопросов по проекту обращайтесь к команде разработки или руководству ОСС.
+## Quick Reference
 
+**Common tasks:**
+
+- First time setup → [Getting Started](getting-started.md)
+- Deploy to production → [Deployment](deployment.md)
+- Add content → [Content Editing](content-editing.md)
+- Fix errors → [Troubleshooting](troubleshooting.md)
+- Set up database → [Database Setup](database.md)
+
+**Having issues?**
+
+1. Check [Troubleshooting](troubleshooting.md) first
+2. Look at specific guide for your task
+3. Check Vercel/Supabase logs
+4. Verify environment variables
+
+## Old Documentation
+
+Some older docs are still in the folder but are being replaced by the guides above:
+- `DEPLOY.md` → See [deployment.md](deployment.md)
+- `SUPABASE_SETUP.md` → See [database.md](database.md)
+- `VERCEL_SETUP.md` → See [deployment.md](deployment.md)
+- `EDITING_GUIDE.md` → See [content-editing.md](content-editing.md)
+- Various 404 fix docs → See [troubleshooting.md](troubleshooting.md)
+
+The new guides above are simpler and more up-to-date.
