@@ -23,6 +23,14 @@ export const metadata: Metadata = {
   authors: [{ name: 'ОСС ДВФУ' }],
   creator: 'ОСС ДВФУ',
   publisher: 'ОСС ДВФУ',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.ico', type: 'image/x-icon' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
+  },
   formatDetection: {
     email: false,
     address: false,
@@ -68,6 +76,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="ru">
       <head>
         <link rel="canonical" href={siteUrl} />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
       </head>
       <body className="bg-oss-dark text-white antialiased">
         <Header />
