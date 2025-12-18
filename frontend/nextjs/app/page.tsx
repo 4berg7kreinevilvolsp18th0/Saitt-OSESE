@@ -6,44 +6,69 @@ import { DIRECTIONS } from '../lib/directions';
 import DirectionCard from '../components/DirectionCard';
 import ContentCard from '../components/ContentCard';
 import Logo from '../components/Logo';
-import { supabase } from '../lib/supabaseClient';
+import { supabase, isSupabaseConfigured } from '../lib/supabaseClient';
 
 export default function Home() {
   const [latestNews, setLatestNews] = useState<any[]>([]);
   const [loadingNews, setLoadingNews] = useState(true);
+  const [supabaseError, setSupabaseError] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadLatestNews() {
-      const { data } = await supabase
-        .from('content')
-        .select('id, type, title, slug, published_at, direction_id')
-        .eq('status', 'published')
-        .eq('type', 'news')
-        .order('published_at', { ascending: false })
-        .limit(3);
-
-      if (data) {
-        // Получаем названия направлений
-        const directionIds = data.map((item) => item.direction_id).filter(Boolean);
-        if (directionIds.length > 0) {
-          const { data: directions } = await supabase
-            .from('directions')
-            .select('id, title')
-            .in('id', directionIds);
-
-          const directionsMap = new Map((directions || []).map((d: any) => [d.id, d.title]));
-
-          const enriched = data.map((item: any) => ({
-            ...item,
-            direction_title: item.direction_id ? directionsMap.get(item.direction_id) : undefined,
-          }));
-
-          setLatestNews(enriched);
-        } else {
-          setLatestNews(data);
-        }
+      // Проверяем подключение Supabase
+      if (!isSupabaseConfigured()) {
+        setSupabaseError('Supabase не настроен. Пожалуйста, настройте переменные окружения.');
+        setLoadingNews(false);
+        return;
       }
-      setLoadingNews(false);
+
+      try {
+        const { data, error } = await supabase
+          .from('content')
+          .select('id, type, title, slug, published_at, direction_id')
+          .eq('status', 'published')
+          .eq('type', 'news')
+          .order('published_at', { ascending: false })
+          .limit(3);
+
+        if (error) {
+          console.error('Ошибка загрузки новостей:', error);
+          setSupabaseError(`Ошибка подключения к базе данных: ${error.message}`);
+          setLoadingNews(false);
+          return;
+        }
+
+        if (data) {
+          // Получаем названия направлений
+          const directionIds = data.map((item) => item.direction_id).filter(Boolean);
+          if (directionIds.length > 0) {
+            const { data: directions, error: dirError } = await supabase
+              .from('directions')
+              .select('id, title')
+              .in('id', directionIds);
+
+            if (dirError) {
+              console.error('Ошибка загрузки направлений:', dirError);
+            } else {
+              const directionsMap = new Map((directions || []).map((d: any) => [d.id, d.title]));
+
+              const enriched = data.map((item: any) => ({
+                ...item,
+                direction_title: item.direction_id ? directionsMap.get(item.direction_id) : undefined,
+              }));
+
+              setLatestNews(enriched);
+            }
+          } else {
+            setLatestNews(data);
+          }
+        }
+      } catch (err: any) {
+        console.error('Неожиданная ошибка:', err);
+        setSupabaseError(`Ошибка: ${err.message || 'Неизвестная ошибка'}`);
+      } finally {
+        setLoadingNews(false);
+      }
     }
 
     loadLatestNews();
@@ -112,7 +137,18 @@ export default function Home() {
           </Link>
         </div>
 
-        {loadingNews ? (
+        {supabaseError ? (
+          <div className="rounded-3xl border border-yellow-500/50 bg-yellow-500/10 p-8 md:p-10 text-center">
+            <div className="text-yellow-400 font-semibold mb-2">⚠️ Предупреждение</div>
+            <div className="text-white/80 mb-4">{supabaseError}</div>
+            <div className="text-sm text-white/60">
+              Пожалуйста, настройте Supabase согласно инструкции в{' '}
+              <a href="/docs/SUPABASE_SETUP.md" className="text-yellow-400 hover:underline">
+                docs/SUPABASE_SETUP.md
+              </a>
+            </div>
+          </div>
+        ) : loadingNews ? (
           <div className="text-center text-white/50 py-8">Загрузка новостей...</div>
         ) : latestNews.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
