@@ -149,12 +149,12 @@ export default function Home() {
           <div className="lg:col-span-2">
             <div className="flex items-end justify-between gap-4 flex-wrap mb-6">
               <div>
-                <h2 className="text-2xl font-semibold text-white dark:text-white light:text-gray-900">Новости и гайды</h2>
-                <p className="mt-2 text-white/70 dark:text-white/70 light:text-gray-600 max-w-2xl">
+                <h2 className="text-2xl font-semibold text-white">Новости и гайды</h2>
+                <p className="mt-2 text-white/70 max-w-2xl">
                   Публикуем актуальную информацию и инструкции по направлениям. Цель — чтобы часть вопросов решалась без обращения.
                 </p>
               </div>
-              <Link href="/content" className="text-white/70 dark:text-white/70 light:text-gray-600 hover:text-white dark:hover:text-white light:hover:text-gray-900 transition">
+              <Link href="/content" className="text-white/70 hover:text-white transition">
                 Все материалы →
               </Link>
             </div>
