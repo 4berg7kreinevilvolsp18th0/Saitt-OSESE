@@ -6,6 +6,15 @@
   color-scheme: dark;
 }
 
+/* Светлая тема */
+.light {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -16,7 +25,7 @@ a {
 
 /* Markdown content styles */
 .markdown-content {
-  @apply text-white/80;
+  @apply text-white/80 dark:text-white/80 light:text-gray-800;
 }
 
 .markdown-content h1 {
