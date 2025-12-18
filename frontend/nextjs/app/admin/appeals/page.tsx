@@ -3,6 +3,25 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { supabase } from '../../../lib/supabaseClient';
 
+type Appeal = {
+  id: string;
+  title: string;
+  description?: string;
+  created_at: string;
+  status: 'new' | 'in_progress' | 'waiting' | 'closed';
+  contact_value?: string;
+  direction_id?: string;
+};
+
+type Column = { key: Appeal['status']; title: string };
+
+const columns: Column[] = [
+  { key: 'new', title: 'Новое' },
+  { key: 'in_progress', title: 'В работе' },
+  { key: 'waiting', title: 'Ждём инфо' },
+  { key: 'closed', title: 'Закрыто' },
+];
+
 function AppealCard({
   appeal,
   onMove,
@@ -10,7 +29,7 @@ function AppealCard({
 }: {
   appeal: Appeal;
   onMove: (id: string, status: Appeal['status']) => void;
-  columns: typeof columns;
+  columns: Column[];
 }) {
   const [expanded, setExpanded] = useState(false);
 
@@ -52,23 +71,6 @@ function AppealCard({
     </div>
   );
 }
-
-type Appeal = {
-  id: string;
-  title: string;
-  description?: string;
-  created_at: string;
-  status: 'new' | 'in_progress' | 'waiting' | 'closed';
-  contact_value?: string;
-  direction_id?: string;
-};
-
-const columns: { key: Appeal['status']; title: string }[] = [
-  { key: 'new', title: 'Новое' },
-  { key: 'in_progress', title: 'В работе' },
-  { key: 'waiting', title: 'Ждём инфо' },
-  { key: 'closed', title: 'Закрыто' },
-];
 
 export default function AdminAppealsKanban() {
   const [appeals, setAppeals] = useState<Appeal[]>([]);
