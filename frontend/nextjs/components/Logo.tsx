@@ -18,14 +18,22 @@ export default function Logo({
   useImage = true
 }: LogoProps) {
   const [imageError, setImageError] = useState(false);
-  const [currentSrc, setCurrentSrc] = useState('/logo.png');
+  // Пробуем разные варианты логотипов в порядке приоритета
+  const [currentSrc, setCurrentSrc] = useState('/Лого вектор белое.png');
   
   const handleImageError = () => {
-    if (currentSrc === '/logo.png') {
-      // Пробуем SVG
-      setCurrentSrc('/logo.svg');
+    const fallbacks = [
+      '/Лого вектор белое.svg',
+      '/Лого вектор красное.png',
+      '/logo.png',
+      '/logo.svg'
+    ];
+    
+    const currentIndex = fallbacks.indexOf(currentSrc);
+    if (currentIndex < fallbacks.length - 1) {
+      setCurrentSrc(fallbacks[currentIndex + 1]);
     } else {
-      // Если и SVG нет, показываем fallback
+      // Если все варианты не найдены, показываем fallback SVG
       setImageError(true);
     }
   };
