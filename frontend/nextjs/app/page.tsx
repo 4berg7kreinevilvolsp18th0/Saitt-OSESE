@@ -53,21 +53,27 @@ export default function Home() {
     <main className="min-h-screen bg-oss-dark text-white">
       <section className="bg-oss-red py-20">
         <div className="max-w-6xl mx-auto px-6 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            Объединённый совет студентов ДВФУ
+          <div className="flex justify-center mb-8">
+            <Logo size={120} color="#FFFFFF" />
+          </div>
+          <h1 className="text-3xl md:text-5xl font-bold mb-4">
+            ОБЪЕДИНЕННЫЙ СОВЕТ СТУДЕНТОВ
           </h1>
-          <p className="text-lg md:text-xl max-w-3xl mx-auto text-white/90">
+          <p className="text-lg md:text-xl mb-2 text-white/90">
+            Дальневосточный федеральный университет
+          </p>
+          <p className="text-base md:text-lg max-w-3xl mx-auto text-white/80 mb-8">
             Высший орган студенческого самоуправления ДВФУ. Решаем правовые,
             инфраструктурные, стипендиальные, адаптационные и консультационные вопросы.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <Link href="/appeal" className="px-6 py-3 bg-white text-oss-red font-semibold rounded-xl">
+            <Link href="/appeal" className="px-6 py-3 bg-white text-oss-red font-semibold rounded-xl hover:bg-white/90 transition">
               Подать обращение
             </Link>
-            <Link href="/appeal/status" className="px-6 py-3 border border-white/80 rounded-xl">
+            <Link href="/appeal/status" className="px-6 py-3 border border-white/80 rounded-xl hover:bg-white/10 transition">
               Проверить статус
             </Link>
-            <Link href="/statistics" className="px-6 py-3 border border-white/80 rounded-xl">
+            <Link href="/statistics" className="px-6 py-3 border border-white/80 rounded-xl hover:bg-white/10 transition">
               Статистика
             </Link>
           </div>
