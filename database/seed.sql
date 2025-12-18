@@ -13,6 +13,7 @@ on conflict (slug) do nothing;
 
 -- Insert sample appeals (for testing)
 -- Note: В production эти данные не нужны, только для разработки
+-- Проверяем, что обращений еще нет, чтобы не создавать дубликаты
 insert into appeals (direction_id, title, description, contact_type, contact_value, status, is_anonymous)
 select
   d.id,
@@ -29,8 +30,12 @@ select
   false
 from directions d
 where d.is_active = true
-limit 10
-on conflict do nothing;
+  and not exists (
+    select 1 from appeals 
+    where appeals.direction_id = d.id 
+      and appeals.title = 'Тестовое обращение: ' || d.title
+  )
+limit 10;
 
 -- Insert sample content
 insert into content (type, title, slug, body, direction_id, status, published_at)
