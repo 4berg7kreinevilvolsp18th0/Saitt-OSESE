@@ -160,18 +160,18 @@ export default function Home() {
             </div>
 
             {supabaseError ? (
-              <div className="rounded-3xl border border-yellow-500/50 dark:border-yellow-500/50 light:border-yellow-400 bg-yellow-500/10 dark:bg-yellow-500/10 light:bg-yellow-50 p-8 md:p-10 text-center">
-                <div className="text-yellow-400 dark:text-yellow-400 light:text-yellow-600 font-semibold mb-2">⚠️ Предупреждение</div>
-                <div className="text-white/80 dark:text-white/80 light:text-gray-800 mb-4">{supabaseError}</div>
-                <div className="text-sm text-white/60 dark:text-white/60 light:text-gray-600">
+              <div className="rounded-3xl border border-yellow-500/50 bg-yellow-500/10 p-8 md:p-10 text-center">
+                <div className="text-yellow-400 font-semibold mb-2">⚠️ Предупреждение</div>
+                <div className="text-white/80 mb-4">{supabaseError}</div>
+                <div className="text-sm text-white/60">
                   Пожалуйста, настройте Supabase согласно инструкции в{' '}
-                  <a href="/docs/SUPABASE_SETUP.md" className="text-yellow-400 dark:text-yellow-400 light:text-yellow-600 hover:underline">
+                  <a href="/docs/SUPABASE_SETUP.md" className="text-yellow-400 hover:underline">
                     docs/SUPABASE_SETUP.md
                   </a>
                 </div>
               </div>
             ) : loadingNews ? (
-              <div className="text-center text-white/50 dark:text-white/50 light:text-gray-500 py-8">Загрузка новостей...</div>
+              <div className="text-center text-white/50 py-8">Загрузка новостей...</div>
             ) : latestNews.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {latestNews.map((item) => (
@@ -186,7 +186,7 @@ export default function Home() {
                 ))}
               </div>
             ) : (
-              <div className="rounded-3xl border border-white/10 dark:border-white/10 light:border-gray-200 bg-white/5 dark:bg-white/5 light:bg-gray-50 p-8 md:p-10 text-center text-white/50 dark:text-white/50 light:text-gray-500">
+              <div className="rounded-3xl border border-white/10 bg-white/5 p-8 md:p-10 text-center text-white/50">
                 Пока нет опубликованных новостей
               </div>
             )}
