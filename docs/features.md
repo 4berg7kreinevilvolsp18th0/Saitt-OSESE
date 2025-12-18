@@ -53,7 +53,7 @@ NEXT_PUBLIC_TELEGRAM_CHANNEL=oss_dvfu
 NEXT_PUBLIC_TELEGRAM_API_URL=/api/telegram/posts
 ```
 
-See [Telegram setup guide](telegram-setup.md) for details.
+See [Telegram Setup Guide](telegram-setup.md) for details.
 
 ## Logo
 
