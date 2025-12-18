@@ -69,6 +69,18 @@ create table if not exists documents (
     created_at timestamptz default now()
 );
 
+-- User Roles (for Supabase Auth integration)
+-- Создаем таблицу ДО индексов, чтобы избежать ошибок
+create table if not exists user_roles (
+    id uuid primary key default gen_random_uuid(),
+    user_id uuid not null, -- Supabase auth.users.id
+    role text not null check (role in ('member','lead','board','staff')),
+    direction_id uuid references directions(id), -- null for board/staff, set for member/lead
+    created_at timestamptz default now(),
+    updated_at timestamptz default now(),
+    unique(user_id, role, direction_id)
+);
+
 -- ===============================
 -- Indexes for Performance
 -- ===============================
@@ -98,20 +110,6 @@ create index if not exists idx_user_roles_direction on user_roles(direction_id);
 -- Directions indexes
 create index if not exists idx_directions_slug on directions(slug);
 create index if not exists idx_directions_active on directions(is_active) where is_active = true;
-
--- User Roles (for Supabase Auth integration)
-create table if not exists user_roles (
-    id uuid primary key default gen_random_uuid(),
-    user_id uuid not null, -- Supabase auth.users.id
-    role text not null check (role in ('member','lead','board','staff')),
-    direction_id uuid references directions(id), -- null for board/staff, set for member/lead
-    created_at timestamptz default now(),
-    updated_at timestamptz default now(),
-    unique(user_id, role, direction_id)
-);
-
-create index if not exists idx_user_roles_user_id on user_roles(user_id);
-create index if not exists idx_user_roles_direction on user_roles(direction_id);
 
 -- ===============================
 -- Row Level Security (RLS) Policies
