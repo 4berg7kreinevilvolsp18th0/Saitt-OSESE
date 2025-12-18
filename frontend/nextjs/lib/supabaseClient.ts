@@ -3,6 +3,22 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
+// КРИТИЧЕСКАЯ ПРОВЕРКА: Убеждаемся, что используется ANON ключ, а не SERVICE_ROLE
+if (supabaseAnonKey && (
+  supabaseAnonKey.includes('service_role') || 
+  supabaseAnonKey.length > 200 || // service_role ключи обычно длиннее
+  process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY // если случайно установлен service_role
+)) {
+  console.error(
+    '🚨 КРИТИЧЕСКАЯ ОШИБКА БЕЗОПАСНОСТИ!\n' +
+    'Обнаружен SERVICE_ROLE ключ вместо ANON ключа!\n' +
+    'SERVICE_ROLE ключ НИКОГДА не должен использоваться в браузере!\n' +
+    'Используйте только NEXT_PUBLIC_SUPABASE_ANON_KEY из Supabase Dashboard → Settings → API → anon public\n' +
+    'Удалите NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY из переменных окружения!'
+  );
+  throw new Error('Forbidden use of secret API key in browser');
+}
+
 // Проверка наличия переменных окружения
 if (typeof window !== 'undefined') {
   // Только в браузере
@@ -17,6 +33,14 @@ if (typeof window !== 'undefined') {
     // Проверка формата URL
     if (!supabaseUrl.startsWith('https://') || !supabaseUrl.includes('.supabase.co')) {
       console.warn('⚠️ NEXT_PUBLIC_SUPABASE_URL выглядит неправильно:', supabaseUrl);
+    }
+    
+    // Проверка, что ключ выглядит как anon key (обычно начинается с eyJ и короче service_role)
+    if (supabaseAnonKey.length > 200) {
+      console.warn(
+        '⚠️ ВНИМАНИЕ: Ключ выглядит слишком длинным для anon key.\n' +
+        'Убедитесь, что используете anon public ключ, а не service_role!'
+      );
     }
   }
 }
