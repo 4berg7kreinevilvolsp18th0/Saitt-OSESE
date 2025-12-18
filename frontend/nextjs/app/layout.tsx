@@ -80,7 +80,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
       </head>
-      <body className="bg-oss-dark dark:bg-oss-dark light:bg-gray-50 text-white dark:text-white light:text-gray-900 antialiased transition-colors">
+      <body className="bg-oss-dark text-white antialiased transition-colors">
         <ThemeProvider>
           <Header />
           {children}
