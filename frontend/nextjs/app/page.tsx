@@ -6,6 +6,7 @@ import { DIRECTIONS } from '../lib/directions';
 import DirectionCard from '../components/DirectionCard';
 import ContentCard from '../components/ContentCard';
 import Logo from '../components/Logo';
+import TelegramPosts from '../components/TelegramPosts';
 import { supabase, isSupabaseConfigured, safeSupabaseQuery } from '../lib/supabaseClient';
 
 export default function Home() {
