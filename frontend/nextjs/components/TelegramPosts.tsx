@@ -16,7 +16,7 @@ interface TelegramPostsProps {
 }
 
 export default function TelegramPosts({ 
-  channel = process.env.NEXT_PUBLIC_TELEGRAM_CHANNEL || '@oss_dvfu',
+  channel = process.env.NEXT_PUBLIC_TELEGRAM_CHANNEL || 'oss_dvfu', // Канал ОСС ДВФУ: https://t.me/oss_dvfu
   limit = 5 
 }: TelegramPostsProps) {
   const [posts, setPosts] = useState<TelegramPost[]>([]);
@@ -34,25 +34,22 @@ export default function TelegramPosts({
       try {
         setLoading(true);
         
-        // Пример: если есть API endpoint для получения постов
-        const apiUrl = process.env.NEXT_PUBLIC_TELEGRAM_API_URL;
+        // Используем наш API endpoint для получения постов
+        const apiUrl = process.env.NEXT_PUBLIC_TELEGRAM_API_URL || '/api/telegram/posts';
+        const channelName = channel.replace('@', '');
         
-        if (apiUrl) {
-          const response = await fetch(`${apiUrl}/posts?channel=${channel}&limit=${limit}`);
-          if (response.ok) {
-            const data = await response.json();
-            setPosts(data.posts || []);
-          } else {
-            throw new Error('Не удалось загрузить посты');
-          }
+        const response = await fetch(`${apiUrl}?channel=${channelName}&limit=${limit}`);
+        if (response.ok) {
+          const data = await response.json();
+          setPosts(data.posts || []);
         } else {
-          // Заглушка для демонстрации
+          // Если API недоступен, показываем приветственное сообщение с ссылкой на канал
           setPosts([
             {
               id: '1',
               date: Date.now() - 3600000,
-              text: 'Новое в Telegram канале ОСС ДВФУ! Подписывайтесь, чтобы быть в курсе всех событий.',
-              link: `https://t.me/${channel.replace('@', '')}`,
+              text: 'Добро пожаловать в официальный канал ОСС ДВФУ! Представляем студентов, защищаем их права, поддерживаем студенческие инициативы и развиваем ДВФУ. Подписывайтесь на @oss_dvfu, чтобы быть в курсе всех событий!',
+              link: `https://t.me/${channelName}`,
             },
           ]);
         }
@@ -95,7 +92,7 @@ export default function TelegramPosts({
           href={`https://t.me/${channel.replace('@', '')}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-oss-red hover:underline"
+          className="inline-flex items-center gap-2 text-oss-red dark:text-oss-red light:text-oss-red hover:underline"
         >
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
             <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
@@ -116,7 +113,7 @@ export default function TelegramPosts({
           href={`https://t.me/${channel.replace('@', '')}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm text-oss-red hover:underline flex items-center gap-1"
+          className="text-sm text-oss-red dark:text-oss-red light:text-oss-red hover:underline flex items-center gap-1"
         >
           Все посты
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -148,7 +145,7 @@ export default function TelegramPosts({
                       href={post.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-oss-red hover:underline"
+                      className="text-oss-red dark:text-oss-red light:text-oss-red hover:underline"
                     >
                       Читать →
                     </Link>
