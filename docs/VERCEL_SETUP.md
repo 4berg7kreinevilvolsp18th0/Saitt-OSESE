@@ -28,6 +28,13 @@
 
 ```
 Project Name: oss-dvfu-site (или любое другое название)
+⚠️ Правила для Project Name:
+   - Только буквы (a-z, A-Z), цифры (0-9) и подчеркивания (_)
+   - НЕ может начинаться с цифры
+   - НЕ используйте дефисы (-), пробелы, спецсимволы
+   - Примеры правильных имен: oss_dvfu_site, ossDvfuSite, ossdvfu
+   - Примеры НЕПРАВИЛЬНЫХ: oss-dvfu-site, 123project, my site
+
 Framework Preset: Next.js ✅
 Root Directory: frontend/nextjs ⚠️ ОБЯЗАТЕЛЬНО!
 Build Command: npm run build (или оставьте по умолчанию)
@@ -54,7 +61,6 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY
 NEXT_PUBLIC_SITE_URL
 = https://ваш-проект.vercel.app
 (можно обновить после первого деплоя)
-```
 
 ### Шаг 4: Деплой
 
@@ -124,6 +130,25 @@ Automatic Deployments: Enabled ✅
 4. ✅ Проверьте консоль браузера на ошибки
 
 ## Troubleshooting
+
+### Ошибка "The name contains invalid characters":
+**Эта ошибка возникает при неправильном Project Name!**
+
+✅ **Правильные имена:**
+- `oss_dvfu_site` (используйте подчеркивания вместо дефисов)
+- `ossDvfuSite` (camelCase)
+- `ossdvfu` (все маленькие буквы)
+
+❌ **Неправильные имена:**
+- `oss-dvfu-site` (дефисы недопустимы)
+- `123project` (не может начинаться с цифры)
+- `my site` (пробелы недопустимы)
+- `project.name` (точки недопустимы)
+
+**Решение:**
+1. Измените Project Name на имя без дефисов (используйте подчеркивания `_`)
+2. Убедитесь, что имя не начинается с цифры
+3. Используйте только буквы, цифры и подчеркивания
 
 ### Ошибка "Build Failed":
 - Проверьте, что Root Directory указан правильно: `frontend/nextjs`
