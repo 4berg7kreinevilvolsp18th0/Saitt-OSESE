@@ -6,6 +6,8 @@ export type ColorKey =
   | 'international'
   | 'neutral';
 
+export type Theme = 'dark' | 'light';
+
 export function accentClass(colorKey: ColorKey): string {
   switch (colorKey) {
     case 'legal':
@@ -40,4 +42,24 @@ export function accentBg(colorKey: ColorKey): string {
     default:
       return 'bg-oss-red';
   }
+}
+
+// Функции для работы с темой
+export function getTheme(): Theme {
+  if (typeof window === 'undefined') return 'dark';
+  const stored = localStorage.getItem('theme') as Theme | null;
+  return stored || 'dark';
+}
+
+export function setTheme(theme: Theme) {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem('theme', theme);
+  document.documentElement.classList.toggle('light', theme === 'light');
+  document.documentElement.classList.toggle('dark', theme === 'dark');
+}
+
+export function initTheme() {
+  if (typeof window === 'undefined') return;
+  const theme = getTheme();
+  setTheme(theme);
 }
