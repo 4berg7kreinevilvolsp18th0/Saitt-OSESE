@@ -95,7 +95,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-oss-dark text-white">
+    <main className="min-h-screen bg-oss-dark dark:bg-oss-dark light:bg-gray-50 text-white dark:text-white light:text-gray-900">
       <section className="bg-oss-red py-20">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <div className="flex justify-center mb-8">
@@ -145,49 +145,57 @@ export default function Home() {
       </section>
 
       <section className="max-w-6xl mx-auto px-6 pb-16">
-        <div className="flex items-end justify-between gap-4 flex-wrap mb-6">
-          <div>
-            <h2 className="text-2xl font-semibold">Новости и гайды</h2>
-            <p className="mt-2 text-white/70 max-w-2xl">
-              Публикуем актуальную информацию и инструкции по направлениям. Цель — чтобы часть вопросов решалась без обращения.
-            </p>
-          </div>
-          <Link href="/content" className="text-white/70 hover:text-white transition">
-            Все материалы →
-          </Link>
-        </div>
-
-        {supabaseError ? (
-          <div className="rounded-3xl border border-yellow-500/50 bg-yellow-500/10 p-8 md:p-10 text-center">
-            <div className="text-yellow-400 font-semibold mb-2">⚠️ Предупреждение</div>
-            <div className="text-white/80 mb-4">{supabaseError}</div>
-            <div className="text-sm text-white/60">
-              Пожалуйста, настройте Supabase согласно инструкции в{' '}
-              <a href="/docs/SUPABASE_SETUP.md" className="text-yellow-400 hover:underline">
-                docs/SUPABASE_SETUP.md
-              </a>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2">
+            <div className="flex items-end justify-between gap-4 flex-wrap mb-6">
+              <div>
+                <h2 className="text-2xl font-semibold text-white dark:text-white light:text-gray-900">Новости и гайды</h2>
+                <p className="mt-2 text-white/70 dark:text-white/70 light:text-gray-600 max-w-2xl">
+                  Публикуем актуальную информацию и инструкции по направлениям. Цель — чтобы часть вопросов решалась без обращения.
+                </p>
+              </div>
+              <Link href="/content" className="text-white/70 dark:text-white/70 light:text-gray-600 hover:text-white dark:hover:text-white light:hover:text-gray-900 transition">
+                Все материалы →
+              </Link>
             </div>
+
+            {supabaseError ? (
+              <div className="rounded-3xl border border-yellow-500/50 dark:border-yellow-500/50 light:border-yellow-400 bg-yellow-500/10 dark:bg-yellow-500/10 light:bg-yellow-50 p-8 md:p-10 text-center">
+                <div className="text-yellow-400 dark:text-yellow-400 light:text-yellow-600 font-semibold mb-2">⚠️ Предупреждение</div>
+                <div className="text-white/80 dark:text-white/80 light:text-gray-800 mb-4">{supabaseError}</div>
+                <div className="text-sm text-white/60 dark:text-white/60 light:text-gray-600">
+                  Пожалуйста, настройте Supabase согласно инструкции в{' '}
+                  <a href="/docs/SUPABASE_SETUP.md" className="text-yellow-400 dark:text-yellow-400 light:text-yellow-600 hover:underline">
+                    docs/SUPABASE_SETUP.md
+                  </a>
+                </div>
+              </div>
+            ) : loadingNews ? (
+              <div className="text-center text-white/50 dark:text-white/50 light:text-gray-500 py-8">Загрузка новостей...</div>
+            ) : latestNews.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {latestNews.map((item) => (
+                  <ContentCard
+                    key={item.id}
+                    title={item.title}
+                    slug={item.slug}
+                    type={item.type}
+                    direction={item.direction_title}
+                    publishedAt={item.published_at}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="rounded-3xl border border-white/10 dark:border-white/10 light:border-gray-200 bg-white/5 dark:bg-white/5 light:bg-gray-50 p-8 md:p-10 text-center text-white/50 dark:text-white/50 light:text-gray-500">
+                Пока нет опубликованных новостей
+              </div>
+            )}
           </div>
-        ) : loadingNews ? (
-          <div className="text-center text-white/50 py-8">Загрузка новостей...</div>
-        ) : latestNews.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {latestNews.map((item) => (
-              <ContentCard
-                key={item.id}
-                title={item.title}
-                slug={item.slug}
-                type={item.type}
-                direction={item.direction_title}
-                publishedAt={item.published_at}
-              />
-            ))}
+          
+          <div className="lg:col-span-1">
+            <TelegramPosts limit={3} />
           </div>
-        ) : (
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-8 md:p-10 text-center text-white/50">
-            Пока нет опубликованных новостей
-          </div>
-        )}
+        </div>
       </section>
     </main>
   );
