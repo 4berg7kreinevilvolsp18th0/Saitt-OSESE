@@ -1,5 +1,7 @@
 
 /** @type {import('tailwindcss').Config} */
+const plugin = require('tailwindcss/plugin');
+
 module.exports = {
   darkMode: 'class', // Включаем class-based dark mode
   content: [
@@ -22,5 +24,10 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(function({ addVariant }) {
+      // Добавляем поддержку префикса light:
+      addVariant('light', '.light &');
+    }),
+  ],
 };
