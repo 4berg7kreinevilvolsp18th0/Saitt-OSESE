@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { supabase } from '../../lib/supabaseClient';
 import { DIRECTIONS } from '../../lib/directions';
 
-export default function AppealPage() {
+function AppealPageContent() {
   const params = useSearchParams();
   const presetDirection = params.get('direction');
 
@@ -243,5 +243,17 @@ export default function AppealPage() {
         </button>
       </div>
     </main>
+  );
+}
+
+export default function AppealPage() {
+  return (
+    <Suspense fallback={
+      <main className="max-w-3xl mx-auto px-6 py-12">
+        <div className="text-center text-white/50">Загрузка...</div>
+      </main>
+    }>
+      <AppealPageContent />
+    </Suspense>
   );
 }
