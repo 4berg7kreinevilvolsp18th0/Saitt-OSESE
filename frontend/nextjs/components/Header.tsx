@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Logo from './Logo';
 
 const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
   <Link
@@ -13,8 +14,8 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-oss-dark/80 backdrop-blur border-b border-white/10">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        <Link href="/" className="font-semibold tracking-tight">
-          ОСС ДВФУ
+        <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition">
+          <Logo size={36} showText={true} />
         </Link>
         <nav className="flex items-center gap-5">
           <NavLink href="/directions">Направления</NavLink>
