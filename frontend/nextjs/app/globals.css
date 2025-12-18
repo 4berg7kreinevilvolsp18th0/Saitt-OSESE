@@ -25,7 +25,11 @@ a {
 
 /* Markdown content styles */
 .markdown-content {
-  @apply text-white/80 dark:text-white/80 light:text-gray-800;
+  @apply text-white/80 dark:text-white/80;
+}
+
+.light .markdown-content {
+  @apply text-gray-800;
 }
 
 .markdown-content h1 {
