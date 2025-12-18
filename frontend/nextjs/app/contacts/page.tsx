@@ -88,7 +88,7 @@ export default function ContactsPage() {
           </p>
           <p>
             <strong>Для срочных вопросов:</strong> Используйте экстренный контакт.
-          </p>
+      </p>
         </div>
       </section>
     </main>
