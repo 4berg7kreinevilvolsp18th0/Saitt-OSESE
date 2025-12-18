@@ -121,18 +121,22 @@ pip install -r requirements.txt
 uvicorn main:app --reload
 ```
 
-## 📚 Документация
+## 📚 Documentation
 
-Подробная документация находится в папке `docs/`:
+Main guides (in English, simple language):
 
-- `README.md` — общий обзор проекта
-- `TECH_SPEC.md` — техническая спецификация
-- `# PROJECT_STATE_AND_NEXT_STEPS.md` — состояние и планы развития
-- `TODO.md` — список задач
-- `WORKPLAN.md` — план работ
-- `BRAND.md` — правила бренда и дизайна
-- `OPERATIONS.md` — операционные процедуры
-- `DASHBOARDS.md` — описание дашбордов
+- **[Getting Started](docs/getting-started.md)** - Set up and run locally
+- **[Deployment](docs/deployment.md)** - Deploy to Vercel
+- **[Database Setup](docs/database.md)** - Configure Supabase
+- **[Content Editing](docs/content-editing.md)** - How to add/edit content
+- **[Troubleshooting](docs/troubleshooting.md)** - Fix common problems
+- **[Features](docs/features.md)** - Theme, Telegram, and other features
+
+Technical docs (for developers):
+
+- `TECH_SPEC.md` - Technical specification
+- `BRAND.md` - Design system and branding
+- `OPERATIONS.md` - Operations procedures
 
 ## 🎨 Дизайн-система
 
