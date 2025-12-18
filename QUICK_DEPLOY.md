@@ -45,22 +45,26 @@ git push -u origin main
 
 5. Создайте пользователей в **Authentication → Users**
 
-## 🚀 Шаг 4: Деплой на Vercel
+## 🚀 Шаг 4: Деплой на Vercel (с автоматическим деплоем)
 
 1. Зайдите на [vercel.com](https://vercel.com)
 2. Войдите через **GitHub**
-3. Нажмите **"Add New Project"**
-4. Выберите ваш репозиторий
-5. **ВАЖНО:** Настройте проект:
+3. Нажмите **"Add New..." → "Project"** ✅
+   - ⚠️ Выберите именно **"Project"**, не Domain/Store/Integration
+4. Выберите ваш репозиторий из списка
+5. Нажмите **"Import"**
+
+6. **ВАЖНО:** Настройте проект:
    ```
-   Framework Preset: Next.js
+   Project Name: oss-dvfu-site (или любое другое)
+   Framework Preset: Next.js ✅
    Root Directory: frontend/nextjs  ⚠️ ОБЯЗАТЕЛЬНО!
-   Build Command: npm run build
-   Output Directory: .next
-   Install Command: npm install
+   Build Command: npm run build (или по умолчанию)
+   Output Directory: .next (или по умолчанию)
+   Install Command: npm install (или по умолчанию)
    ```
 
-6. Добавьте **Environment Variables**:
+7. Добавьте **Environment Variables** (нажмите "Environment Variables"):
    ```
    NEXT_PUBLIC_SUPABASE_URL = ваш-supabase-url
    NEXT_PUBLIC_SUPABASE_ANON_KEY = ваш-supabase-anon-key
@@ -68,12 +72,18 @@ git push -u origin main
    ```
    (URL сайта можно обновить после первого деплоя)
 
-7. Нажмите **"Deploy"**
+8. Нажмите **"Deploy"**
 
-8. После успешного деплоя:
-   - Скопируйте URL сайта из Vercel
-   - Обновите `NEXT_PUBLIC_SITE_URL` в Vercel Settings
-   - Перезапустите деплой (Redeploy)
+9. После успешного деплоя:
+   - Скопируйте URL сайта из Vercel (например: `https://oss-dvfu-site.vercel.app`)
+   - Зайдите в Settings → Environment Variables
+   - Обновите `NEXT_PUBLIC_SITE_URL` на ваш реальный URL
+   - Нажмите **"Redeploy"**
+
+10. ✅ **Автоматический деплой настроен!**
+    - Теперь каждый push в `main` автоматически деплоится
+    - Pull Requests получают preview деплои
+    - Подробнее: `docs/AUTO_DEPLOY.md` и `docs/VERCEL_SETUP.md`
 
 ## 👥 Шаг 5: Настройте роли пользователей
 
