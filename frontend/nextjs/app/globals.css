@@ -33,15 +33,27 @@ a {
 }
 
 .markdown-content h1 {
-  @apply text-3xl font-bold mt-8 mb-4;
+  @apply text-3xl font-bold mt-8 mb-4 text-white;
+}
+
+.light .markdown-content h1 {
+  @apply text-gray-900;
 }
 
 .markdown-content h2 {
-  @apply text-2xl font-semibold mt-6 mb-3;
+  @apply text-2xl font-semibold mt-6 mb-3 text-white;
+}
+
+.light .markdown-content h2 {
+  @apply text-gray-900;
 }
 
 .markdown-content h3 {
-  @apply text-xl font-semibold mt-4 mb-2;
+  @apply text-xl font-semibold mt-4 mb-2 text-white;
+}
+
+.light .markdown-content h3 {
+  @apply text-gray-900;
 }
 
 .markdown-content p {
@@ -117,4 +129,41 @@ a {
 
 .light .markdown-content th {
   @apply bg-gray-100 text-gray-900;
+}
+
+/* Общие стили для светлой темы */
+.light {
+  background-color: #F9FAFB;
+  color: #1F2937;
+}
+
+.light .text-white {
+  color: #1F2937;
+}
+
+.light .text-white\/80,
+.light .text-white\/70,
+.light .text-white\/60,
+.light .text-white\/50 {
+  color: #6B7280;
+}
+
+.light .bg-oss-dark {
+  background-color: #F9FAFB;
+}
+
+.light .bg-white\/5 {
+  background-color: #FFFFFF;
+}
+
+.light .bg-white\/10 {
+  background-color: #F3F4F6;
+}
+
+.light .border-white\/10 {
+  border-color: #E5E7EB;
+}
+
+.light .border-white\/20 {
+  border-color: #D1D5DB;
 }
