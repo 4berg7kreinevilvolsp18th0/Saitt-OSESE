@@ -173,12 +173,18 @@ Technical docs (for developers):
 
 Проект создан для ОСС ДВФУ.
 
-## 🤝 Поддержка
+## 🤝 Support
 
-При возникновении проблем:
-1. **Ошибка 404?** См. [`QUICK_FIX_404.md`](QUICK_FIX_404.md) — быстрое исправление
-2. **Supabase не настроен?** См. [`docs/SUPABASE_SETUP.md`](docs/SUPABASE_SETUP.md) — подробная инструкция
-3. Проверьте `docs/OPERATIONS.md` — операционные процедуры
-4. Проверьте логи Vercel/Supabase
-5. Проверьте переменные окружения
+Having issues? Check these guides:
+
+1. **[Troubleshooting](docs/troubleshooting.md)** - Common problems and fixes
+2. **[Getting Started](docs/getting-started.md)** - Initial setup
+3. **[Deployment](docs/deployment.md)** - Deployment issues
+4. **[Database Setup](docs/database.md)** - Supabase configuration
+
+Still stuck? Check:
+- Vercel build logs
+- Supabase logs  
+- Browser console (F12)
+- Environment variables
 
