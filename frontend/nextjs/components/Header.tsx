@@ -15,6 +15,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-oss-dark/80 backdrop-blur border-b border-white/10">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition">
+          <Logo size={40} showText={true} useImage={true} />
         </Link>
         <nav className="flex items-center gap-5">
           <NavLink href="/directions">Направления</NavLink>
