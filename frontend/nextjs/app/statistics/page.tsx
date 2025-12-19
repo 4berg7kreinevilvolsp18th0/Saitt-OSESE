@@ -28,18 +28,6 @@ export default function StatisticsPage() {
         setLoading(true);
         setError(null);
 
-        const { data: d1, error: e1 } = await supabase
-          .from('appeals_public_daily')
-          .select('*')
-          .order('day', { ascending: true })
-          .limit(90);
-
-        const { data: d2, error: e2 } = await supabase
-          .from('appeals_public_by_direction')
-          .select('*')
-          .order('total_count', { ascending: false });
-
-        if (e1 || e2) {
           setError('Не удалось загрузить статистику');
           return;
         }
