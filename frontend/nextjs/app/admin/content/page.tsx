@@ -229,7 +229,27 @@ export default function AdminContentPage() {
           <option value="news">Новости</option>
           <option value="guide">Гайды</option>
           <option value="faq">FAQ</option>
-        </select>
+      {/* Поиск и фильтры */}
+      <div className="space-y-4 mb-6">
+        <SearchBar
+          onSearch={handleSearch}
+          placeholder="Поиск по заголовку, slug или направлению..."
+          className="w-full"
+        />
+        <div className="flex flex-wrap gap-4">
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value as any)}
+            className="rounded-xl bg-white/10 p-3 border border-white/20 text-white"
+          >
+            <option value="all">Все статусы</option>
+            <option value="draft">Черновики</option>
+            <option value="published">Опубликовано</option>
+            <option value="archived">Архив</option>
+          </select>
+          <select
+            value={filterType}
+            onChange={(e) => setFilterType(e.target.value as any)}
       </div>
 
       {error && (
