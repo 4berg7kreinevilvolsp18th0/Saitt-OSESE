@@ -117,6 +117,7 @@ export default function Home() {
             Высший орган студенческого самоуправления ДВФУ. Решаем правовые,
             инфраструктурные, стипендиальные, адаптационные и консультационные вопросы.
           </p>
+          <div className="mt-8 sm:mt-10 flex flex-wrap justify-center gap-3 sm:gap-4 px-4">
               Подать обращение
             </Link>
             <Link href="/appeal/status" className="px-6 py-3 border border-white/80 rounded-xl hover:bg-white/10 transition">
