@@ -2,18 +2,10 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { supabase } from '../../../lib/supabaseClient';
+import AppealCard from '../../../components/AppealCard';
+import { AppealStatus } from '../../../lib/appealStatus';
 
-type Appeal = {
-  id: string;
-  title: string;
-  description?: string;
-  created_at: string;
-  status: 'new' | 'in_progress' | 'waiting' | 'closed';
-  contact_value?: string;
-  direction_id?: string;
-};
-
-type Column = { key: Appeal['status']; title: string };
+type Column = { key: AppealStatus; title: string };
 
 const columns: Column[] = [
   { key: 'new', title: 'Новое' },
