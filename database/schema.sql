@@ -44,6 +44,11 @@ create table if not exists appeal_attachments (
     id uuid primary key default gen_random_uuid(),
     appeal_id uuid references appeals(id) on delete cascade,
     file_name text not null,
+    file_url text not null, -- URL файла в Supabase Storage
+    file_size integer, -- Размер в байтах
+    mime_type text, -- MIME тип файла
+    uploaded_at timestamptz default now()
+);
 -- Appeal comments
 create table if not exists appeal_comments (
     id uuid primary key default gen_random_uuid(),
