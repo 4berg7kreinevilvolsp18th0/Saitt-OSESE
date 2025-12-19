@@ -28,6 +28,20 @@ export default function StatisticsPage() {
         setLoading(true);
         setError(null);
 
+        // Вычисляем статистику напрямую из таблицы appeals
+        // За последние 90 дней
+        const ninetyDaysAgo = new Date();
+        ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
+
+        // Получаем все обращения за последние 90 дней
+        const { data: appeals, error: appealsError } = await supabase
+          .from('appeals')
+          .select('id, created_at, closed_at, direction_id, status')
+          .gte('created_at', ninetyDaysAgo.toISOString())
+          .order('created_at', { ascending: true });
+
+        if (appealsError) {
+          console.error('Ошибка загрузки обращений:', appealsError);
           setError('Не удалось загрузить статистику');
           return;
         }
