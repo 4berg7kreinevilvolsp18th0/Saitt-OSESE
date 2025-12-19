@@ -212,12 +212,12 @@ function AppealPageContent() {
             >
               <option value="" className="text-gray-500">Выберите школу или институт</option>
               {SCHOOLS.map((school) => (
-                <option key={school.code} value={school.code}>
+                <option key={school.code} value={school.code} className="text-white light:text-gray-900">
                   {school.shortName} — {school.fullName}
                 </option>
               ))}
             </select>
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none transition-transform group-hover:translate-y-[-2px]">
               <svg
                 className="w-5 h-5 text-white/60 light:text-gray-500"
                 fill="none"
