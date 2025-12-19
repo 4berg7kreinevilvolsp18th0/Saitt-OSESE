@@ -1,0 +1,190 @@
+{
+  "common": {
+    "siteName": "OSS DVFU",
+    "siteDescription": "United Student Council of FEFU",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "refresh": "Refresh"
+  },
+  "navigation": {
+    "home": "Home",
+    "directions": "Directions",
+    "appeal": "Submit Appeal",
+    "status": "Check Status",
+    "statistics": "Statistics",
+    "content": "News & Guides",
+    "documents": "Documents",
+    "contacts": "Contacts",
+    "admin": "Admin Panel"
+  },
+  "home": {
+    "title": "Welcome to OSS DVFU",
+    "subtitle": "Single window for student issues",
+    "latestNews": "Latest News",
+    "studentOrganizations": "Student Organizations",
+    "telegramPosts": "Telegram News",
+    "viewAll": "View All"
+  },
+  "directions": {
+    "title": "Working Directions",
+    "description": "Choose the direction that matches your question",
+    "legal": {
+      "title": "Legal Committee",
+      "description": "Student rights protection, conflict resolution, legal consultations"
+    },
+    "infrastructure": {
+      "title": "Infrastructure Committee",
+      "description": "Dormitory issues, buildings, campus infrastructure"
+    },
+    "scholarship": {
+      "title": "Scholarship Committee",
+      "description": "Scholarship issues, financial support, financial matters"
+    },
+    "international": {
+      "title": "International Committee",
+      "description": "Support for international students, visa issues, adaptation"
+    },
+    "viewDetails": "View Details",
+    "submitAppeal": "Submit Appeal"
+  },
+  "appeal": {
+    "title": "Submit Appeal",
+    "description": "Describe your issue and we will help resolve it",
+    "form": {
+      "direction": "Direction",
+      "directionPlaceholder": "Select direction (optional)",
+      "title": "Appeal Title",
+      "titlePlaceholder": "Briefly describe the issue",
+      "description": "Description",
+      "descriptionPlaceholder": "Describe the situation in detail",
+      "contact": "Contact",
+      "contactPlaceholder": "Email or Telegram (@username)",
+      "contactHint": "Provide email or Telegram for contact",
+      "anonymous": "Submit anonymously",
+      "anonymousHint": "Note: anonymous appeals are harder to process as we cannot clarify details directly.",
+      "attachments": "Attachments (optional)",
+      "attachmentsHint": "Maximum 5 files, up to 10MB each. Allowed: images, PDF, documents",
+      "selectFiles": "Select Files",
+      "fileLimitReached": "File limit reached",
+      "uploaded": "Uploaded",
+      "submit": "Submit Appeal",
+      "submitting": "Submitting...",
+      "uploadingFiles": "Uploading files...",
+      "required": "Required field"
+    },
+    "success": {
+      "title": "Appeal Accepted",
+      "message": "Your appeal has been successfully registered",
+      "token": "Appeal Code",
+      "tokenDescription": "Save this code to check the appeal status",
+      "checkStatus": "Check Status",
+      "newAppeal": "Submit New Appeal"
+    },
+    "errors": {
+      "titleRequired": "Please provide appeal title",
+      "descriptionRequired": "Please describe your issue",
+      "contactRequired": "Please provide contact information",
+      "contactInvalid": "Please provide valid email or Telegram (@username)",
+      "submitError": "Error submitting appeal. Please try again later.",
+      "generalError": "An error occurred. Please try again later."
+    }
+  },
+  "status": {
+    "title": "Check Appeal Status",
+    "description": "Enter the appeal code you received when submitting your appeal.",
+    "tokenInput": "Appeal Code",
+    "tokenPlaceholder": "Paste appeal code",
+    "check": "Check Status",
+    "checking": "Checking...",
+    "notFound": "Appeal with this code not found. Please check the code.",
+    "appealTitle": "Appeal Title",
+    "status": "Status",
+    "submitted": "Submitted",
+    "firstResponse": "First Response",
+    "closed": "Closed",
+    "statuses": {
+      "new": {
+        "label": "Accepted",
+        "description": "Your appeal has been received and registered. We will start working on it soon."
+      },
+      "in_progress": {
+        "label": "In Progress",
+        "description": "Your appeal is being processed. We are working on resolving your issue."
+      },
+      "waiting": {
+        "label": "Information Needed",
+        "description": "We need additional information to resolve the issue. Please check the contact you provided."
+      },
+      "closed": {
+        "label": "Resolved",
+        "description": "Appeal is closed. If the issue is not fully resolved, you can submit a new appeal."
+      }
+    }
+  },
+  "admin": {
+    "appeals": {
+      "title": "Appeals",
+      "description": "Kanban board for processing appeals. Access and actions depend on role (member/lead/board).",
+      "columns": {
+        "new": "New",
+        "in_progress": "In Progress",
+        "waiting": "Waiting for Info",
+        "closed": "Closed"
+      },
+      "actions": {
+        "expand": "More",
+        "collapse": "Collapse",
+        "assign": "Assignee",
+        "priority": "Priority",
+        "deadline": "Deadline",
+        "moveTo": "→",
+        "export": "Export CSV"
+      },
+      "priorities": {
+        "low": "Low",
+        "normal": "Normal",
+        "high": "High",
+        "urgent": "Urgent"
+      },
+      "empty": "Empty",
+      "loading": "Loading…",
+      "error": "If you see an access error, RLS policies are correctly restricting the role."
+    }
+  },
+  "statistics": {
+    "title": "Statistics",
+    "description": "Public appeal statistics"
+  },
+  "content": {
+    "title": "News & Guides",
+    "description": "Current information and useful materials",
+    "news": "News",
+    "guides": "Guides",
+    "readMore": "Read More"
+  },
+  "documents": {
+    "title": "Documents",
+    "description": "Official documents and regulations"
+  },
+  "contacts": {
+    "title": "Contacts",
+    "description": "Contact us"
+  },
+  "footer": {
+    "rights": "All rights reserved",
+    "ossDvfu": "OSS DVFU"
+  }
+}
+
