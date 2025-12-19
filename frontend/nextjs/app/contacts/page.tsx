@@ -26,7 +26,9 @@ export default function ContactsPage() {
   }));
 
   return (
-      <p className="mt-3 text-white/70 max-w-3xl">
+    <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <h1 className="text-2xl sm:text-3xl font-semibold light:text-gray-900">Контакты</h1>
+      <p className="mt-3 text-sm sm:text-base text-white/70 max-w-3xl light:text-gray-600">
         Единый справочник контактов ОСС ДВФУ. Для подачи обращения используйте форму на сайте.
       </p>
 
