@@ -56,7 +56,9 @@ def get_appeals(
     direction_id: Optional[UUID] = None,
     status: Optional[str] = None,
     priority: Optional[str] = None,
-    assigned_to: Optional[UUID] = None
+    assigned_to: Optional[UUID] = None,
+    sort_by: str = "created_at",
+    sort_order: str = "desc"
 ) -> List[Appeal]:
     query = db.query(Appeal)
     if direction_id:
@@ -67,7 +69,15 @@ def get_appeals(
         query = query.filter(Appeal.priority == priority)
     if assigned_to:
         query = query.filter(Appeal.assigned_to == assigned_to)
-    return query.order_by(Appeal.created_at.desc()).offset(skip).limit(limit).all()
+    
+    # Sorting
+    sort_column = getattr(Appeal, sort_by, Appeal.created_at)
+    if sort_order == "desc":
+        query = query.order_by(sort_column.desc())
+    else:
+        query = query.order_by(sort_column.asc())
+    
+    return query.offset(skip).limit(limit).all()
 
 
 def create_appeal(db: Session, appeal: AppealCreate) -> Appeal:
