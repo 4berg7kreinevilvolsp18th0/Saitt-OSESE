@@ -167,3 +167,15 @@ def get_user_performance_stats(
     
     return {
         "user_id": user_id,
+        "closed": closed,
+        "in_progress": in_progress,
+        "waiting": waiting,
+        "avg_resolution_time_hours": avg_resolution_time,
+        "completion_rate": (closed / total_assigned * 100) if total_assigned > 0 else 0
+    }
+
+
+def get_content_analytics(
+    db: Session,
+    start_date: Optional[date] = None,
+    end_date: Optional[date] = None
