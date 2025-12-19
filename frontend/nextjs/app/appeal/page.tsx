@@ -192,13 +192,13 @@ function AppealPageContent() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">
+          <label className="block text-xs sm:text-sm font-medium mb-2 light:text-gray-700">
             Контакт для связи <span className="text-red-400">*</span>
           </label>
           <input
-            className={`w-full rounded-xl bg-white/10 p-3 border ${
+            className={`w-full rounded-xl bg-white/10 p-3 border text-sm sm:text-base ${
               errors.contact ? 'border-red-500' : 'border-white/20'
-            }`}
+            } light:bg-white light:border-gray-300 light:text-gray-900`}
             placeholder="email@example.com или @telegram_username"
             value={contact}
             onChange={(e) => {
