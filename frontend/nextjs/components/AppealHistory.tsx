@@ -25,4 +25,24 @@ const actionLabels: Record<string, string> = {
   priority_changed: 'Приоритет изменён',
   deadline_set: 'Дедлайн установлен',
   comment_added: 'Добавлен комментарий',
+};
+
+const actionIcons: Record<string, string> = {
+  status_changed: '🔄',
+  assigned: '👤',
+  priority_changed: '⚡',
+  deadline_set: '📅',
+  comment_added: '💬',
+};
+
+export default function AppealHistory({ appealId }: AppealHistoryProps) {
+  const [history, setHistory] = useState<AppealHistoryItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [expanded, setExpanded] = useState(false);
+  const { t } = useLocale();
+
+  useEffect(() => {
+    if (expanded && appealId) {
+      loadHistory();
+    }
 
