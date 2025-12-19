@@ -312,6 +312,25 @@ create policy "appeal_attachments_public_insert" on appeal_attachments
   for insert with check (true);
 
 -- Appeal Attachments: can read if have access to appeal
+drop policy if exists "appeal_attachments_read" on appeal_attachments;
+create policy "appeal_attachments_read" on appeal_attachments
+  for select using (
+    -- Can read if user has access to the appeal
+    exists (
+      select 1 from appeals
+      where appeals.id = appeal_attachments.appeal_id
+        and (
+          -- Public can read by public_token (will be checked in application)
+          true
+          or
+          -- Members can read if they have access
+          public.has_role('board') or public.has_role('staff')
+          or public.has_role('lead', appeals.direction_id)
+          or public.has_role('member', appeals.direction_id)
+        )
+    )
+  );
+
 -- User Roles: users can read their own roles
 drop policy if exists "user_roles_read_own" on user_roles;
 create policy "user_roles_read_own" on user_roles
