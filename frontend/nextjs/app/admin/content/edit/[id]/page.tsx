@@ -4,11 +4,15 @@ import React, { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { supabase } from '../../../../../lib/supabaseClient';
 import { DIRECTIONS } from '../../../../../lib/directions';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { useToast } from '../../../../../components/ToastProvider';
 
 export default function EditContentPage() {
   const router = useRouter();
   const params = useParams();
   const contentId = params.id as string;
+  const toast = useToast();
 
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
@@ -19,6 +23,7 @@ export default function EditContentPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showPreview, setShowPreview] = useState(false);
 
   useEffect(() => {
     if (contentId === 'new') {
