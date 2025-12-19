@@ -159,8 +159,9 @@ function AppealPageContent() {
             Краткая тема <span className="text-red-400">*</span>
           </label>
           <input
+            className={`w-full rounded-xl bg-white/10 p-3 border text-sm sm:text-base ${
               errors.title ? 'border-red-500' : 'border-white/20'
-            }`}
+            } light:bg-white light:border-gray-300 light:text-gray-900`}
             placeholder="Например: Не пришла стипендия"
             value={title}
             onChange={(e) => {
@@ -168,11 +169,11 @@ function AppealPageContent() {
               if (errors.title) setErrors({ ...errors, title: '' });
             }}
           />
-          {errors.title && <p className="mt-1 text-sm text-red-400">{errors.title}</p>}
+          {errors.title && <p className="mt-1 text-xs sm:text-sm text-red-400">{errors.title}</p>}
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">
+          <label className="block text-xs sm:text-sm font-medium mb-2 light:text-gray-700">
             Описание ситуации <span className="text-red-400">*</span>
           </label>
           <textarea
