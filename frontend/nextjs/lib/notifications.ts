@@ -144,3 +144,15 @@ export async function notifyAppealChange(
       waiting: 'Ждём инфо',
       closed: 'Закрыто',
     };
+
+    notifications.push(
+      sendNotification({
+        userId: appealData.assigned_to,
+        appealId,
+        type: 'appeal_status',
+        title: 'Статус обращения изменён',
+        message: `Обращение "${appealData.title}" переведено в статус "${statusLabels[appealData.status] || appealData.status}"`,
+        url: `/admin/appeals?appeal=${appealId}`,
+      })
+    );
+  }
