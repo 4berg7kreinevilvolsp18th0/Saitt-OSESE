@@ -7,8 +7,9 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 sm:gap-4">
           <div>
             <div className="text-white/80 font-medium text-sm sm:text-base">Объединённый совет студентов ДВФУ</div>
+            <div className="text-xs sm:text-sm">Официальный сайт: обращения, гайды, новости, документы.</div>
           </div>
-          <div className="text-white/50">© {year} ОСС ДВФУ • Версия MVP</div>
+          <div className="text-white/50 text-xs sm:text-sm">© {year} ОСС ДВФУ • Версия MVP</div>
         </div>
       </div>
     </footer>
