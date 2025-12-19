@@ -89,27 +89,27 @@ export default function StatisticsPage() {
   }, [daily]);
 
   return (
-    <main className="max-w-6xl mx-auto px-6 py-12">
-      <h1 className="text-3xl font-semibold">Статистика обращений</h1>
-      <p className="mt-3 text-white/70 max-w-3xl">
+    <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <h1 className="text-2xl sm:text-3xl font-semibold light:text-gray-900">Статистика обращений</h1>
+      <p className="mt-3 text-sm sm:text-base text-white/70 max-w-3xl light:text-gray-600">
         Здесь показываются только агрегированные данные. Никаких персональных данных студентов или содержания обращений.
       </p>
 
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-          <div className="text-sm text-white/60">Создано (последние 90 дней)</div>
-          <div className="mt-2 text-3xl font-semibold">{loading ? '…' : totals.created}</div>
+      <div className="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 light:bg-white light:border-gray-200 light:shadow-sm">
+          <div className="text-xs sm:text-sm text-white/60 light:text-gray-500">Создано (последние 90 дней)</div>
+          <div className="mt-2 text-2xl sm:text-3xl font-semibold light:text-gray-900">{loading ? '…' : totals.created}</div>
         </div>
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-          <div className="text-sm text-white/60">Закрыто (последние 90 дней)</div>
-          <div className="mt-2 text-3xl font-semibold">{loading ? '…' : totals.closed}</div>
+        <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 light:bg-white light:border-gray-200 light:shadow-sm">
+          <div className="text-xs sm:text-sm text-white/60 light:text-gray-500">Закрыто (последние 90 дней)</div>
+          <div className="mt-2 text-2xl sm:text-3xl font-semibold light:text-gray-900">{loading ? '…' : totals.closed}</div>
         </div>
       </div>
 
-      <section className="mt-8 rounded-3xl border border-white/10 bg-white/5 p-6">
-        <h2 className="text-xl font-semibold">Динамика</h2>
-        <p className="mt-2 text-white/70">Количество обращений по дням (создано/закрыто).</p>
-        <div className="mt-6 h-72">
+      <section className="mt-6 sm:mt-8 rounded-2xl sm:rounded-3xl border border-white/10 bg-white/5 p-4 sm:p-6 light:bg-white light:border-gray-200 light:shadow-sm">
+        <h2 className="text-lg sm:text-xl font-semibold light:text-gray-900">Динамика</h2>
+        <p className="mt-2 text-xs sm:text-sm text-white/70 light:text-gray-600">Количество обращений по дням (создано/закрыто).</p>
+        <div className="mt-4 sm:mt-6 h-64 sm:h-72">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={daily}>
               <XAxis dataKey="day" hide />
@@ -123,25 +123,25 @@ export default function StatisticsPage() {
       </section>
 
       {error && (
-        <div className="mt-8 rounded-xl border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-400">
+        <div className="mt-6 sm:mt-8 rounded-xl border border-red-500/40 bg-red-500/10 p-4 text-xs sm:text-sm text-red-400 light:bg-red-50 light:border-red-200 light:text-red-700">
           {error}
         </div>
       )}
 
-      <section className="mt-8 rounded-3xl border border-white/10 bg-white/5 p-6">
-        <h2 className="text-xl font-semibold">Распределение по направлениям</h2>
-        <p className="mt-2 text-white/70">Сколько обращений относится к каждому направлению (накопительно).</p>
+      <section className="mt-6 sm:mt-8 rounded-2xl sm:rounded-3xl border border-white/10 bg-white/5 p-4 sm:p-6 light:bg-white light:border-gray-200 light:shadow-sm">
+        <h2 className="text-lg sm:text-xl font-semibold light:text-gray-900">Распределение по направлениям</h2>
+        <p className="mt-2 text-xs sm:text-sm text-white/70 light:text-gray-600">Сколько обращений относится к каждому направлению (накопительно).</p>
         {loading ? (
-          <div className="mt-6 h-72 flex items-center justify-center text-white/50">
+          <div className="mt-4 sm:mt-6 h-64 sm:h-72 flex items-center justify-center text-white/50 text-sm sm:text-base light:text-gray-500">
             Загрузка данных...
           </div>
         ) : byDir.length === 0 ? (
-          <div className="mt-6 h-72 flex items-center justify-center text-white/50">
+          <div className="mt-4 sm:mt-6 h-64 sm:h-72 flex items-center justify-center text-white/50 text-sm sm:text-base light:text-gray-500">
             Нет данных для отображения
           </div>
         ) : (
           <>
-            <div className="mt-6 h-72">
+            <div className="mt-4 sm:mt-6 h-64 sm:h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={byDir}>
                   <XAxis
@@ -165,9 +165,9 @@ export default function StatisticsPage() {
             </div>
             <div className="mt-4 space-y-2">
               {byDir.map((item, i) => (
-                <div key={i} className="flex items-center justify-between text-sm">
-                  <span className="text-white/80">{item.direction_title || 'Не указано'}</span>
-                  <span className="text-white/60">{item.total_count}</span>
+                <div key={i} className="flex items-center justify-between text-xs sm:text-sm p-2 rounded-lg bg-white/5 light:bg-gray-50">
+                  <span className="text-white/80 light:text-gray-700">{item.direction_title || 'Не указано'}</span>
+                  <span className="text-white/60 font-semibold light:text-gray-900">{item.total_count}</span>
                 </div>
               ))}
             </div>
