@@ -237,7 +237,7 @@ export default function DirectionPage({ params }: { params: { slug: string } }) 
             <h2 className="text-xl sm:text-2xl font-semibold light:text-gray-900">Материалы по направлению</h2>
             <Link
               href={`/content?direction=${direction.slug}`}
-              className="text-sm text-white/70 hover:text-white transition"
+              className="text-xs sm:text-sm text-white/70 hover:text-white transition light:text-gray-600 light:hover:text-gray-900"
             >
               Все материалы →
             </Link>
