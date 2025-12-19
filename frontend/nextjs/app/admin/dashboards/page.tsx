@@ -139,7 +139,9 @@ export default function AdminDashboards() {
 
   return (
     <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-      <h1 className="text-2xl sm:text-3xl font-semibold light:text-gray-900">Дашборды</h1>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-semibold font-sf-display light:text-gray-900">Дашборды</h1>
       <p className="mt-3 text-sm sm:text-base text-white/70 max-w-3xl light:text-gray-600">
         Доступно руководителям направлений и руководству ОСС. Данные ограничиваются политиками доступа (RLS).
       </p>
