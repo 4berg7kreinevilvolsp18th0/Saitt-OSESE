@@ -123,6 +123,7 @@ create index if not exists idx_appeals_created_at on appeals(created_at desc);
 create index if not exists idx_appeals_public_token on appeals(public_token);
 create index if not exists idx_appeals_assigned_to on appeals(assigned_to);
 create index if not exists idx_appeals_priority on appeals(priority);
+create index if not exists idx_appeals_deadline on appeals(deadline) where deadline is not null;
 
 -- Content indexes
 create index if not exists idx_content_status on content(status);
