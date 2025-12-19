@@ -113,3 +113,40 @@ export async function POST(request: NextRequest) {
                 <p>
                   <a href="${appealUrl}" style="background: #DC2626; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
                     Открыть обращение
+                  </a>
+                </p>
+                ` : ''}
+                <p style="color: #666; font-size: 12px; margin-top: 30px;">
+                  С уважением,<br>
+                  ОСС ДВФУ
+                </p>
+              </div>
+            `,
+          }),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error('Email send error:', errorData);
+          return NextResponse.json({ 
+            success: false, 
+            message: 'Failed to send email' 
+          });
+        }
+
+        return NextResponse.json({ 
+          success: true, 
+          message: 'Email sent' 
+        });
+      } catch (error: any) {
+        console.error('Email notification error:', error);
+        return NextResponse.json({ 
+          success: false, 
+          message: error.message 
+        });
+      }
+    }
+
+    return NextResponse.json({ 
+      success: true, 
+      message: 'Notification sent' 
