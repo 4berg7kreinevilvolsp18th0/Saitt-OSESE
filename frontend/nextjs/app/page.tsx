@@ -155,19 +155,17 @@ export default function Home() {
           <div className="lg:col-span-2">
             <div className="flex items-end justify-between gap-4 flex-wrap mb-6">
               <div>
-                <h2 className="text-2xl font-semibold text-white">Новости и гайды</h2>
-                <p className="mt-2 text-white/70 max-w-2xl">
+                <h2 className="text-xl sm:text-2xl font-semibold text-white">Новости и гайды</h2>
+                <p className="mt-2 text-sm sm:text-base text-white/70 max-w-2xl">
                   Публикуем актуальную информацию и инструкции по направлениям. Цель — чтобы часть вопросов решалась без обращения.
                 </p>
               </div>
-              <Link href="/content" className="text-white/70 hover:text-white transition">
+              <Link href="/content" className="text-sm sm:text-base text-white/70 hover:text-white transition whitespace-nowrap">
                 Все материалы →
               </Link>
             </div>
 
             {supabaseError ? (
-              <div className="rounded-3xl border border-yellow-500/50 bg-yellow-500/10 p-8 md:p-10 text-center">
-                <div className="text-yellow-400 font-semibold mb-2">⚠️ Предупреждение</div>
                 <div className="text-white/80 mb-4">{supabaseError}</div>
                 <div className="text-sm text-white/60">
                   Пожалуйста, настройте Supabase согласно инструкции в{' '}
