@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ThemeProvider from '../components/ThemeProvider';
 import { LocaleProvider } from '../components/LocaleProvider';
+import ToastProvider from '../components/ToastProvider';
 import type { Metadata } from 'next';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://oss-dvfu.vercel.app';
