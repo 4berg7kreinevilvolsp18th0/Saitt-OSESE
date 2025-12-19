@@ -185,15 +185,14 @@ export default function DirectionPage({ params }: { params: { slug: string } }) 
           <Link href="/content" className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl border border-white/40 text-white hover:bg-white/10 transition text-sm sm:text-base">
             Гайды и новости
           </Link>
-          <Link href="/documents" className="px-5 py-3 rounded-xl border border-white/40 text-white">
+          <Link href="/documents" className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl border border-white/40 text-white hover:bg-white/10 transition text-sm sm:text-base">
             Документы
           </Link>
         </div>
       </div>
 
-      <section className="mt-10">
-        <h2 className="text-2xl font-semibold mb-6">Частые кейсы</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 light:text-gray-900">Частые кейсы</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {getCasesForDirection(direction.slug).map((c, i) => (
             <div
               key={i}
