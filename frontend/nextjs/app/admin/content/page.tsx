@@ -276,6 +276,11 @@ export default function AdminContentPage() {
               className="px-4 py-2 rounded-lg border border-white/20 text-white/80 hover:text-white transition text-sm"
             >
               Снять выделение
+            </button>
+          </div>
+        </div>
+      )}
+
       {error && (
         <div className="mb-6 rounded-xl border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-400">
           {error}
@@ -295,10 +300,28 @@ export default function AdminContentPage() {
           {filteredContent.map((item) => (
             <div
               key={item.id}
-              className="rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition"
+              className={`rounded-xl border p-4 transition ${
+                selectedItems.has(item.id)
+                  ? 'border-oss-red bg-oss-red/10'
+                  : 'border-white/10 bg-white/5 hover:bg-white/10'
+              }`}
             >
               <div className="flex items-start justify-between gap-4">
-                <div className="flex-1">
+                <div className="flex items-start gap-3 flex-1">
+                  <input
+                    type="checkbox"
+                    checked={selectedItems.has(item.id)}
+                    onChange={(e) => {
+                      const newSelected = new Set(selectedItems);
+                      if (e.target.checked) {
+                        newSelected.add(item.id);
+                      } else {
+                        newSelected.delete(item.id);
+                      }
+                      setSelectedItems(newSelected);
+                    }}
+                    className="mt-1 w-4 h-4 rounded border-white/20 bg-white/10 text-oss-red focus:ring-oss-red"
+                  />
                   <div className="flex items-center gap-2 mb-2">
                     <Badge
                       variant={
