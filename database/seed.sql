@@ -66,3 +66,67 @@ where d.is_active = true
 limit 5
 on conflict (slug) do nothing;
 
+-- Insert sample student organizations
+insert into student_organizations (title, description, telegram_url, vk_url, email, contact_person, is_active, display_order) values
+  (
+    'Студенческий совет',
+    'Орган студенческого самоуправления, представляющий интересы студентов и организующий культурные и спортивные мероприятия.',
+    'https://t.me/student_council_dvfu',
+    'https://vk.com/student_council_dvfu',
+    'council@dvfu.ru',
+    'Иванов Иван',
+    true,
+    1
+  ),
+  (
+    'Волонтёрский центр',
+    'Организация волонтёрской деятельности студентов, помощь в социальных проектах и мероприятиях университета.',
+    'https://t.me/volunteer_dvfu',
+    'https://vk.com/volunteer_dvfu',
+    'volunteer@dvfu.ru',
+    'Петрова Мария',
+    true,
+    2
+  ),
+  (
+    'Студенческий медиацентр',
+    'Создание контента для студенческих СМИ, организация фото- и видеосъёмок мероприятий, ведение социальных сетей.',
+    'https://t.me/media_dvfu',
+    'https://vk.com/media_dvfu',
+    'media@dvfu.ru',
+    'Сидоров Алексей',
+    true,
+    3
+  ),
+  (
+    'Клуб дебатов',
+    'Развитие ораторского мастерства, участие в дебатных турнирах, организация дискуссий и круглых столов.',
+    'https://t.me/debate_dvfu',
+    null,
+    'debate@dvfu.ru',
+    'Козлова Анна',
+    true,
+    4
+  ),
+  (
+    'Экологический клуб',
+    'Организация экологических акций, просвещение в области экологии, участие в природоохранных проектах.',
+    'https://t.me/eco_dvfu',
+    'https://vk.com/eco_dvfu',
+    'eco@dvfu.ru',
+    'Морозов Дмитрий',
+    true,
+    5
+  ),
+  (
+    'IT-сообщество',
+    'Обмен опытом в области программирования, организация хакатонов и митапов, помощь в развитии IT-навыков.',
+    'https://t.me/it_dvfu',
+    'https://vk.com/it_dvfu',
+    'it@dvfu.ru',
+    'Новиков Сергей',
+    true,
+    6
+  )
+on conflict do nothing;
+
