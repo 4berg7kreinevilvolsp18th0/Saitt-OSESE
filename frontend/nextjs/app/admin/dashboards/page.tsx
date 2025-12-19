@@ -174,14 +174,14 @@ export default function AdminDashboards() {
                 </BarChart>
               </ResponsiveContainer>
             </div>
-            <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
               {rows.map((row, i) => {
                 const statusInfo = statusLabels[i];
                 return (
-                  <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-white/5">
-                    <span className="text-sm text-white/80">{row.status}</span>
+                  <div key={i} className="flex items-center justify-between p-2 sm:p-3 rounded-lg bg-white/5 light:bg-gray-50">
+                    <span className="text-xs sm:text-sm text-white/80 light:text-gray-700">{row.status}</span>
                     <span
-                      className="text-lg font-semibold"
+                      className="text-base sm:text-lg font-semibold"
                       style={{ color: statusInfo?.color || '#fff' }}
                     >
                       {row.count}
