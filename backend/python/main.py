@@ -8,7 +8,11 @@ from typing import Optional, List
 from uuid import UUID
 
 from database import get_db, engine, Base
-from models import Appeal, Direction, Content, Document
+from models import Appeal, Direction, Content, Document, AppealAttachment
+from errors import (
+    AppealNotFoundError, AttachmentNotFoundError,
+    appeal_not_found_handler, attachment_not_found_handler
+)
 from schemas import (
     AppealCreate, Appeal, AppealUpdate, AppealPublic, TokenResponse,
     AppealCommentCreate, AppealComment,
@@ -16,7 +20,8 @@ from schemas import (
     DocumentCreate, Document,
     Direction, DirectionCreate,
     UserRoleCreate, UserRole,
-    AppealStats, MessageResponse
+    AppealStats, MessageResponse,
+    AppealAttachmentCreate, AppealAttachment
 )
 import crud
 
@@ -26,13 +31,21 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="OSS DVFU API",
     description="Backend API for OSS DVFU website",
-    version="1.0.0"
+    version="1.0.0",
+    docs_url="/docs",
+    redoc_url="/redoc"
 )
 
+# Register error handlers
+app.add_exception_handler(AppealNotFoundError, appeal_not_found_handler)
+app.add_exception_handler(AttachmentNotFoundError, attachment_not_found_handler)
+
 # CORS middleware
+import os
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "*").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify exact origins
+    allow_origins=ALLOWED_ORIGINS if ALLOWED_ORIGINS != ["*"] else ["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -98,12 +111,25 @@ def get_appeal_by_token(token: UUID, db: Session = Depends(get_db)):
 def get_appeals(
     direction_id: Optional[UUID] = Query(None),
     status: Optional[str] = Query(None, pattern="^(new|in_progress|waiting|closed)$"),
+    priority: Optional[str] = Query(None, pattern="^(low|normal|high|urgent)$"),
+    assigned_to: Optional[UUID] = Query(None),
+    overdue_only: bool = Query(False),
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=1000),
     db: Session = Depends(get_db)
 ):
     """Get appeals (admin endpoint - requires auth in production)"""
-    return crud.get_appeals(db, skip=skip, limit=limit, direction_id=direction_id, status=status)
+    if overdue_only:
+        return crud.get_overdue_appeals(db, skip=skip, limit=limit)
+    return crud.get_appeals(
+        db, 
+        skip=skip, 
+        limit=limit, 
+        direction_id=direction_id, 
+        status=status,
+        priority=priority,
+        assigned_to=assigned_to
+    )
 
 
 @app.get("/api/appeals/{appeal_id}", response_model=Appeal)
@@ -246,6 +272,45 @@ def get_user_roles(user_id: UUID, db: Session = Depends(get_db)):
 def create_user_role(user_role: UserRoleCreate, db: Session = Depends(get_db)):
     """Create user role (admin endpoint)"""
     return crud.create_user_role(db, user_role)
+
+
+# ==================== Appeal Attachments ====================
+
+@app.get("/api/appeals/{appeal_id}/attachments", response_model=List[AppealAttachment])
+def get_appeal_attachments(appeal_id: UUID, db: Session = Depends(get_db)):
+    """Get all attachments for an appeal"""
+    return crud.get_appeal_attachments(db, appeal_id)
+
+
+@app.get("/api/attachments/{attachment_id}", response_model=AppealAttachment)
+def get_appeal_attachment(attachment_id: UUID, db: Session = Depends(get_db)):
+    """Get attachment by ID"""
+    attachment = crud.get_appeal_attachment(db, attachment_id)
+    if not attachment:
+        raise HTTPException(status_code=404, detail="Attachment not found")
+    return attachment
+
+
+@app.post("/api/attachments", response_model=AppealAttachment, status_code=status.HTTP_201_CREATED)
+def create_appeal_attachment(
+    attachment: AppealAttachmentCreate,
+    db: Session = Depends(get_db)
+):
+    """Create an attachment for an appeal (admin endpoint)"""
+    # Verify appeal exists
+    appeal = crud.get_appeal(db, attachment.appeal_id)
+    if not appeal:
+        raise HTTPException(status_code=404, detail="Appeal not found")
+    return crud.create_appeal_attachment(db, attachment)
+
+
+@app.delete("/api/attachments/{attachment_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_appeal_attachment(attachment_id: UUID, db: Session = Depends(get_db)):
+    """Delete an attachment (admin endpoint)"""
+    success = crud.delete_appeal_attachment(db, attachment_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Attachment not found")
+    return None
 
 
 if __name__ == "__main__":
