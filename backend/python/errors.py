@@ -64,3 +64,12 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
             "body": exc.body
         }
     )
+
+
+async def integrity_error_handler(request: Request, exc: IntegrityError):
+    """Handle database integrity errors"""
+    return JSONResponse(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        content={"detail": "Database integrity error", "message": str(exc.orig)}
+    )
+
