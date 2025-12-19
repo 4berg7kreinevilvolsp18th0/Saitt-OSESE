@@ -395,6 +395,150 @@ def search_appeals_endpoint(
         limit=limit
     )
     return results
+
+
+@app.get("/api/search/content", response_model=List[Content])
+@limiter.limit("60/minute")
+def search_content_endpoint(
+    request: Request,
+    q: str = Query(..., min_length=2, description="Search query"),
+    type: Optional[str] = Query(None, pattern="^(news|guide|faq)$"),
+    direction_id: Optional[UUID] = Query(None),
+    published_only: bool = Query(True),
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=1000),
+    db: Session = Depends(get_db)
+):
+    """Full-text search in content"""
+    results = search.search_content(
+        db,
+        query=q,
+        content_type=type,
+        direction_id=direction_id,
+        published_only=published_only,
+        skip=skip,
+        limit=limit
+    )
+    return results
+
+
+@app.get("/api/search/appeals/tags", response_model=List[Appeal])
+@limiter.limit("60/minute")
+def search_appeals_by_tags_endpoint(
+    request: Request,
+    tags: List[str] = Query(..., description="List of tags to search"),
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=1000),
+    db: Session = Depends(get_db)
+):
+    """Search appeals by tags"""
+    results = search.search_appeals_by_tags(
+        db,
+        tags=tags,
+        skip=skip,
+        limit=limit
+    )
+    return results
+
+
+# ==================== Export ====================
+
+@app.get("/api/export/appeals/csv")
+@limiter.limit("10/minute")
+def export_appeals_csv(
+    request: Request,
+    direction_id: Optional[UUID] = Query(None),
+    status: Optional[str] = Query(None),
+    include_internal: bool = Query(False),
+    db: Session = Depends(get_db)
+):
+    """Export appeals to CSV"""
+    appeals = crud.get_appeals(
+        db,
+        direction_id=direction_id,
+        status=status,
+        skip=0,
+        limit=10000  # Max export limit
+    )
+    
+    csv_data = export.export_appeals_to_csv(db, appeals, include_internal=include_internal)
+    
+    return Response(
+        content=csv_data,
+        media_type="text/csv",
+        headers={
+            "Content-Disposition": f"attachment; filename=appeals_{date.today().isoformat()}.csv"
+        }
+    )
+
+
+@app.get("/api/export/appeals/excel")
+@limiter.limit("10/minute")
+def export_appeals_excel(
+    request: Request,
+    direction_id: Optional[UUID] = Query(None),
+    status: Optional[str] = Query(None),
+    include_internal: bool = Query(False),
+    db: Session = Depends(get_db)
+):
+    """Export appeals to Excel"""
+    appeals = crud.get_appeals(
+        db,
+        direction_id=direction_id,
+        status=status,
+        skip=0,
+        limit=10000  # Max export limit
+    )
+    
+    excel_data = export.export_appeals_to_excel(db, appeals, include_internal=include_internal)
+    
+    return Response(
+        content=excel_data,
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={
+            "Content-Disposition": f"attachment; filename=appeals_{date.today().isoformat()}.xlsx"
+        }
+    )
+
+
+@app.get("/api/export/stats/csv")
+@limiter.limit("10/minute")
+def export_stats_csv(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    """Export statistics to CSV"""
+    stats = crud.get_appeal_stats(db)
+    csv_data = export.export_statistics_to_csv(stats)
+    
+    return Response(
+        content=csv_data,
+        media_type="text/csv",
+        headers={
+            "Content-Disposition": f"attachment; filename=stats_{date.today().isoformat()}.csv"
+        }
+    )
+
+
+# ==================== Content Analytics ====================
+
+@app.get("/api/analytics/content")
+@limiter.limit("20/minute")
+def get_content_analytics(
+    request: Request,
+    start_date: Optional[date] = Query(None),
+    end_date: Optional[date] = Query(None),
+    db: Session = Depends(get_db)
+):
+    """Get content analytics"""
+    analytics_data = analytics.get_content_analytics(
+        db,
+        start_date=start_date,
+        end_date=end_date
+    )
+    return analytics_data
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
