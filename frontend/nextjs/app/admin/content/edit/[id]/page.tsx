@@ -243,22 +243,17 @@ export default function EditContentPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">
-            Содержание (Markdown) <span className="text-red-400">*</span>
-          </label>
-          <textarea
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-            className="w-full rounded-xl bg-white/10 p-3 border border-white/20 text-white font-mono h-96"
-            placeholder="Введите текст в формате Markdown..."
-          />
-          <div className="mt-2 text-xs text-white/50 space-y-1">
-            <p><strong>Подсказки по форматированию:</strong></p>
-            <p>• Заголовки: # Заголовок 1, ## Заголовок 2, ### Заголовок 3</p>
-            <p>• Жирный текст: **текст**</p>
-            <p>• Курсив: *текст*</p>
-            <p>• Списки: - Пункт 1, - Пункт 2</p>
-            <p>• Ссылки: [текст](https://ссылка)</p>
+          <div className="flex items-center justify-between mb-2">
+            <label className="block text-sm font-medium">
+              Содержание (Markdown) <span className="text-red-400">*</span>
+            </label>
+            <button
+              type="button"
+              onClick={() => setShowPreview(!showPreview)}
+              className="px-3 py-1.5 rounded-lg border border-white/20 text-sm text-white/80 hover:text-white hover:border-white/40 transition"
+            >
+              {showPreview ? 'Редактировать' : 'Предпросмотр'}
+            </button>
           </div>
         </div>
 
