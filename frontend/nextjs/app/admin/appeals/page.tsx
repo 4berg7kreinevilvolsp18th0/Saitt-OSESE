@@ -80,6 +80,7 @@ export default function AdminAppealsKanban() {
     }));
 
     setAppeals(enrichedAppeals);
+    setFilteredAppeals(enrichedAppeals);
     
     // Загружаем список доступных пользователей для назначения
     // В реальности это должны быть пользователи с ролями member/lead/board
@@ -98,15 +99,33 @@ export default function AdminAppealsKanban() {
     setLoading(false);
   }
 
+  // Фильтрация по поисковому запросу
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setFilteredAppeals(appeals);
+      return;
+    }
+
+    const query = searchQuery.toLowerCase();
+    const filtered = appeals.filter((appeal) => {
+      return (
+        appeal.title?.toLowerCase().includes(query) ||
+        appeal.description?.toLowerCase().includes(query) ||
+        appeal.contact_value?.toLowerCase().includes(query)
+      );
+    });
+    setFilteredAppeals(filtered);
+  }, [searchQuery, appeals]);
+
   useEffect(() => {
     load();
   }, []);
 
   const grouped = useMemo(() => {
     const g: Record<string, any[]> = { new: [], in_progress: [], waiting: [], closed: [] };
-    for (const a of appeals) g[a.status]?.push(a);
+    for (const a of filteredAppeals) g[a.status]?.push(a);
     return g;
-  }, [appeals]);
+  }, [filteredAppeals]);
 
   async function move(id: string, to: AppealStatus) {
     setError(null);
