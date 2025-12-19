@@ -2,6 +2,7 @@
 SQLAlchemy models for OSS DVFU database
 """
 from sqlalchemy import Column, String, Boolean, DateTime, ForeignKey, Text, Date, CheckConstraint
+from sqlalchemy import Column, String, Boolean, DateTime, ForeignKey, Text, Date, CheckConstraint, Integer, ARRAY
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
