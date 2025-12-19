@@ -83,6 +83,14 @@ export default function StatisticsPage() {
         (appeals || []).forEach((appeal: any) => {
           const dirId = appeal.direction_id || 'other';
           directionMap.set(dirId, (directionMap.get(dirId) || 0) + 1);
+        });
+
+        const directionArray = Array.from(directionMap.entries()).map(([direction_id, total_count]) => ({
+          direction_id: direction_id === 'other' ? null : direction_id,
+          total_count,
+        }));
+
+        const { data: d2 } = directionArray.length > 0 ? { data: directionArray } : { data: [] };
 
         // Получаем названия направлений
         if (d2 && d2.length > 0) {
