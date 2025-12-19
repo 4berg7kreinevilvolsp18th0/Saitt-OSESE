@@ -324,3 +324,4 @@ def get_appeals_by_school(
             "end": end_date.isoformat() if end_date else None,
         }
     }
+
