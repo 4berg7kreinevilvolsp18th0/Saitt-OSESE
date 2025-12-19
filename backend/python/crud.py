@@ -54,12 +54,19 @@ def get_appeals(
     skip: int = 0,
     limit: int = 100,
     direction_id: Optional[UUID] = None,
+    status: Optional[str] = None,
+    priority: Optional[str] = None,
+    assigned_to: Optional[UUID] = None
 ) -> List[Appeal]:
     query = db.query(Appeal)
     if direction_id:
         query = query.filter(Appeal.direction_id == direction_id)
     if status:
         query = query.filter(Appeal.status == status)
+    if priority:
+        query = query.filter(Appeal.priority == priority)
+    if assigned_to:
+        query = query.filter(Appeal.assigned_to == assigned_to)
     return query.order_by(Appeal.created_at.desc()).offset(skip).limit(limit).all()
 
 
