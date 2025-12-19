@@ -52,6 +52,16 @@ export default function StatisticsPage() {
         (appeals || []).forEach((appeal: any) => {
           const createdDate = new Date(appeal.created_at).toISOString().split('T')[0];
           if (!dailyMap.has(createdDate)) {
+            dailyMap.set(createdDate, { created_count: 0, closed_count: 0 });
+          }
+          const dayData = dailyMap.get(createdDate)!;
+          dayData.created_count += 1;
+
+          if (appeal.status === 'closed' && appeal.closed_at) {
+            const closedDate = new Date(appeal.closed_at).toISOString().split('T')[0];
+            if (!dailyMap.has(closedDate)) {
+              dailyMap.set(closedDate, { created_count: 0, closed_count: 0 });
+            }
 
         // Получаем названия направлений
         if (d2 && d2.length > 0) {
