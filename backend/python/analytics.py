@@ -131,3 +131,19 @@ def get_detailed_appeal_stats(
             "end": end_date.isoformat() if end_date else None,
         }
     }
+
+
+def get_user_performance_stats(
+    db: Session,
+    user_id: str,
+    start_date: Optional[date] = None,
+    end_date: Optional[date] = None
+) -> Dict:
+    """
+    Get performance statistics for a specific user
+    """
+    query = db.query(Appeal).filter(Appeal.assigned_to == user_id)
+    
+    if start_date:
+        query = query.filter(Appeal.created_at >= start_date)
+    if end_date:
