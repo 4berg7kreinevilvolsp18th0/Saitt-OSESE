@@ -20,8 +20,11 @@ export default function Header() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition">
           <Logo size={32} showText={false} useImage={true} />
+          <span className="hidden sm:inline">
+            <Logo size={40} showText={true} useImage={true} />
+          </span>
         </Link>
-        <nav className="flex items-center gap-5">
+        <nav className="hidden md:flex items-center gap-4 lg:gap-5">
           <NavLink href="/directions">Направления</NavLink>
           <NavLink href="/appeal">Обращение</NavLink>
           <NavLink href="/statistics">Статистика</NavLink>
