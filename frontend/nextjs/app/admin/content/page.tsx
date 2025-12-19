@@ -322,6 +322,7 @@ export default function AdminContentPage() {
                     }}
                     className="mt-1 w-4 h-4 rounded border-white/20 bg-white/10 text-oss-red focus:ring-oss-red"
                   />
+                  <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
                     <Badge
                       variant={
@@ -357,6 +358,7 @@ export default function AdminContentPage() {
                     {item.published_at &&
                       ` • Опубликовано: ${new Date(item.published_at).toLocaleDateString('ru-RU')}`}
                   </p>
+                  </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <Link
