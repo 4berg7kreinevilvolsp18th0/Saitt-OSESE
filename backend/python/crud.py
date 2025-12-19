@@ -7,11 +7,12 @@ from typing import Optional, List
 from uuid import UUID
 from datetime import datetime, date
 from models import (
-    Direction, Appeal, AppealComment, Content, Document, UserRole
+    Direction, Appeal, AppealComment, Content, Document, UserRole, AppealAttachment
 )
 from schemas import (
     DirectionCreate, AppealCreate, AppealUpdate, AppealCommentCreate,
-    ContentCreate, ContentUpdate, DocumentCreate, UserRoleCreate
+    ContentCreate, ContentUpdate, DocumentCreate, UserRoleCreate,
+    AppealAttachmentCreate
 )
 
 
@@ -53,7 +54,6 @@ def get_appeals(
     skip: int = 0,
     limit: int = 100,
     direction_id: Optional[UUID] = None,
-    status: Optional[str] = None
 ) -> List[Appeal]:
     query = db.query(Appeal)
     if direction_id:
