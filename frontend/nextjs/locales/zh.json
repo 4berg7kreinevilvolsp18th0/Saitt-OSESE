@@ -150,7 +150,8 @@
         "priority": "优先级",
         "deadline": "截止日期",
         "moveTo": "→",
-        "export": "导出CSV"
+        "export": "导出CSV",
+        "history": "历史"
       },
       "priorities": {
         "low": "低",
