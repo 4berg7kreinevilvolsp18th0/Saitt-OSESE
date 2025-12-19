@@ -104,13 +104,36 @@ export default function AdminDashboards() {
           avgResponseTime,
         });
 
+        // Группируем по дням для графика динамики
+        const dailyMap = new Map<string, number>();
+        items.forEach((item) => {
+          const date = new Date(item.created_at).toLocaleDateString('ru-RU', {
+            day: '2-digit',
+            month: '2-digit',
+          });
+          dailyMap.set(date, (dailyMap.get(date) || 0) + 1);
+        });
+
+        const daily = Array.from(dailyMap.entries())
+          .map(([date, count]) => ({ date, count }))
+          .sort((a, b) => {
+            const [dayA, monthA] = a.date.split('.');
+            const [dayB, monthB] = b.date.split('.');
+            return new Date(2024, parseInt(monthB) - 1, parseInt(dayB)).getTime() -
+                   new Date(2024, parseInt(monthA) - 1, parseInt(dayA)).getTime();
+          })
+          .reverse()
+          .slice(-30); // Последние 30 дней
+
+        setDailyData(daily);
+
         setLoading(false);
       } catch (err) {
         setError('Произошла ошибка при загрузке данных');
         setLoading(false);
       }
     })();
-  }, []);
+  }, [dateRange]);
 
   const total = useMemo(() => rows.reduce((s, r) => s + r.count, 0), [rows]);
 
