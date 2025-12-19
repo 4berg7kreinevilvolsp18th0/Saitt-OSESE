@@ -26,3 +26,21 @@
 
 - **SF UI Text** - для основного текста (body)
 - **SF UI Display** - для заголовков (h1-h6)
+
+### Tailwind классы
+
+- `font-sf-text` - применить SF UI Text
+- `font-sf-display` - применить SF UI Display
+
+## Проверка
+
+После размещения файлов:
+1. Перезапустите dev сервер (`npm run dev`)
+2. Проверьте в DevTools → Network, что шрифты загружаются
+3. Проверьте в DevTools → Elements, что применяется правильный font-family
+
+## Fallback
+
+Если файлы шрифтов не найдены, используются системные шрифты:
+- `-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`
+
