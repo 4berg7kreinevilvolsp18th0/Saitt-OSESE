@@ -162,7 +162,7 @@ export default function StudentOrganizations() {
               )}
             </div>
             {org.contact_person && (
-              <p className="mt-3 text-xs sm:text-sm text-white/60">
+              <p className="mt-3 text-xs sm:text-sm text-white/60 light:text-gray-500">
                 Контакт: {org.contact_person}
               </p>
             )}
