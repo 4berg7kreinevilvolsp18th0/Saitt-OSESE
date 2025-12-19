@@ -372,6 +372,19 @@ def delete_appeal_attachment(attachment_id: UUID, db: Session = Depends(get_db))
     return None
 
 
+# ==================== Search ====================
+
+@app.get("/api/search/appeals", response_model=List[Appeal])
+@limiter.limit("60/minute")
+def search_appeals_endpoint(
+    request: Request,
+    q: str = Query(..., min_length=2, description="Search query"),
+    direction_id: Optional[UUID] = Query(None),
+    status: Optional[str] = Query(None, pattern="^(new|in_progress|waiting|closed)$"),
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=1000),
+    db: Session = Depends(get_db)
+):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
