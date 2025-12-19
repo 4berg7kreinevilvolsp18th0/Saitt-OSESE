@@ -232,8 +232,8 @@ function AppealPageContent() {
             <p className="mt-1 text-xs sm:text-sm text-red-400 light:text-red-600">{errors.school}</p>
           )}
           {selectedSchool && (
-            <div className="mt-2 rounded-lg bg-oss-red/10 border border-oss-red/30 p-2 text-xs text-oss-red/90 light:bg-red-50 light:border-red-200 light:text-red-700">
-              <span className="font-medium">Выбрано: </span>
+            <div className="mt-2 rounded-lg bg-oss-red/10 border border-oss-red/30 p-2.5 text-xs sm:text-sm text-oss-red/90 light:bg-red-50 light:border-red-200 light:text-red-700 animate-in fade-in slide-in-from-top-2 duration-200">
+              <span className="font-semibold">✓ Выбрано: </span>
               {SCHOOLS.find((s) => s.code === selectedSchool)?.fullName}
             </div>
           )}
