@@ -99,6 +99,39 @@ def update_appeal(db: Session, appeal_id: UUID, appeal_update: AppealUpdate) -> 
     return db_appeal
 
 
+def get_appeals_by_priority(
+    db: Session,
+    priority: str,
+    skip: int = 0,
+    limit: int = 100
+) -> List[Appeal]:
+    """Get appeals by priority"""
+    return db.query(Appeal).filter(
+        Appeal.priority == priority
+    ).order_by(Appeal.created_at.desc()).offset(skip).limit(limit).all()
+
+
+def get_appeals_by_assigned(
+    db: Session,
+    user_id: UUID,
+    skip: int = 0,
+    limit: int = 100
+) -> List[Appeal]:
+    """Get appeals assigned to a user"""
+    return db.query(Appeal).filter(
+        Appeal.assigned_to == user_id
+    ).order_by(Appeal.created_at.desc()).offset(skip).limit(limit).all()
+
+
+def get_overdue_appeals(db: Session, skip: int = 0, limit: int = 100) -> List[Appeal]:
+    """Get appeals with overdue deadlines"""
+    today = date.today()
+    return db.query(Appeal).filter(
+        Appeal.deadline < today,
+        Appeal.status != "closed"
+    ).order_by(Appeal.deadline).offset(skip).limit(limit).all()
+
+
 def get_appeal_stats(db: Session) -> dict:
     """Get appeal statistics"""
     total = db.query(func.count(Appeal.id)).scalar()
