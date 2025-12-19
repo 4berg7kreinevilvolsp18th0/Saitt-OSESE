@@ -315,3 +315,12 @@ def get_appeals_by_school(
                 "by_status": {"new": 0, "in_progress": 0, "waiting": 0, "closed": 0},
                 "by_priority": {"low": 0, "normal": 0, "high": 0, "urgent": 0},
             }
+    
+    return {
+        "by_school": by_school,
+        "total_schools": len([s for s in by_school.values() if s["total"] > 0]),
+        "period": {
+            "start": start_date.isoformat() if start_date else None,
+            "end": end_date.isoformat() if end_date else None,
+        }
+    }
