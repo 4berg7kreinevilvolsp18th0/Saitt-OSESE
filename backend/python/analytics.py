@@ -256,3 +256,12 @@ def get_appeals_by_school(
     end_date: Optional[date] = None,
     school_code: Optional[str] = None
 ) -> Dict:
+    """
+    Get appeals statistics grouped by school/institute
+    """
+    query = db.query(Appeal)
+    
+    if start_date:
+        query = query.filter(Appeal.created_at >= start_date)
+    if end_date:
+        query = query.filter(Appeal.created_at <= end_date)
