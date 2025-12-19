@@ -1,3 +1,21 @@
+from uuid import UUID
+import os
+import httpx
+
+# Supabase configuration
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_ANON_KEY = os.getenv("SUPABASE_ANON_KEY")
+
+security = HTTPBearer()
+
+
+async def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)) -> dict:
+    """
+    Verify Supabase JWT token and return user info
+    
+    In production, this should verify the token with Supabase.
+    For now, it's a placeholder that extracts user_id from token.
+    """
     token = credentials.credentials
     
     if not SUPABASE_URL or not SUPABASE_ANON_KEY:
