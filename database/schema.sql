@@ -69,6 +69,23 @@ create table if not exists documents (
     created_at timestamptz default now()
 );
 
+-- Student Organizations (Студенческие объединения)
+create table if not exists student_organizations (
+    id uuid primary key default gen_random_uuid(),
+    title text not null,
+    description text,
+    logo_url text,
+    website_url text,
+    telegram_url text,
+    vk_url text,
+    email text,
+    contact_person text,
+    is_active boolean default true,
+    display_order integer default 0,
+    created_at timestamptz default now(),
+    updated_at timestamptz default now()
+);
+
 -- User Roles (for Supabase Auth integration)
 -- Создаем таблицу ДО индексов, чтобы избежать ошибок
 create table if not exists user_roles (
@@ -111,6 +128,10 @@ create index if not exists idx_user_roles_direction on user_roles(direction_id);
 create index if not exists idx_directions_slug on directions(slug);
 create index if not exists idx_directions_active on directions(is_active) where is_active = true;
 
+-- Student organizations indexes
+create index if not exists idx_student_organizations_active on student_organizations(is_active) where is_active = true;
+create index if not exists idx_student_organizations_display_order on student_organizations(display_order);
+
 -- ===============================
 -- Row Level Security (RLS) Policies
 -- ===============================
@@ -121,6 +142,7 @@ alter table appeal_comments enable row level security;
 alter table content enable row level security;
 alter table documents enable row level security;
 alter table directions enable row level security;
+alter table student_organizations enable row level security;
 alter table user_roles enable row level security;
 
 -- Directions: public read for active directions
@@ -247,6 +269,18 @@ create policy "documents_public_read" on documents
 -- Documents: members can manage
 drop policy if exists "documents_members_manage" on documents;
 create policy "documents_members_manage" on documents
+  for all using (
+    public.has_role('board') or public.has_role('staff') or public.has_role('lead')
+  );
+
+-- Student Organizations: public can read active organizations
+drop policy if exists "student_organizations_public_read" on student_organizations;
+create policy "student_organizations_public_read" on student_organizations
+  for select using (is_active = true);
+
+-- Student Organizations: members can manage
+drop policy if exists "student_organizations_members_manage" on student_organizations;
+create policy "student_organizations_members_manage" on student_organizations
   for all using (
     public.has_role('board') or public.has_role('staff') or public.has_role('lead')
   );
