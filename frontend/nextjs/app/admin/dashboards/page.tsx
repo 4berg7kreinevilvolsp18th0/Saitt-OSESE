@@ -338,7 +338,7 @@ export default function AdminDashboards() {
               Детальная статистика обращений по школам и институтам
             </p>
           </div>
-          <a
+          <Link
             href="/admin/dashboards/schools"
             className="px-4 py-2 rounded-lg bg-oss-red font-semibold hover:bg-oss-red/90 transition text-sm"
           >
