@@ -255,6 +255,39 @@ export default function EditContentPage() {
               {showPreview ? 'Редактировать' : 'Предпросмотр'}
             </button>
           </div>
+          {showPreview ? (
+            <div className="w-full rounded-xl bg-white/10 p-6 border border-white/20 min-h-[400px] max-h-[600px] overflow-y-auto markdown-content">
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  h1: ({ node, ...props }) => (
+                    <h1 className="text-3xl font-bold mt-8 mb-4 text-white light:text-gray-900" {...props} />
+                  ),
+                  h2: ({ node, ...props }) => (
+                    <h2 className="text-2xl font-semibold mt-6 mb-3 text-white light:text-gray-900" {...props} />
+                  ),
+                  h3: ({ node, ...props }) => (
+                    <h3 className="text-xl font-semibold mt-4 mb-2 text-white light:text-gray-900" {...props} />
+                  ),
+                  p: ({ node, ...props }) => (
+                    <p className="mt-4 leading-relaxed text-white/80 light:text-gray-700" {...props} />
+                  ),
+                  ul: ({ node, ...props }) => (
+                    <ul className="list-disc ml-6 mt-2 space-y-1" {...props} />
+                  ),
+                  ol: ({ node, ...props }) => (
+                    <ol className="list-decimal ml-6 mt-2 space-y-1" {...props} />
+                  ),
+                  code: ({ node, inline, ...props }: any) =>
+                    inline ? (
+                      <code
+                        className="bg-white/10 px-1.5 py-0.5 rounded text-sm font-mono text-white/90 light:bg-gray-100 light:text-gray-800"
+                        {...props}
+                      />
+                    ) : (
+                      <code
+                        className="block bg-white/5 p-4 rounded-xl overflow-x-auto text-sm font-mono text-white/90 light:bg-gray-100 light:text-gray-800"
+                        {...props}
         </div>
 
         <div className="flex gap-4">
