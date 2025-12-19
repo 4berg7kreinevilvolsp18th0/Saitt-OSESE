@@ -282,3 +282,32 @@ def delete_user_role(db: Session, role_id: UUID) -> bool:
     return True
 
 
+# Appeal Attachment CRUD
+def get_appeal_attachments(db: Session, appeal_id: UUID) -> List[AppealAttachment]:
+    """Get all attachments for an appeal"""
+    return db.query(AppealAttachment).filter(AppealAttachment.appeal_id == appeal_id).order_by(AppealAttachment.uploaded_at).all()
+
+
+def get_appeal_attachment(db: Session, attachment_id: UUID) -> Optional[AppealAttachment]:
+    """Get attachment by ID"""
+    return db.query(AppealAttachment).filter(AppealAttachment.id == attachment_id).first()
+
+
+def create_appeal_attachment(db: Session, attachment: AppealAttachmentCreate) -> AppealAttachment:
+    """Create a new attachment"""
+    db_attachment = AppealAttachment(**attachment.dict())
+    db.add(db_attachment)
+    db.commit()
+    db.refresh(db_attachment)
+    return db_attachment
+
+
+def delete_appeal_attachment(db: Session, attachment_id: UUID) -> bool:
+    """Delete an attachment"""
+    db_attachment = db.query(AppealAttachment).filter(AppealAttachment.id == attachment_id).first()
+    if not db_attachment:
+        return False
+    db.delete(db_attachment)
+    db.commit()
+    return True
+
