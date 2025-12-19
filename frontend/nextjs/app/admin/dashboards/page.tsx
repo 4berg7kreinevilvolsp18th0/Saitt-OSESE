@@ -142,10 +142,12 @@ export default function AdminDashboards() {
     <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-semibold font-sf-display light:text-gray-900">Дашборды</h1>
-      <p className="mt-3 text-sm sm:text-base text-white/70 max-w-3xl light:text-gray-600">
-        Доступно руководителям направлений и руководству ОСС. Данные ограничиваются политиками доступа (RLS).
-      </p>
+          <h1 className="text-2xl sm:text-3xl font-semibold light:text-gray-900">Дашборды</h1>
+          <p className="mt-3 text-sm sm:text-base text-white/70 max-w-3xl light:text-gray-600">
+            Доступно руководителям направлений и руководству ОСС. Данные ограничиваются политиками доступа (RLS).
+          </p>
+        </div>
+      </div>
 
       {error && (
         <div className="mt-6 rounded-xl sm:rounded-2xl border border-red-500/40 bg-red-500/10 p-4 text-xs sm:text-sm text-red-400 light:bg-red-50 light:border-red-200 light:text-red-700">
@@ -331,7 +333,7 @@ export default function AdminDashboards() {
       <section className="mt-6 sm:mt-8 rounded-2xl sm:rounded-3xl border border-white/10 bg-white/5 p-4 sm:p-6 light:bg-white light:border-gray-200 light:shadow-sm">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg sm:text-xl font-semibold font-sf-display light:text-gray-900">
+            <h2 className="text-lg sm:text-xl font-semibold light:text-gray-900">
               Статистика по школам ДВФУ
             </h2>
             <p className="mt-2 text-xs sm:text-sm text-white/70 light:text-gray-600">
