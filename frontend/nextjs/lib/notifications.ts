@@ -156,3 +156,21 @@ export async function notifyAppealChange(
       })
     );
   }
+
+  // Уведомление о назначении обращения
+  if (appealData.assigned_to) {
+    notifications.push(
+      sendNotification({
+        userId: appealData.assigned_to,
+        appealId,
+        type: 'appeal_assigned',
+        title: 'Вам назначено обращение',
+        message: `Вам назначено обращение: "${appealData.title}"`,
+        url: `/admin/appeals?appeal=${appealId}`,
+      })
+    );
+  }
+
+  await Promise.allSettled(notifications);
+}
+
