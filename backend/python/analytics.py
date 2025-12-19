@@ -147,3 +147,23 @@ def get_user_performance_stats(
     if start_date:
         query = query.filter(Appeal.created_at >= start_date)
     if end_date:
+        query = query.filter(Appeal.created_at <= end_date)
+    
+    total_assigned = query.count()
+    closed = query.filter(Appeal.status == "closed").count()
+    in_progress = query.filter(Appeal.status == "in_progress").count()
+    waiting = query.filter(Appeal.status == "waiting").count()
+    
+    # Average resolution time for this user
+    closed_by_user = query.filter(Appeal.status == "closed").all()
+    avg_resolution_time = None
+    if closed_by_user:
+        total_time = sum(
+            (appeal.closed_at - appeal.created_at).total_seconds()
+            for appeal in closed_by_user
+            if appeal.closed_at
+        )
+        avg_resolution_time = total_time / len(closed_by_user) / 3600  # in hours
+    
+    return {
+        "user_id": user_id,
