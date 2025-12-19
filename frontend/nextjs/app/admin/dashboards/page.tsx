@@ -150,6 +150,36 @@ export default function AdminDashboards() {
         </div>
       )}
 
+      {/* Фильтр по датам */}
+      <div className="mt-6 flex flex-wrap gap-3">
+        <button
+          onClick={() => setDateRange('7d')}
+          className={`px-4 py-2 rounded-lg border text-sm transition ${
+            dateRange === '7d'
+              ? 'border-oss-red bg-oss-red/20 text-white'
+              : 'border-white/20 text-white/80 hover:border-white/40'
+          }`}
+        >
+          7 дней
+        </button>
+        <button
+          onClick={() => setDateRange('30d')}
+          className={`px-4 py-2 rounded-lg border text-sm transition ${
+            dateRange === '30d'
+              ? 'border-oss-red bg-oss-red/20 text-white'
+              : 'border-white/20 text-white/80 hover:border-white/40'
+          }`}
+        >
+          30 дней
+        </button>
+        <button
+          onClick={() => setDateRange('90d')}
+          className={`px-4 py-2 rounded-lg border text-sm transition ${
+            dateRange === '90d'
+              ? 'border-oss-red bg-oss-red/20 text-white'
+              : 'border-white/20 text-white/80 hover:border-white/40'
+          }`}
+        >
       <div className="mt-6 sm:mt-8 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 light:bg-white light:border-gray-200 light:shadow-sm">
           <div className="text-xs sm:text-sm text-white/60 light:text-gray-500">Всего обращений</div>
