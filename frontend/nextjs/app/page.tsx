@@ -131,8 +131,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto px-6 py-12">
-        <div className="flex items-end justify-between gap-4 flex-wrap">
           <div>
             <h2 className="text-2xl font-semibold">Направления</h2>
             <p className="mt-2 text-white/70 max-w-2xl">
