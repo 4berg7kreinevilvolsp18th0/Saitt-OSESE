@@ -131,9 +131,11 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <div className="flex items-end justify-between gap-4 flex-wrap mb-6">
           <div>
-            <h2 className="text-2xl font-semibold">Направления</h2>
-            <p className="mt-2 text-white/70 max-w-2xl">
+            <h2 className="text-xl sm:text-2xl font-semibold">Направления</h2>
+            <p className="mt-2 text-sm sm:text-base text-white/70 max-w-2xl">
               Цвет каждого раздела — часть навигации: он помогает быстро понять, в каком блоке вы находитесь.
             </p>
           </div>
