@@ -135,3 +135,12 @@ export async function notifyAppealChange(
   }
 ) {
   const notifications: Promise<any>[] = [];
+
+  // Уведомление назначенному пользователю об изменении статуса
+  if (appealData.assigned_to && appealData.status) {
+    const statusLabels: Record<string, string> = {
+      new: 'Новое',
+      in_progress: 'В работе',
+      waiting: 'Ждём инфо',
+      closed: 'Закрыто',
+    };
