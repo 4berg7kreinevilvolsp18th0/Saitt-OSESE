@@ -182,6 +182,44 @@ def get_appeal_stats(
     return AppealStats(**stats)
 
 
+@app.get("/api/appeals/stats/detailed")
+@limiter.limit("20/minute")
+def get_detailed_stats(
+    request: Request,
+    start_date: Optional[date] = Query(None),
+    end_date: Optional[date] = Query(None),
+    direction_id: Optional[UUID] = Query(None),
+    db: Session = Depends(get_db)
+):
+    """Get detailed appeal statistics with analytics"""
+    stats = analytics.get_detailed_appeal_stats(
+        db,
+        start_date=start_date,
+        end_date=end_date,
+        direction_id=str(direction_id) if direction_id else None
+    )
+    return stats
+
+
+@app.get("/api/users/{user_id}/performance")
+@limiter.limit("30/minute")
+def get_user_performance(
+    request: Request,
+    user_id: UUID,
+    start_date: Optional[date] = Query(None),
+    end_date: Optional[date] = Query(None),
+    db: Session = Depends(get_db)
+):
+    """Get performance statistics for a user"""
+    stats = analytics.get_user_performance_stats(
+        db,
+        str(user_id),
+        start_date=start_date,
+        end_date=end_date
+    )
+    return stats
+
+
 # ==================== Appeal Comments ====================
 
 @app.get("/api/appeals/{appeal_id}/comments", response_model=List[AppealComment])
