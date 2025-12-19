@@ -177,9 +177,9 @@ export default function Home() {
                 </div>
               </div>
             ) : loadingNews ? (
-              <div className="text-center text-white/50 py-8">Загрузка новостей...</div>
+              <div className="text-center text-white/50 py-8 text-sm sm:text-base">Загрузка новостей...</div>
             ) : latestNews.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {latestNews.map((item) => (
                   <ContentCard
                     key={item.id}
@@ -192,7 +192,7 @@ export default function Home() {
                 ))}
               </div>
             ) : (
-              <div className="rounded-3xl border border-white/10 bg-white/5 p-8 md:p-10 text-center text-white/50">
+              <div className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/5 p-6 sm:p-8 md:p-10 text-center text-white/50 text-sm sm:text-base">
                 Пока нет опубликованных новостей
               </div>
             )}
