@@ -60,3 +60,12 @@ export default function ToastComponent({ toast, onRemove }: ToastProps) {
     <div
       className={`flex items-center gap-3 rounded-xl border p-4 shadow-lg min-w-[300px] max-w-md animate-slide-in ${typeStyles[toast.type]}`}
     >
+      <div className="flex-shrink-0">{icons[toast.type]}</div>
+      <p className="flex-1 text-sm font-medium">{toast.message}</p>
+      <button
+        onClick={() => onRemove(toast.id)}
+        className="flex-shrink-0 text-current opacity-60 hover:opacity-100 transition"
+        aria-label="Закрыть"
+      >
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
