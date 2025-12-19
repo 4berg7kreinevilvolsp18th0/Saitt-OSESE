@@ -288,6 +288,45 @@ export default function EditContentPage() {
                       <code
                         className="block bg-white/5 p-4 rounded-xl overflow-x-auto text-sm font-mono text-white/90 light:bg-gray-100 light:text-gray-800"
                         {...props}
+                      />
+                    ),
+                  a: ({ node, ...props }) => (
+                    <a
+                      className="text-oss-red hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      {...props}
+                    />
+                  ),
+                  blockquote: ({ node, ...props }) => (
+                    <blockquote
+                      className="border-l-4 border-white/20 pl-4 italic my-4 text-white/70 light:border-gray-300 light:text-gray-600"
+                      {...props}
+                    />
+                  ),
+                }}
+              >
+                {body || '*Начните вводить текст...*'}
+              </ReactMarkdown>
+            </div>
+          ) : (
+            <>
+              <textarea
+                value={body}
+                onChange={(e) => setBody(e.target.value)}
+                className="w-full rounded-xl bg-white/10 p-3 border border-white/20 text-white font-mono h-96"
+                placeholder="Введите текст в формате Markdown..."
+              />
+              <div className="mt-2 text-xs text-white/50 space-y-1">
+                <p><strong>Подсказки по форматированию:</strong></p>
+                <p>• Заголовки: # Заголовок 1, ## Заголовок 2, ### Заголовок 3</p>
+                <p>• Жирный текст: **текст**</p>
+                <p>• Курсив: *текст*</p>
+                <p>• Списки: - Пункт 1, - Пункт 2</p>
+                <p>• Ссылки: [текст](https://ссылка)</p>
+              </div>
+            </>
+          )}
         </div>
 
         <div className="flex gap-4">
