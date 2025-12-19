@@ -197,10 +197,12 @@ function AppealPageContent() {
           <label className="block text-xs sm:text-sm font-medium mb-2 light:text-gray-700">
             Школа / Институт <span className="text-oss-red">*</span>
           </label>
-          <div className="relative">
+          <div className="relative group">
             <select
-              className={`w-full rounded-xl bg-white/10 p-3 border text-sm sm:text-base appearance-none cursor-pointer transition-all ${
-                errors.school ? 'border-red-500' : 'border-white/20 hover:border-oss-red/50 focus:border-oss-red'
+              className={`w-full rounded-xl bg-white/10 p-3 pr-10 border text-sm sm:text-base appearance-none cursor-pointer transition-all ${
+                errors.school
+                  ? 'border-red-500'
+                  : 'border-white/20 hover:border-oss-red/50 focus:border-oss-red group-hover:border-oss-red/50'
               } light:bg-white light:border-gray-300 light:text-gray-900 focus:outline-none focus:ring-2 focus:ring-oss-red/20`}
               value={selectedSchool}
               onChange={(e) => {
