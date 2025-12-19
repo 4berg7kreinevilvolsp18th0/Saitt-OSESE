@@ -43,3 +43,33 @@ export async function sendNotification(params: SendNotificationParams) {
       if (type === 'appeal_comment' && settings.email_appeal_comment) emailEnabled = true;
 
       if (emailEnabled) {
+        try {
+          // Получаем email пользователя из notification_settings или передаём через параметры
+          // Для внутренних уведомлений email должен быть получен на сервере
+          // Здесь просто вызываем API endpoint, который сам получит email
+          const userEmail = null; // Email будет получен на сервере
+
+          if (true) { // Всегда отправляем запрос, сервер проверит настройки
+            const response = await fetch('/api/notifications/email/internal', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                userId,
+                email: userEmail,
+                appealId,
+                type,
+                title,
+                message,
+                url,
+              }),
+            });
+
+            if (response.ok) {
+              results.email = true;
+            }
+          }
+        } catch (error) {
+          console.error('Email notification error:', error);
+        }
+      }
+    }
