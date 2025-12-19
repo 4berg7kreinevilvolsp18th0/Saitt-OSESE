@@ -206,8 +206,8 @@ function AppealPageContent() {
               if (errors.contact) setErrors({ ...errors, contact: '' });
             }}
           />
-          {errors.contact && <p className="mt-1 text-sm text-red-400">{errors.contact}</p>}
-          <p className="mt-1 text-xs text-white/50">Email или Telegram (@username)</p>
+          {errors.contact && <p className="mt-1 text-xs sm:text-sm text-red-400">{errors.contact}</p>}
+          <p className="mt-1 text-xs text-white/50 light:text-gray-500">Email или Telegram (@username)</p>
         </div>
 
         <div className="flex items-center gap-3">
@@ -216,20 +216,20 @@ function AppealPageContent() {
             id="anonymous"
             checked={isAnonymous}
             onChange={(e) => setIsAnonymous(e.target.checked)}
-            className="w-5 h-5 rounded border-white/20 bg-white/10"
+            className="w-5 h-5 rounded border-white/20 bg-white/10 light:border-gray-300 light:bg-white"
           />
-          <label htmlFor="anonymous" className="text-sm text-white/80">
+          <label htmlFor="anonymous" className="text-xs sm:text-sm text-white/80 light:text-gray-700">
             Подать анонимно
           </label>
         </div>
         {isAnonymous && (
-          <p className="text-xs text-white/60 -mt-3">
+          <p className="text-xs text-white/60 -mt-3 light:text-gray-500">
             Примечание: анонимные обращения сложнее обрабатывать, так как мы не сможем уточнить детали напрямую.
           </p>
         )}
 
         {errors.submit && (
-          <div className="rounded-xl border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-400">
+          <div className="rounded-xl border border-red-500/40 bg-red-500/10 p-4 text-xs sm:text-sm text-red-400 light:bg-red-50 light:border-red-200 light:text-red-700">
             {errors.submit}
           </div>
         )}
@@ -237,7 +237,7 @@ function AppealPageContent() {
         <button
           onClick={submit}
           disabled={isSubmitting}
-          className="w-full rounded-xl bg-oss-red py-3 font-semibold hover:bg-oss-red/90 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full rounded-xl bg-oss-red py-3 font-semibold hover:bg-oss-red/90 transition disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
         >
           {isSubmitting ? 'Отправка...' : 'Отправить обращение'}
         </button>
