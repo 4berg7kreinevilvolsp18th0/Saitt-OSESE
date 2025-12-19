@@ -47,7 +47,10 @@ class AppealCreate(AppealBase):
 class AppealUpdate(BaseModel):
     status: Optional[str] = Field(None, pattern="^(new|in_progress|waiting|closed)$")
     direction_id: Optional[UUID] = None
+    priority: Optional[str] = Field(None, pattern="^(low|normal|high|urgent)$")
+    tags: Optional[List[str]] = None
     deadline: Optional[date] = None
+    assigned_to: Optional[UUID] = None
     first_response_at: Optional[datetime] = None
     closed_at: Optional[datetime] = None
 
@@ -55,8 +58,11 @@ class AppealUpdate(BaseModel):
 class Appeal(AppealBase):
     id: UUID
     status: str
+    priority: Optional[str] = "normal"
+    tags: Optional[List[str]] = None
     public_token: UUID
     deadline: Optional[date] = None
+    assigned_to: Optional[UUID] = None
     created_at: datetime
     first_response_at: Optional[datetime] = None
     closed_at: Optional[datetime] = None
@@ -183,4 +189,25 @@ class MessageResponse(BaseModel):
 
 class TokenResponse(BaseModel):
     public_token: UUID
+
+
+# Appeal Attachment schemas
+class AppealAttachmentBase(BaseModel):
+    file_name: str
+    file_url: str
+    file_size: Optional[int] = None
+    mime_type: Optional[str] = None
+
+
+class AppealAttachmentCreate(AppealAttachmentBase):
+    appeal_id: UUID
+
+
+class AppealAttachment(AppealAttachmentBase):
+    id: UUID
+    appeal_id: UUID
+    uploaded_at: datetime
+
+    class Config:
+        from_attributes = True
 
