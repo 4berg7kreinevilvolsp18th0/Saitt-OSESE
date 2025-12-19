@@ -34,6 +34,7 @@ class Appeal(Base):
     __table_args__ = (
         CheckConstraint("contact_type IN ('email', 'telegram')", name="check_contact_type"),
         CheckConstraint("status IN ('new', 'in_progress', 'waiting', 'closed')", name="check_appeal_status"),
+        CheckConstraint("priority IN ('low', 'normal', 'high', 'urgent')", name="check_appeal_priority"),
     )
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
