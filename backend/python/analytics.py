@@ -167,6 +167,7 @@ def get_user_performance_stats(
     
     return {
         "user_id": user_id,
+        "total_assigned": total_assigned,
         "closed": closed,
         "in_progress": in_progress,
         "waiting": waiting,
@@ -179,3 +180,32 @@ def get_content_analytics(
     db: Session,
     start_date: Optional[date] = None,
     end_date: Optional[date] = None
+) -> Dict:
+    """
+    Get content analytics
+    """
+    query = db.query(Content)
+    
+    if start_date:
+        query = query.filter(Content.published_at >= start_date)
+    if end_date:
+        query = query.filter(Content.published_at <= end_date)
+    
+    total = query.count()
+    
+    by_type = {}
+    for content_type in ["news", "guide", "faq"]:
+        count = query.filter(Content.type == content_type).count()
+        by_type[content_type] = count
+    
+    by_status = {}
+    for status in ["draft", "published", "archived"]:
+        count = query.filter(Content.status == status).count()
+        by_status[status] = count
+    
+    return {
+        "total": total,
+        "by_type": by_type,
+        "by_status": by_status
+    }
+
