@@ -171,9 +171,9 @@ export default function DirectionPage({ params }: { params: { slug: string } }) 
   const accent = accentBg(direction.colorKey);
 
   return (
-    <main className="max-w-6xl mx-auto px-6 py-12">
-      <div className={`rounded-3xl ${accent} p-8 md:p-10`}>
-        <div className="text-xs uppercase tracking-wide text-white/90">
+    <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <div className={`rounded-2xl sm:rounded-3xl ${accent} p-6 sm:p-8 md:p-10`}>
+        <div className="text-xs uppercase tracking-wide text-white/90 light:text-white/80">
           Направление
         </div>
         <h1 className="mt-2 text-3xl md:text-4xl font-bold">{direction.title}</h1>
