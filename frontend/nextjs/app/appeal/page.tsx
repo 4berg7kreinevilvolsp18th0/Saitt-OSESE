@@ -128,11 +128,11 @@ function AppealPageContent() {
         Опишите проблему — мы направим её в нужный комитет.
       </p>
 
-      <div className="mt-8 space-y-5">
+      <div className="mt-6 sm:mt-8 space-y-4 sm:space-y-5">
         {presetDirection && selectedDirectionObj && (
-          <div className="rounded-xl border border-white/20 bg-white/5 p-4">
-            <div className="text-sm text-white/60">Направление</div>
-            <div className="mt-1 font-medium">{selectedDirectionObj.title}</div>
+          <div className="rounded-xl border border-white/20 bg-white/5 p-4 light:bg-white light:border-gray-200 light:shadow-sm">
+            <div className="text-xs sm:text-sm text-white/60 light:text-gray-500">Направление</div>
+            <div className="mt-1 font-medium text-sm sm:text-base light:text-gray-900">{selectedDirectionObj.title}</div>
           </div>
         )}
 
