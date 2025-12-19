@@ -45,4 +45,24 @@ export default function AppealHistory({ appealId }: AppealHistoryProps) {
     if (expanded && appealId) {
       loadHistory();
     }
+  }, [expanded, appealId]);
+
+  async function loadHistory() {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('appeal_history')
+        .select('*')
+        .eq('appeal_id', appealId)
+        .order('created_at', { ascending: false })
+        .limit(50);
+
+      if (error) {
+        console.error('Ошибка загрузки истории:', error);
+        return;
+      }
+
+      setHistory((data as any) || []);
+    } catch (err) {
+      console.error('Ошибка:', err);
 
