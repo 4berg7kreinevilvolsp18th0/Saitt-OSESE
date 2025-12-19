@@ -343,7 +343,7 @@ export default function AdminDashboards() {
             className="px-4 py-2 rounded-lg bg-oss-red font-semibold hover:bg-oss-red/90 transition text-sm"
           >
             Открыть →
-          </a>
+          </Link>
         </div>
       </section>
     </main>
