@@ -24,9 +24,6 @@ export default function DocumentsPage() {
   ];
 
   return (
-    <main className="max-w-6xl mx-auto px-6 py-12">
-      <h1 className="text-3xl font-semibold">Документы</h1>
-      <p className="mt-3 text-white/70 max-w-3xl">
         Положения, регламенты, шаблоны заявлений и полезные ссылки. Документы организованы по категориям и направлениям.
       </p>
 
