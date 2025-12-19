@@ -94,7 +94,7 @@ export default function StatisticsPage() {
 
         // Получаем названия направлений
         if (d2 && d2.length > 0) {
-          const directionIds = d2.map((d: any) => d.direction_id).filter(Boolean);
+          const directionIds = (d2 as any[]).map((d: any) => d.direction_id).filter(Boolean);
           if (directionIds.length > 0) {
             const { data: directions } = await supabase
               .from('directions')
@@ -113,6 +113,8 @@ export default function StatisticsPage() {
               direction_slug: item.direction_id ? directionsMap.get(item.direction_id)?.slug : null,
             }));
 
+            // Сортируем по количеству
+            enriched.sort((a, b) => b.total_count - a.total_count);
             setByDir(enriched);
           } else {
             setByDir((d2 as any) || []);
