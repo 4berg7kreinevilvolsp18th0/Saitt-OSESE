@@ -75,3 +75,41 @@ export async function POST(request: NextRequest) {
         subject: 'Новый комментарий к обращению',
         intro: 'К обращению был добавлен новый комментарий.',
       },
+    };
+
+    const typeInfo = typeLabels[type] || {
+      subject: 'Уведомление от ОСС ДВФУ',
+      intro: 'У вас новое уведомление.',
+    };
+
+    if (emailService === 'resend') {
+      try {
+        const response = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${emailApiKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            from: process.env.EMAIL_FROM || 'noreply@oss-dvfu.ru',
+            to: email,
+            subject: typeInfo.subject,
+            html: `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <h2 style="color: #DC2626;">${typeInfo.subject}</h2>
+                <p>Здравствуйте!</p>
+                <p>${typeInfo.intro}</p>
+                ${title ? `
+                <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                  <strong>Обращение:</strong> ${title}
+                </div>
+                ` : ''}
+                ${message ? `
+                <p style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                  ${message}
+                </p>
+                ` : ''}
+                ${appealId ? `
+                <p>
+                  <a href="${appealUrl}" style="background: #DC2626; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
+                    Открыть обращение
