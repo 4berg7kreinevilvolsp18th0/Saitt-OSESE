@@ -242,7 +242,7 @@ export default function DirectionPage({ params }: { params: { slug: string } }) 
               Все материалы →
             </Link>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {relatedContent.map((item) => (
               <ContentCard
                 key={item.id}
