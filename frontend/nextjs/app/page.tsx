@@ -139,19 +139,19 @@ export default function Home() {
               Цвет каждого раздела — часть навигации: он помогает быстро понять, в каком блоке вы находитесь.
             </p>
           </div>
-          <Link href="/directions" className="text-white/70 hover:text-white transition">
+          <Link href="/directions" className="text-sm sm:text-base text-white/70 hover:text-white transition whitespace-nowrap">
             Все направления →
           </Link>
         </div>
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {DIRECTIONS.map((d) => (
             <DirectionCard key={d.slug} d={d} />
           ))}
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto px-6 pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 pb-12 sm:pb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
           <div className="lg:col-span-2">
             <div className="flex items-end justify-between gap-4 flex-wrap mb-6">
               <div>
