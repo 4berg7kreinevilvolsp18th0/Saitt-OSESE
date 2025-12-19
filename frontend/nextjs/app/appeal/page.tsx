@@ -219,7 +219,7 @@ function AppealPageContent() {
             </select>
             <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none transition-transform group-hover:translate-y-[-2px]">
               <svg
-                className="w-5 h-5 text-white/60 light:text-gray-500"
+                className="w-5 h-5 text-white/60 group-hover:text-oss-red light:text-gray-500 light:group-hover:text-oss-red transition-colors"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -228,7 +228,9 @@ function AppealPageContent() {
               </svg>
             </div>
           </div>
-          {errors.school && <p className="mt-1 text-xs sm:text-sm text-red-400">{errors.school}</p>}
+          {errors.school && (
+            <p className="mt-1 text-xs sm:text-sm text-red-400 light:text-red-600">{errors.school}</p>
+          )}
           {selectedSchool && (
             <div className="mt-2 rounded-lg bg-oss-red/10 border border-oss-red/30 p-2 text-xs text-oss-red/90 light:bg-red-50 light:border-red-200 light:text-red-700">
               <span className="font-medium">Выбрано: </span>
