@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Logo from './Logo';
 import ThemeToggle from './ThemeToggle';
+import MobileMenu from './MobileMenu';
 
 const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
   <Link
