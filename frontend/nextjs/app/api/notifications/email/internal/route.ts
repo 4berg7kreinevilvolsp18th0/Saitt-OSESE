@@ -52,3 +52,26 @@ export async function POST(request: NextRequest) {
     const emailApiKey = process.env.EMAIL_API_KEY;
 
     if (!emailApiKey) {
+      console.warn('Email service not configured');
+      return NextResponse.json({ 
+        success: true, 
+        message: 'Email уведомления не настроены' 
+      });
+    }
+
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://oss-dvfu.vercel.app';
+    const appealUrl = url || `${siteUrl}/admin/appeals${appealId ? `?appeal=${appealId}` : ''}`;
+
+    const typeLabels: Record<string, { subject: string; intro: string }> = {
+      appeal_status: {
+        subject: 'Статус обращения изменён',
+        intro: 'Статус обращения был изменён.',
+      },
+      appeal_assigned: {
+        subject: 'Вам назначено обращение',
+        intro: 'Вам было назначено новое обращение для обработки.',
+      },
+      appeal_comment: {
+        subject: 'Новый комментарий к обращению',
+        intro: 'К обращению был добавлен новый комментарий.',
+      },
