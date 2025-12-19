@@ -113,6 +113,7 @@ export default function Home() {
           <p className="text-base sm:text-lg md:text-xl mb-2 text-white/90">
             Дальневосточный федеральный университет
           </p>
+          <p className="text-sm sm:text-base md:text-lg max-w-3xl mx-auto text-white/80 mb-6 sm:mb-8 px-4">
             Высший орган студенческого самоуправления ДВФУ. Решаем правовые,
             инфраструктурные, стипендиальные, адаптационные и консультационные вопросы.
           </p>
