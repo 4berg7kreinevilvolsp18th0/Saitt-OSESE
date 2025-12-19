@@ -539,6 +539,22 @@ def get_content_analytics(
     return analytics_data
 
 
+@app.get("/api/analytics/schools")
+@limiter.limit("20/minute")
+def get_schools_analytics(
+    request: Request,
+    start_date: Optional[date] = Query(None),
+    end_date: Optional[date] = Query(None),
+    school_code: Optional[str] = Query(None),
+    db: Session = Depends(get_db)
+):
+    """Get appeals statistics grouped by schools/institutes"""
+    stats = analytics.get_appeals_by_school(
+        db,
+        start_date=start_date,
+        end_date=end_date,
+        school_code=school_code
+    )
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
