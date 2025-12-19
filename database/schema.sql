@@ -306,6 +306,12 @@ create policy "student_organizations_members_manage" on student_organizations
     public.has_role('board') or public.has_role('staff') or public.has_role('lead')
   );
 
+-- Appeal Attachments: public can create (when creating appeal)
+drop policy if exists "appeal_attachments_public_insert" on appeal_attachments;
+create policy "appeal_attachments_public_insert" on appeal_attachments
+  for insert with check (true);
+
+-- Appeal Attachments: can read if have access to appeal
 -- User Roles: users can read their own roles
 drop policy if exists "user_roles_read_own" on user_roles;
 create policy "user_roles_read_own" on user_roles
