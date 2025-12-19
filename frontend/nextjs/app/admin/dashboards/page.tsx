@@ -325,6 +325,26 @@ export default function AdminDashboards() {
           </div>
         )}
       </section>
+
+      {/* Ссылка на статистику по школам */}
+      <section className="mt-6 sm:mt-8 rounded-2xl sm:rounded-3xl border border-white/10 bg-white/5 p-4 sm:p-6 light:bg-white light:border-gray-200 light:shadow-sm">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-lg sm:text-xl font-semibold font-sf-display light:text-gray-900">
+              Статистика по школам ДВФУ
+            </h2>
+            <p className="mt-2 text-xs sm:text-sm text-white/70 light:text-gray-600">
+              Детальная статистика обращений по школам и институтам
+            </p>
+          </div>
+          <a
+            href="/admin/dashboards/schools"
+            className="px-4 py-2 rounded-lg bg-oss-red font-semibold hover:bg-oss-red/90 transition text-sm"
+          >
+            Открыть →
+          </a>
+        </div>
+      </section>
     </main>
   );
 }
