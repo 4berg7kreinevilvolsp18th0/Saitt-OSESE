@@ -1,7 +1,6 @@
 """
 SQLAlchemy models for OSS DVFU database
 """
-from sqlalchemy import Column, String, Boolean, DateTime, ForeignKey, Text, Date, CheckConstraint
 from sqlalchemy import Column, String, Boolean, DateTime, ForeignKey, Text, Date, CheckConstraint, Integer, ARRAY
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
@@ -48,8 +47,11 @@ class Appeal(Base):
     contact_type = Column(String)
     contact_value = Column(String)
     status = Column(String, nullable=False, default="new")
+    priority = Column(String, default="normal")
+    tags = Column(ARRAY(String))  # PostgreSQL array of strings
     public_token = Column(UUID(as_uuid=True), default=uuid.uuid4, unique=True, index=True)
     deadline = Column(Date)
+    assigned_to = Column(UUID(as_uuid=True), nullable=True)  # Supabase auth user ID
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     first_response_at = Column(DateTime(timezone=True))
     closed_at = Column(DateTime(timezone=True))
@@ -57,6 +59,7 @@ class Appeal(Base):
     # Relationships
     direction = relationship("Direction", back_populates="appeals")
     comments = relationship("AppealComment", back_populates="appeal", cascade="all, delete-orphan")
+    attachments = relationship("AppealAttachment", back_populates="appeal", cascade="all, delete-orphan")
 
 
 class AppealComment(Base):
@@ -126,4 +129,20 @@ class UserRole(Base):
 
     # Relationships
     direction = relationship("Direction", back_populates="user_roles")
+
+
+class AppealAttachment(Base):
+    """Appeal attachment model"""
+    __tablename__ = "appeal_attachments"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    appeal_id = Column(UUID(as_uuid=True), ForeignKey("appeals.id", ondelete="CASCADE"), nullable=False)
+    file_name = Column(String, nullable=False)
+    file_url = Column(String, nullable=False)
+    file_size = Column(Integer)  # Size in bytes
+    mime_type = Column(String)
+    uploaded_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    # Relationships
+    appeal = relationship("Appeal", back_populates="attachments")
 
