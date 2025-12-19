@@ -107,6 +107,66 @@ export default function AdminContentPage() {
   async function bulkUpdateStatus(newStatus: 'draft' | 'published' | 'archived') {
     if (selectedItems.size === 0) return;
 
+    const selectedIds = Array.from(selectedItems);
+    const updates = selectedIds.map((id) => ({
+      id,
+      status: newStatus,
+      published_at: newStatus === 'published' ? new Date().toISOString() : null,
+    }));
+
+    for (const update of updates) {
+      const { error } = await supabase
+        .from('content')
+        .update({
+          status: update.status,
+          published_at: update.published_at,
+        })
+        .eq('id', update.id);
+
+      if (error) {
+        setError(`Ошибка при обновлении ${update.id}`);
+        return;
+      }
+    }
+
+    loadContent();
+    setSelectedItems(new Set());
+    toast.success(`Обновлено ${updates.length} материалов`);
+  }
+
+  async function bulkDelete() {
+    if (selectedItems.size === 0) return;
+    if (!confirm(`Удалить ${selectedItems.size} материалов? Это действие нельзя отменить.`)) return;
+
+    const selectedIds = Array.from(selectedItems);
+    for (const id of selectedIds) {
+      const { error } = await supabase.from('content').delete().eq('id', id);
+      if (error) {
+        setError(`Ошибка при удалении ${id}`);
+        return;
+      }
+    }
+
+    loadContent();
+    setSelectedItems(new Set());
+    toast.success(`Удалено ${selectedIds.length} материалов`);
+  }
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query.toLowerCase());
+  };
+
+  const filteredContent = allContent.filter((item) => {
+    // Поиск
+    if (searchQuery) {
+      const matchesSearch =
+        item.title.toLowerCase().includes(searchQuery) ||
+        item.slug.toLowerCase().includes(searchQuery) ||
+        (item.direction_title && item.direction_title.toLowerCase().includes(searchQuery));
+      if (!matchesSearch) return false;
+    }
+
+    // Фильтры
     if (filterStatus !== 'all' && item.status !== filterStatus) return false;
     if (filterType !== 'all' && item.type !== filterType) return false;
     return true;
@@ -149,7 +209,6 @@ export default function AdminContentPage() {
         </div>
       </div>
 
-      {/* Фильтры */}
       <div className="flex flex-wrap gap-4 mb-6">
         <select
           value={filterStatus}
