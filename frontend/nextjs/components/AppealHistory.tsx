@@ -13,3 +13,15 @@ interface AppealHistoryItem {
   created_at: string;
   changed_by: string | null;
   changed_by_name?: string;
+}
+
+interface AppealHistoryProps {
+  appealId: string;
+}
+
+const actionLabels: Record<string, string> = {
+  status_changed: 'Статус изменён',
+  assigned: 'Назначен ответственный',
+  priority_changed: 'Приоритет изменён',
+  deadline_set: 'Дедлайн установлен',
+  comment_added: 'Добавлен комментарий',
