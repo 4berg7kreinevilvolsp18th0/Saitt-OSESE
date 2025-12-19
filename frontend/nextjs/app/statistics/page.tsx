@@ -46,7 +46,12 @@ export default function StatisticsPage() {
           return;
         }
 
-        setDaily((d1 as any) || []);
+        // Группируем по дням
+        const dailyMap = new Map<string, { created_count: number; closed_count: number }>();
+        
+        (appeals || []).forEach((appeal: any) => {
+          const createdDate = new Date(appeal.created_at).toISOString().split('T')[0];
+          if (!dailyMap.has(createdDate)) {
 
         // Получаем названия направлений
         if (d2 && d2.length > 0) {
