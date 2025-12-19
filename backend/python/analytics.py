@@ -304,3 +304,14 @@ def get_appeals_by_school(
             by_school[normalized_school]["by_priority"][appeal.priority] = (
                 by_school[normalized_school]["by_priority"].get(appeal.priority, 0) + 1
             )
+    
+    # Добавляем школы без обращений
+    for code in SCHOOL_CODES:
+        if code not in by_school:
+            by_school[code] = {
+                "code": code,
+                "name": SCHOOLS_MAPPING[code],
+                "total": 0,
+                "by_status": {"new": 0, "in_progress": 0, "waiting": 0, "closed": 0},
+                "by_priority": {"low": 0, "normal": 0, "high": 0, "urgent": 0},
+            }
