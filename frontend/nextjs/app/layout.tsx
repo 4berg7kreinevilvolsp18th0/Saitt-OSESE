@@ -87,6 +87,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <LocaleProvider>
             <ToastProvider>
               <Header />
+              {children}
+              <Footer />
+            </ToastProvider>
           </LocaleProvider>
         </ThemeProvider>
       </body>
