@@ -94,28 +94,28 @@ export default function ContentPage() {
   });
 
   return (
-    <main className="max-w-6xl mx-auto px-6 py-12">
-      <h1 className="text-3xl font-semibold">Новости и гайды</h1>
-      <p className="mt-3 text-white/70">
+    <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <h1 className="text-2xl sm:text-3xl font-semibold light:text-gray-900">Новости и гайды</h1>
+      <p className="mt-3 text-sm sm:text-base text-white/70 light:text-gray-600">
         Официальные разъяснения, инструкции и новости ОСС.
       </p>
 
       {/* Фильтры и поиск */}
-      <div className="mt-8 space-y-4">
-        <div className="flex flex-wrap gap-4">
-          <div className="flex-1 min-w-[200px]">
+      <div className="mt-6 sm:mt-8 space-y-3 sm:space-y-4">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+          <div className="flex-1 min-w-0">
             <input
               type="text"
               placeholder="Поиск по заголовку..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full rounded-xl bg-white/10 p-3 border border-white/20 text-white placeholder-white/50"
+              className="w-full rounded-xl bg-white/10 p-3 border border-white/20 text-sm sm:text-base text-white placeholder-white/50 light:bg-white light:border-gray-300 light:text-gray-900 light:placeholder-gray-400"
             />
           </div>
           <select
             value={filterType}
             onChange={(e) => setFilterType(e.target.value as any)}
-            className="rounded-xl bg-white/10 p-3 border border-white/20 text-white"
+            className="rounded-xl bg-white/10 p-3 border border-white/20 text-sm sm:text-base text-white light:bg-white light:border-gray-300 light:text-gray-900"
           >
             <option value="all">Все типы</option>
             <option value="news">Новости</option>
@@ -125,7 +125,7 @@ export default function ContentPage() {
           <select
             value={filterDirection}
             onChange={(e) => setFilterDirection(e.target.value)}
-            className="rounded-xl bg-white/10 p-3 border border-white/20 text-white"
+            className="rounded-xl bg-white/10 p-3 border border-white/20 text-sm sm:text-base text-white light:bg-white light:border-gray-300 light:text-gray-900"
           >
             <option value="all">Все направления</option>
             {DIRECTIONS.map((d) => (
@@ -138,21 +138,21 @@ export default function ContentPage() {
       </div>
 
       {error && (
-        <div className="mt-6 rounded-xl border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-400">
+        <div className="mt-6 rounded-xl border border-red-500/40 bg-red-500/10 p-4 text-xs sm:text-sm text-red-400 light:bg-red-50 light:border-red-200 light:text-red-700">
           {error}
         </div>
       )}
 
       {loading ? (
-        <div className="mt-8 text-center text-white/50">Загрузка...</div>
+        <div className="mt-8 text-center text-white/50 text-sm sm:text-base light:text-gray-500">Загрузка...</div>
       ) : filteredContent.length === 0 ? (
-        <div className="mt-8 text-center text-white/50">
+        <div className="mt-8 text-center text-white/50 text-sm sm:text-base light:text-gray-500">
           {searchQuery || filterType !== 'all' || filterDirection !== 'all'
             ? 'Ничего не найдено по заданным фильтрам'
             : 'Пока нет опубликованного контента'}
         </div>
       ) : (
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
           {filteredContent.map((item) => (
             <ContentCard
               key={item.id}
