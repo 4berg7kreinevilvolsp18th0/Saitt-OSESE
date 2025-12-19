@@ -4,6 +4,7 @@ import React, { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { supabase } from '../../lib/supabaseClient';
 import { DIRECTIONS } from '../../lib/directions';
+import { SCHOOLS } from '../../lib/schools';
 import FileUpload from '../../components/FileUpload';
 
 function AppealPageContent() {
@@ -14,6 +15,7 @@ function AppealPageContent() {
   const [description, setDescription] = useState('');
   const [contact, setContact] = useState('');
   const [selectedDirection, setSelectedDirection] = useState<string>(presetDirection || '');
+  const [selectedSchool, setSelectedSchool] = useState<string>('');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [submittedToken, setSubmittedToken] = useState<string | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -40,6 +42,10 @@ function AppealPageContent() {
       newErrors.contact = 'Укажите контакт для связи';
     } else if (!/^[\w\.-]+@[\w\.-]+\.\w+$|^@[\w]+$/.test(contact.trim())) {
       newErrors.contact = 'Укажите email или Telegram (@username)';
+    }
+
+    if (!selectedSchool.trim()) {
+      newErrors.school = 'Выберите школу или институт';
     }
 
     setErrors(newErrors);
@@ -79,6 +85,7 @@ function AppealPageContent() {
           contact_value: contact.trim(),
           contact_type: contactType,
           direction_id: directionId,
+          institute: selectedSchool || null,
           is_anonymous: isAnonymous,
         })
         .select('id, public_token')
@@ -90,8 +97,8 @@ function AppealPageContent() {
         return;
       }
 
-      if (data) {
-        const appealId = data.id;
+      if (data && 'id' in data) {
+        const appealId = data.id as string;
         
         // Загружаем файлы, если они есть
         if (files.length > 0 && appealId) {
@@ -185,6 +192,48 @@ function AppealPageContent() {
             </select>
           </div>
         )}
+
+        <div>
+          <label className="block text-xs sm:text-sm font-medium mb-2 light:text-gray-700">
+            Школа / Институт <span className="text-oss-red">*</span>
+          </label>
+          <div className="relative">
+            <select
+              className={`w-full rounded-xl bg-white/10 p-3 border text-sm sm:text-base appearance-none cursor-pointer transition-all ${
+                errors.school ? 'border-red-500' : 'border-white/20 hover:border-oss-red/50 focus:border-oss-red'
+              } light:bg-white light:border-gray-300 light:text-gray-900 focus:outline-none focus:ring-2 focus:ring-oss-red/20`}
+              value={selectedSchool}
+              onChange={(e) => {
+                setSelectedSchool(e.target.value);
+                if (errors.school) setErrors({ ...errors, school: '' });
+              }}
+            >
+              <option value="">Выберите школу или институт</option>
+              {SCHOOLS.map((school) => (
+                <option key={school.code} value={school.code}>
+                  {school.shortName} — {school.fullName}
+                </option>
+              ))}
+            </select>
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+              <svg
+                className="w-5 h-5 text-white/60 light:text-gray-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+          {errors.school && <p className="mt-1 text-xs sm:text-sm text-red-400">{errors.school}</p>}
+          {selectedSchool && (
+            <div className="mt-2 rounded-lg bg-oss-red/10 border border-oss-red/30 p-2 text-xs text-oss-red/90 light:bg-red-50 light:border-red-200 light:text-red-700">
+              <span className="font-medium">Выбрано: </span>
+              {SCHOOLS.find((s) => s.code === selectedSchool)?.fullName}
+            </div>
+          )}
+        </div>
 
         <div>
           <label className="block text-xs sm:text-sm font-medium mb-2 light:text-gray-700">
