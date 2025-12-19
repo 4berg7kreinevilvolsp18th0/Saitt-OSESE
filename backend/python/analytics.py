@@ -227,3 +227,25 @@ def get_content_analytics(
         "by_status": by_status
     }
 
+
+def normalize_school_name(institute: Optional[str]) -> Optional[str]:
+    """
+    Нормализует название института к коду школы
+    """
+    if not institute:
+        return None
+    
+    institute_lower = institute.strip().lower()
+    
+    # Прямое совпадение по коду
+    for code in SCHOOL_CODES:
+        if code.lower() == institute_lower:
+            return code
+    
+    # Поиск по полному названию
+    for code, full_name in SCHOOLS_MAPPING.items():
+        if code.lower() in institute_lower or institute_lower in full_name.lower():
+            return code
+    
+    return institute.strip()  # Возвращаем оригинал, если не найдено
+
