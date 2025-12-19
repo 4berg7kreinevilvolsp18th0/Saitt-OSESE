@@ -122,9 +122,9 @@ function AppealPageContent() {
   const selectedDirectionObj = DIRECTIONS.find((d) => d.slug === selectedDirection);
 
   return (
-    <main className="max-w-2xl mx-auto px-6 py-16">
-      <h1 className="text-3xl font-semibold">Подать обращение</h1>
-      <p className="mt-3 text-white/70">
+    <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16">
+      <h1 className="text-2xl sm:text-3xl font-semibold light:text-gray-900">Подать обращение</h1>
+      <p className="mt-3 text-sm sm:text-base text-white/70 light:text-gray-600">
         Опишите проблему — мы направим её в нужный комитет.
       </p>
 
