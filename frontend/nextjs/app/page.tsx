@@ -100,6 +100,11 @@ export default function Home() {
       <section className="bg-oss-red py-12 sm:py-16 md:py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
           <div className="flex justify-center mb-6 sm:mb-8">
+            <div className="sm:hidden">
+              <Logo size={80} color="#FFFFFF" useImage={true} />
+            </div>
+            <div className="hidden sm:block">
+              <Logo size={120} color="#FFFFFF" useImage={true} />
           </div>
           <h1 className="text-3xl md:text-5xl font-bold mb-4">
             ОБЪЕДИНЕННЫЙ СОВЕТ СТУДЕНТОВ
