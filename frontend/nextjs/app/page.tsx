@@ -105,11 +105,10 @@ export default function Home() {
             </div>
             <div className="hidden sm:block">
               <Logo size={120} color="#FFFFFF" useImage={true} />
+            </div>
           </div>
-          <h1 className="text-3xl md:text-5xl font-bold mb-4">
             ОБЪЕДИНЕННЫЙ СОВЕТ СТУДЕНТОВ
           </h1>
-          <p className="text-lg md:text-xl mb-2 text-white/90">
             Дальневосточный федеральный университет
           </p>
           <p className="text-base md:text-lg max-w-3xl mx-auto text-white/80 mb-8">
