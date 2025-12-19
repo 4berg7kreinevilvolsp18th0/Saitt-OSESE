@@ -87,3 +87,47 @@ def get_detailed_appeal_stats(
             "title": direction_title,
             "count": count
         }
+    
+    # Daily trends (last 30 days)
+    daily_trends = []
+    for i in range(30):
+        day = date.today() - timedelta(days=i)
+        day_start = datetime.combine(day, datetime.min.time())
+        day_end = datetime.combine(day, datetime.max.time())
+        
+        created = query.filter(
+            and_(
+                Appeal.created_at >= day_start,
+                Appeal.created_at <= day_end
+            )
+        ).count()
+        
+        closed = query.filter(
+            and_(
+                Appeal.status == "closed",
+                Appeal.closed_at >= day_start,
+                Appeal.closed_at <= day_end
+            )
+        ).count()
+        
+        daily_trends.append({
+            "date": day.isoformat(),
+            "created": created,
+            "closed": closed
+        })
+    
+    daily_trends.reverse()  # Oldest first
+    
+    return {
+        "total": total,
+        "by_status": by_status,
+        "by_priority": by_priority,
+        "by_direction": by_direction,
+        "avg_response_time_hours": avg_response_time,
+        "avg_resolution_time_hours": avg_resolution_time,
+        "daily_trends": daily_trends,
+        "period": {
+            "start": start_date.isoformat() if start_date else None,
+            "end": end_date.isoformat() if end_date else None,
+        }
+    }
