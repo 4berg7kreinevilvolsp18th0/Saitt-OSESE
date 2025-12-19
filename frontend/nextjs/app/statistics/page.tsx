@@ -69,6 +69,20 @@ export default function StatisticsPage() {
         // Преобразуем в массив и сортируем
         const dailyArray = Array.from(dailyMap.entries())
           .map(([day, counts]) => ({
+            day,
+            created_count: counts.created_count,
+            closed_count: counts.closed_count,
+          }))
+          .sort((a, b) => a.day.localeCompare(b.day))
+          .slice(-90); // Последние 90 дней
+
+        setDaily(dailyArray);
+
+        // Статистика по направлениям
+        const directionMap = new Map<string, number>();
+        (appeals || []).forEach((appeal: any) => {
+          const dirId = appeal.direction_id || 'other';
+          directionMap.set(dirId, (directionMap.get(dirId) || 0) + 1);
 
         // Получаем названия направлений
         if (d2 && d2.length > 0) {
