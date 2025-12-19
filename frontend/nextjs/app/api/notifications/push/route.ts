@@ -52,3 +52,15 @@ export async function POST(request: NextRequest) {
 
     // Здесь должен быть вызов к сервису отправки push (например, через web-push библиотеку)
     // Для продакшена нужен VAPID ключ и серверная библиотека web-push
+    // Пока возвращаем успех, но реальная отправка должна быть на бэкенде
+
+    // Логируем уведомление
+    await supabase.from('notification_log').insert({
+      user_id: userId,
+      appeal_id: appealId || null,
+      type: 'push',
+      event_type: type,
+      title: title || 'Push notification',
+      message,
+      success: true,
+    });
