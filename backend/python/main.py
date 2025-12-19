@@ -144,6 +144,8 @@ def get_appeals(
         status=status,
         priority=priority,
         assigned_to=assigned_to,
+        sort_by=sort_by,
+        sort_order=sort_order
     )
 
 
@@ -170,7 +172,11 @@ def update_appeal(
 
 
 @app.get("/api/appeals/stats/summary", response_model=AppealStats)
-def get_appeal_stats(db: Session = Depends(get_db)):
+@limiter.limit("30/minute")
+def get_appeal_stats(
+    request: Request,
+    db: Session = Depends(get_db)
+):
     """Get appeal statistics (admin endpoint)"""
     stats = crud.get_appeal_stats(db)
     return AppealStats(**stats)
