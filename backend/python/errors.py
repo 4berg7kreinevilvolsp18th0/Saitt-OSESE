@@ -49,3 +49,18 @@ async def unauthorized_handler(request: Request, exc: UnauthorizedError):
 
 
 async def forbidden_handler(request: Request, exc: ForbiddenError):
+    return JSONResponse(
+        status_code=status.HTTP_403_FORBIDDEN,
+        content={"detail": "Forbidden"}
+    )
+
+
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    """Custom validation error handler"""
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content={
+            "detail": exc.errors(),
+            "body": exc.body
+        }
+    )
