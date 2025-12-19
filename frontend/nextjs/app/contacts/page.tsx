@@ -32,6 +32,9 @@ export default function ContactsPage() {
         Единый справочник контактов ОСС ДВФУ. Для подачи обращения используйте форму на сайте.
       </p>
 
+      <section className="mt-8 sm:mt-10">
+        <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 light:text-gray-900">Основные контакты</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {emergencyContacts.map((contact, i) => (
             <div
               key={i}
