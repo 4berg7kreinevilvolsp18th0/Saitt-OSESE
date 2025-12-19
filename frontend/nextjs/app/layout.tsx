@@ -85,9 +85,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-oss-dark text-white antialiased transition-colors">
         <ThemeProvider>
           <LocaleProvider>
-            <Header />
-            {children}
-            <Footer />
+            <ToastProvider>
+              <Header />
           </LocaleProvider>
         </ThemeProvider>
       </body>
