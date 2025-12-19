@@ -108,9 +108,9 @@ function AppealPageContent() {
           <code className="mt-6 block rounded-xl bg-oss-dark border border-white/20 p-4 text-sm sm:text-lg font-mono break-all light:bg-gray-100 light:border-gray-300 light:text-gray-900">
             {submittedToken}
           </code>
-          <p className="mt-4 text-sm text-white/60">
+          <p className="mt-4 text-xs sm:text-sm text-white/60 light:text-gray-500">
             Вы можете проверить статус на странице{' '}
-            <a href="/appeal/status" className="underline text-oss-red">
+            <a href="/appeal/status" className="underline text-oss-red hover:text-oss-red/80">
               проверки статуса
             </a>
           </p>
