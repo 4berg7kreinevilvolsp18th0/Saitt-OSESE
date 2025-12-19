@@ -107,11 +107,12 @@ export default function Home() {
               <Logo size={120} color="#FFFFFF" useImage={true} />
             </div>
           </div>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 px-2">
             ОБЪЕДИНЕННЫЙ СОВЕТ СТУДЕНТОВ
           </h1>
+          <p className="text-base sm:text-lg md:text-xl mb-2 text-white/90">
             Дальневосточный федеральный университет
           </p>
-          <p className="text-base md:text-lg max-w-3xl mx-auto text-white/80 mb-8">
             Высший орган студенческого самоуправления ДВФУ. Решаем правовые,
             инфраструктурные, стипендиальные, адаптационные и консультационные вопросы.
           </p>
