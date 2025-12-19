@@ -37,3 +37,17 @@
 
 ## Если предупреждение всё ещё появляется
 
+1. **Проверьте в Vercel:**
+   - Settings → Environment Variables
+   - Найдите `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - Убедитесь, что значение начинается с `eyJ`
+
+2. **Перезапустите деплой:**
+   - После изменения переменных окружения нужно перезапустить деплой
+
+3. **Очистите кэш браузера:**
+   - Hard refresh: Ctrl+Shift+R (Windows) или Cmd+Shift+R (Mac)
+
+## Новые Supabase ключи
+
+Если вы используете новые "Publishable and secret API keys" вместо legacy:
