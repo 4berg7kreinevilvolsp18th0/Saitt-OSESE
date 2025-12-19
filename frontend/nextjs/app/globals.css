@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Шрифты брендбука ОСС - SF UI Text и SF UI Display */
 @font-face {
   font-family: 'SF UI Text';
   src: url('/fonts/SFUITEXT-LIGHT.TTF') format('truetype');
@@ -56,6 +57,48 @@
   font-weight: 200;
   font-style: normal;
   font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF UI Display';
+  src: url('/fonts/SFUIDISPLAY-REGULAR.TTF') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF UI Display';
+  src: url('/fonts/SFUIDISPLAY-MEDIUM.TTF') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF UI Display';
+  src: url('/fonts/SFUIDISPLAY-SEMIBOLD.TTF') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF UI Display';
+  src: url('/fonts/SFUIDISPLAY-BOLD.TTF') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF UI Display';
+  src: url('/fonts/SFUIDISPLAY-HEAVY.TTF') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   color-scheme: dark;
 }
