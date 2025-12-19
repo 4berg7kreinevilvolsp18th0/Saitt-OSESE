@@ -18,9 +18,12 @@ const columns: Column[] = [
 
 export default function AdminAppealsKanban() {
   const [appeals, setAppeals] = useState<any[]>([]);
+  const [filteredAppeals, setFilteredAppeals] = useState<any[]>([]);
   const [users, setUsers] = useState<Array<{ id: string; email: string; name?: string }>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const { t } = useLocale();
 
   async function load() {
     setLoading(true);
