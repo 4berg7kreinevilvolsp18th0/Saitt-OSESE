@@ -62,6 +62,13 @@ export default function StatisticsPage() {
             if (!dailyMap.has(closedDate)) {
               dailyMap.set(closedDate, { created_count: 0, closed_count: 0 });
             }
+            dailyMap.get(closedDate)!.closed_count += 1;
+          }
+        });
+
+        // Преобразуем в массив и сортируем
+        const dailyArray = Array.from(dailyMap.entries())
+          .map(([day, counts]) => ({
 
         // Получаем названия направлений
         if (d2 && d2.length > 0) {
