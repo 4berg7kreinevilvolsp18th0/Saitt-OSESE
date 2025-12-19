@@ -307,6 +307,22 @@ export default function AdminDashboards() {
                     borderRadius: '8px',
                   }}
                 />
+                <Line
+                  type="monotone"
+                  dataKey="count"
+                  stroke="#D11F2A"
+                  strokeWidth={2}
+                  dot={{ fill: '#D11F2A', r: 4 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        ) : (
+          <div className="mt-4 sm:mt-6 h-64 sm:h-72 flex items-center justify-center text-white/50 text-sm sm:text-base light:text-gray-500">
+            Нет данных за выбранный период
+          </div>
+        )}
+      </section>
     </main>
   );
 }
