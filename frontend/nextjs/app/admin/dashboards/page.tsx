@@ -99,9 +99,9 @@ export default function AdminDashboards() {
   const total = useMemo(() => rows.reduce((s, r) => s + r.count, 0), [rows]);
 
   return (
-    <main className="max-w-6xl mx-auto px-6 py-12">
-      <h1 className="text-3xl font-semibold">Дашборды</h1>
-      <p className="mt-3 text-white/70 max-w-3xl">
+    <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <h1 className="text-2xl sm:text-3xl font-semibold light:text-gray-900">Дашборды</h1>
+      <p className="mt-3 text-sm sm:text-base text-white/70 max-w-3xl light:text-gray-600">
         Доступно руководителям направлений и руководству ОСС. Данные ограничиваются политиками доступа (RLS).
       </p>
 
