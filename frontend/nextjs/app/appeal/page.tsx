@@ -177,9 +177,9 @@ function AppealPageContent() {
             Описание ситуации <span className="text-red-400">*</span>
           </label>
           <textarea
-            className={`w-full rounded-xl bg-white/10 p-3 h-32 border ${
+            className={`w-full rounded-xl bg-white/10 p-3 h-32 border text-sm sm:text-base resize-y ${
               errors.description ? 'border-red-500' : 'border-white/20'
-            }`}
+            } light:bg-white light:border-gray-300 light:text-gray-900`}
             placeholder="Опишите подробно вашу ситуацию, что произошло, когда, какие документы есть..."
             value={description}
             onChange={(e) => {
@@ -187,8 +187,8 @@ function AppealPageContent() {
               if (errors.description) setErrors({ ...errors, description: '' });
             }}
           />
-          {errors.description && <p className="mt-1 text-sm text-red-400">{errors.description}</p>}
-          <p className="mt-1 text-xs text-white/50">Минимум 20 символов</p>
+          {errors.description && <p className="mt-1 text-xs sm:text-sm text-red-400">{errors.description}</p>}
+          <p className="mt-1 text-xs text-white/50 light:text-gray-500">Минимум 20 символов</p>
         </div>
 
         <div>
