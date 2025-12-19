@@ -236,8 +236,46 @@ export default function AdminContentPage() {
             <option value="news">Новости</option>
             <option value="guide">Гайды</option>
             <option value="faq">FAQ</option>
+          </select>
+        </div>
       </div>
 
+      {/* Массовые операции */}
+      {selectedItems.size > 0 && (
+        <div className="mb-6 rounded-xl border border-oss-red/40 bg-oss-red/10 p-4 flex items-center justify-between flex-wrap gap-4">
+          <div className="text-sm text-white/80">
+            Выбрано: <strong>{selectedItems.size}</strong> материалов
+          </div>
+          <div className="flex gap-2 flex-wrap">
+            <button
+              onClick={() => bulkUpdateStatus('published')}
+              className="px-4 py-2 rounded-lg border border-green-500/40 text-green-400 hover:bg-green-500/10 transition text-sm"
+            >
+              Опубликовать
+            </button>
+            <button
+              onClick={() => bulkUpdateStatus('draft')}
+              className="px-4 py-2 rounded-lg border border-yellow-500/40 text-yellow-400 hover:bg-yellow-500/10 transition text-sm"
+            >
+              В черновики
+            </button>
+            <button
+              onClick={() => bulkUpdateStatus('archived')}
+              className="px-4 py-2 rounded-lg border border-gray-500/40 text-gray-400 hover:bg-gray-500/10 transition text-sm"
+            >
+              В архив
+            </button>
+            <button
+              onClick={bulkDelete}
+              className="px-4 py-2 rounded-lg border border-red-500/40 text-red-400 hover:bg-red-500/10 transition text-sm"
+            >
+              Удалить
+            </button>
+            <button
+              onClick={() => setSelectedItems(new Set())}
+              className="px-4 py-2 rounded-lg border border-white/20 text-white/80 hover:text-white transition text-sm"
+            >
+              Снять выделение
       {error && (
         <div className="mb-6 rounded-xl border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-400">
           {error}
