@@ -385,6 +385,16 @@ def search_appeals_endpoint(
     limit: int = Query(100, ge=1, le=1000),
     db: Session = Depends(get_db)
 ):
+    """Full-text search in appeals"""
+    results = search.search_appeals(
+        db,
+        query=q,
+        direction_id=direction_id,
+        status=status,
+        skip=skip,
+        limit=limit
+    )
+    return results
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
