@@ -6,6 +6,7 @@ import AppealCard from '../../../components/AppealCard';
 import SearchBar from '../../../components/SearchBar';
 import { AppealStatus } from '../../../lib/appealStatus';
 import { useLocale } from '../../../components/LocaleProvider';
+import { notifyAppealChange } from '../../../lib/notifications';
 
 type Column = { key: AppealStatus; title: string };
 
@@ -158,8 +159,16 @@ export default function AdminAppealsKanban() {
 
     setAppeals((prev) => prev.map((a) => (a.id === id ? { ...a, ...updateData } : a)));
     
-    // Отправляем уведомления (если настроено)
-    if (updatedAppeal && appeal.contact_value) {
+    // Отправляем уведомления заинтересованным пользователям
+    if (updatedAppeal) {
+      notifyAppealChange(id, {
+        status: to,
+        assigned_to: appeal.assigned_to,
+        title: appeal.title,
+      }).catch((err) => {
+        console.error('Notification error:', err);
+      });
+    } (updatedAppeal && appeal.contact_value) {
       // Telegram уведомление
       if (appeal.contact_type === 'telegram') {
         try {
@@ -204,6 +213,9 @@ export default function AdminAppealsKanban() {
 
   async function assign(id: string, userId: string | null) {
     setError(null);
+    const appeal = appeals.find((a) => a.id === id);
+    if (!appeal) return;
+
     const { error } = await supabase
       .from('appeals')
       .update({ assigned_to: userId })
@@ -212,6 +224,16 @@ export default function AdminAppealsKanban() {
     if (error) {
       setError(error.message);
       return;
+    }
+    
+    // Отправляем уведомление назначенному пользователю
+    if (userId) {
+      notifyAppealChange(id, {
+        assigned_to: userId,
+        title: appeal.title,
+      }).catch((err) => {
+        console.error('Notification error:', err);
+      });
     }
     
     await load(); // Перезагружаем для обновления имен
