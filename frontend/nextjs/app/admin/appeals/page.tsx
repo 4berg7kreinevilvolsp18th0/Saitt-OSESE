@@ -168,7 +168,9 @@ export default function AdminAppealsKanban() {
       }).catch((err) => {
         console.error('Notification error:', err);
       });
-    } (updatedAppeal && appeal.contact_value) {
+    }
+    
+    if (updatedAppeal && appeal.contact_value) {
       // Telegram уведомление
       if (appeal.contact_type === 'telegram') {
         try {
