@@ -119,17 +119,21 @@ def get_appeal_by_token(token: UUID, db: Session = Depends(get_db)):
 
 
 @app.get("/api/appeals", response_model=List[Appeal])
+@limiter.limit("100/minute")
 def get_appeals(
+    request: Request,
     direction_id: Optional[UUID] = Query(None),
     status: Optional[str] = Query(None, pattern="^(new|in_progress|waiting|closed)$"),
     priority: Optional[str] = Query(None, pattern="^(low|normal|high|urgent)$"),
     assigned_to: Optional[UUID] = Query(None),
     overdue_only: bool = Query(False),
+    sort_by: Optional[str] = Query("created_at", pattern="^(created_at|status|priority|deadline)$"),
+    sort_order: Optional[str] = Query("desc", pattern="^(asc|desc)$"),
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=1000),
     db: Session = Depends(get_db)
 ):
-    """Get appeals (admin endpoint - requires auth in production)"""
+    """Get appeals with improved sorting (admin endpoint - requires auth in production)"""
     if overdue_only:
         return crud.get_overdue_appeals(db, skip=skip, limit=limit)
     return crud.get_appeals(
@@ -139,7 +143,7 @@ def get_appeals(
         direction_id=direction_id, 
         status=status,
         priority=priority,
-        assigned_to=assigned_to
+        assigned_to=assigned_to,
     )
 
 
