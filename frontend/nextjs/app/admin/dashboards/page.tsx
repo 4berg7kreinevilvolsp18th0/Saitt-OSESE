@@ -180,6 +180,20 @@ export default function AdminDashboards() {
               : 'border-white/20 text-white/80 hover:border-white/40'
           }`}
         >
+          90 дней
+        </button>
+        <button
+          onClick={() => setDateRange('all')}
+          className={`px-4 py-2 rounded-lg border text-sm transition ${
+            dateRange === 'all'
+              ? 'border-oss-red bg-oss-red/20 text-white'
+              : 'border-white/20 text-white/80 hover:border-white/40'
+          }`}
+        >
+          Все время
+        </button>
+      </div>
+
       <div className="mt-6 sm:mt-8 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 light:bg-white light:border-gray-200 light:shadow-sm">
           <div className="text-xs sm:text-sm text-white/60 light:text-gray-500">Всего обращений</div>
@@ -262,6 +276,15 @@ export default function AdminDashboards() {
           </>
         )}
       </section>
+
+      {/* График динамики обращений */}
+      <section className="mt-6 sm:mt-8 rounded-2xl sm:rounded-3xl border border-white/10 bg-white/5 p-4 sm:p-6 light:bg-white light:border-gray-200 light:shadow-sm">
+        <h2 className="text-lg sm:text-xl font-semibold light:text-gray-900">Динамика обращений</h2>
+        <p className="mt-2 text-xs sm:text-sm text-white/70 light:text-gray-600">
+          Количество новых обращений по дням за выбранный период.
+        </p>
+        {loading ? (
+          <div className="mt-4 sm:mt-6 h-64 sm:h-72 flex items-center justify-center text-white/50 text-sm sm:text-base light:text-gray-500">
     </main>
   );
 }
