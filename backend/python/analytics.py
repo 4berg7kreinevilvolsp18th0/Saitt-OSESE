@@ -265,3 +265,42 @@ def get_appeals_by_school(
         query = query.filter(Appeal.created_at >= start_date)
     if end_date:
         query = query.filter(Appeal.created_at <= end_date)
+    
+    # Фильтруем по школе, если указана
+    if school_code:
+        normalized_code = normalize_school_name(school_code)
+        if normalized_code and normalized_code in SCHOOLS_MAPPING:
+            # Фильтруем обращения по школе
+            # Используем ilike для поиска по частичному совпадению
+            query = query.filter(
+                func.lower(Appeal.institute).like(f"%{normalized_code.lower()}%")
+            )
+    
+    # Получаем все обращения
+    appeals = query.all()
+    
+    # Группируем по школам
+    by_school: Dict[str, Dict] = {}
+    
+    for appeal in appeals:
+        normalized_school = normalize_school_name(appeal.institute)
+        if not normalized_school:
+            normalized_school = "Другое"
+        
+        if normalized_school not in by_school:
+            by_school[normalized_school] = {
+                "code": normalized_school,
+                "name": SCHOOLS_MAPPING.get(normalized_school, normalized_school),
+                "total": 0,
+                "by_status": {"new": 0, "in_progress": 0, "waiting": 0, "closed": 0},
+                "by_priority": {"low": 0, "normal": 0, "high": 0, "urgent": 0},
+            }
+        
+        by_school[normalized_school]["total"] += 1
+        by_school[normalized_school]["by_status"][appeal.status] = (
+            by_school[normalized_school]["by_status"].get(appeal.status, 0) + 1
+        )
+        if appeal.priority:
+            by_school[normalized_school]["by_priority"][appeal.priority] = (
+                by_school[normalized_school]["by_priority"].get(appeal.priority, 0) + 1
+            )
