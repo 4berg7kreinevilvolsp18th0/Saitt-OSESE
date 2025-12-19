@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { supabase } from '../../../../lib/supabaseClient';
 import { SCHOOLS, getSchoolByCode } from '../../../../lib/schools';
 import {
