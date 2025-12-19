@@ -31,6 +31,9 @@ create table if not exists appeals (
         check (status in ('new','in_progress','waiting','closed')),
     public_token uuid default gen_random_uuid(),
     deadline date,
+    assigned_to uuid references auth.users(id), -- Ответственный за обращение
+    priority text default 'normal' check (priority in ('low','normal','high','urgent')),
+    tags text[], -- Массив тегов для классификации
     created_at timestamptz default now(),
     first_response_at timestamptz,
     closed_at timestamptz
