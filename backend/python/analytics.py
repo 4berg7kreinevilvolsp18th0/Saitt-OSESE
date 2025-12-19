@@ -57,3 +57,33 @@ def get_detailed_appeal_stats(
         )
         avg_response_time = total_time / len(closed_appeals) / 3600  # in hours
     
+    # Average resolution time
+    avg_resolution_time = None
+    if closed_appeals:
+        total_time = sum(
+            (appeal.closed_at - appeal.created_at).total_seconds()
+            for appeal in closed_appeals
+            if appeal.closed_at
+        )
+        avg_resolution_time = total_time / len(closed_appeals) / 3600  # in hours
+    
+    # By direction
+    by_direction = {}
+    results = db.query(
+        Direction.id,
+        Direction.title,
+        func.count(Appeal.id).label("count")
+    ).join(Appeal, Direction.id == Appeal.direction_id, isouter=True)
+    
+    if start_date:
+        results = results.filter(Appeal.created_at >= start_date)
+    if end_date:
+        results = results.filter(Appeal.created_at <= end_date)
+    
+    results = results.group_by(Direction.id, Direction.title).all()
+    
+    for direction_id, direction_title, count in results:
+        by_direction[str(direction_id)] = {
+            "title": direction_title,
+            "count": count
+        }
