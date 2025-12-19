@@ -39,6 +39,11 @@ create table if not exists appeals (
     closed_at timestamptz
 );
 
+-- Appeal Attachments (Вложения к обращениям)
+create table if not exists appeal_attachments (
+    id uuid primary key default gen_random_uuid(),
+    appeal_id uuid references appeals(id) on delete cascade,
+    file_name text not null,
 -- Appeal comments
 create table if not exists appeal_comments (
     id uuid primary key default gen_random_uuid(),
