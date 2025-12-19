@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import AppealStatusBadge from './AppealStatusBadge';
+import AppealHistory from './AppealHistory';
 import { AppealStatus } from '../lib/appealStatus';
 
 interface Appeal {
@@ -242,6 +243,11 @@ export default function AppealCard({
               → {x.title}
             </button>
           ))}
+      </div>
+
+      {/* История изменений */}
+      <div className="mt-3">
+        <AppealHistory appealId={appeal.id} />
       </div>
     </div>
   );
