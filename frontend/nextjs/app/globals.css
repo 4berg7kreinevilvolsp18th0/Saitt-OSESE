@@ -2,6 +2,60 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'SF UI Text';
+  src: url('/fonts/SFUITEXT-LIGHT.TTF') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF UI Text';
+  src: url('/fonts/SFUITEXT-REGULAR.TTF') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF UI Text';
+  src: url('/fonts/SFUITEXT-MEDIUM.TTF') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF UI Text';
+  src: url('/fonts/SFUITEXT-SEMIBOLD.TTF') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF UI Text';
+  src: url('/fonts/SFUITEXT-BOLD.TTF') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF UI Display';
+  src: url('/fonts/SFUIDISPLAY-ULTRALIGHT.TTF') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF UI Display';
+  src: url('/fonts/SFUIDISPLAY-THIN.TTF') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
 :root {
   color-scheme: dark;
 }
