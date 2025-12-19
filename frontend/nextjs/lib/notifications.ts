@@ -73,3 +73,34 @@ export async function sendNotification(params: SendNotificationParams) {
         }
       }
     }
+
+    // Отправляем push уведомление
+    if (settings.push_enabled && settings.push_subscription) {
+      let pushEnabled = false;
+      if (type === 'appeal_status' && settings.push_appeal_status) pushEnabled = true;
+      if (type === 'appeal_assigned' && settings.push_appeal_assigned) pushEnabled = true;
+      if (type === 'appeal_comment' && settings.push_appeal_comment) pushEnabled = true;
+
+      if (pushEnabled) {
+        try {
+          const response = await fetch(`${window.location.origin}/api/notifications/push`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              userId,
+              appealId,
+              type,
+              title,
+              message,
+              url,
+            }),
+          });
+
+          if (response.ok) {
+            results.push = true;
+          }
+        } catch (error) {
+          console.error('Push notification error:', error);
+        }
+      }
+    }
