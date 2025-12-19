@@ -106,53 +106,53 @@ export default function AdminDashboards() {
       </p>
 
       {error && (
-        <div className="mt-6 rounded-2xl border border-red-500/40 bg-red-500/10 p-4 text-sm">
+        <div className="mt-6 rounded-xl sm:rounded-2xl border border-red-500/40 bg-red-500/10 p-4 text-xs sm:text-sm text-red-400 light:bg-red-50 light:border-red-200 light:text-red-700">
           {error}
         </div>
       )}
 
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-          <div className="text-sm text-white/60">Всего обращений</div>
-          <div className="mt-2 text-3xl font-semibold">{loading ? '…' : stats.total}</div>
+      <div className="mt-6 sm:mt-8 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 light:bg-white light:border-gray-200 light:shadow-sm">
+          <div className="text-xs sm:text-sm text-white/60 light:text-gray-500">Всего обращений</div>
+          <div className="mt-2 text-2xl sm:text-3xl font-semibold light:text-gray-900">{loading ? '…' : stats.total}</div>
         </div>
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-          <div className="text-sm text-white/60">Новых</div>
-          <div className="mt-2 text-3xl font-semibold text-blue-400">{loading ? '…' : stats.new}</div>
+        <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 light:bg-white light:border-gray-200 light:shadow-sm">
+          <div className="text-xs sm:text-sm text-white/60 light:text-gray-500">Новых</div>
+          <div className="mt-2 text-2xl sm:text-3xl font-semibold text-blue-400 light:text-blue-600">{loading ? '…' : stats.new}</div>
         </div>
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-          <div className="text-sm text-white/60">В работе</div>
-          <div className="mt-2 text-3xl font-semibold text-yellow-400">
+        <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 light:bg-white light:border-gray-200 light:shadow-sm">
+          <div className="text-xs sm:text-sm text-white/60 light:text-gray-500">В работе</div>
+          <div className="mt-2 text-2xl sm:text-3xl font-semibold text-yellow-400 light:text-yellow-600">
             {loading ? '…' : stats.inProgress}
           </div>
         </div>
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-          <div className="text-sm text-white/60">Закрыто</div>
-          <div className="mt-2 text-3xl font-semibold text-green-400">
+        <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 light:bg-white light:border-gray-200 light:shadow-sm">
+          <div className="text-xs sm:text-sm text-white/60 light:text-gray-500">Закрыто</div>
+          <div className="mt-2 text-2xl sm:text-3xl font-semibold text-green-400 light:text-green-600">
             {loading ? '…' : stats.closed}
           </div>
         </div>
       </div>
 
       {stats.avgResponseTime !== null && (
-        <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-6">
-          <div className="text-sm text-white/60">Среднее время до первого ответа</div>
-          <div className="mt-2 text-2xl font-semibold">
+        <div className="mt-6 rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 light:bg-white light:border-gray-200 light:shadow-sm">
+          <div className="text-xs sm:text-sm text-white/60 light:text-gray-500">Среднее время до первого ответа</div>
+          <div className="mt-2 text-xl sm:text-2xl font-semibold light:text-gray-900">
             {stats.avgResponseTime} {stats.avgResponseTime === 1 ? 'час' : 'часов'}
           </div>
         </div>
       )}
 
-      <section className="mt-8 rounded-3xl border border-white/10 bg-white/5 p-6">
-        <h2 className="text-xl font-semibold">Очередь по статусам</h2>
-        <p className="mt-2 text-white/70">Распределение обращений по стадиям обработки.</p>
+      <section className="mt-6 sm:mt-8 rounded-2xl sm:rounded-3xl border border-white/10 bg-white/5 p-4 sm:p-6 light:bg-white light:border-gray-200 light:shadow-sm">
+        <h2 className="text-lg sm:text-xl font-semibold light:text-gray-900">Очередь по статусам</h2>
+        <p className="mt-2 text-xs sm:text-sm text-white/70 light:text-gray-600">Распределение обращений по стадиям обработки.</p>
         {loading ? (
-          <div className="mt-6 h-72 flex items-center justify-center text-white/50">
+          <div className="mt-4 sm:mt-6 h-64 sm:h-72 flex items-center justify-center text-white/50 text-sm sm:text-base light:text-gray-500">
             Загрузка данных...
           </div>
         ) : (
           <>
-            <div className="mt-6 h-72">
+            <div className="mt-4 sm:mt-6 h-64 sm:h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={rows}>
                   <XAxis
