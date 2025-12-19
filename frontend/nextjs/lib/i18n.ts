@@ -1,15 +1,14 @@
 // Утилиты для интернационализации
 
-export type Locale = 'ru' | 'en' | 'zh';
+export type Locale = 'ru' | 'en';
 
 export const defaultLocale: Locale = 'ru';
-export const supportedLocales: Locale[] = ['ru', 'en', 'zh'];
+export const supportedLocales: Locale[] = ['ru', 'en'];
 
 // Кэш переводов
 let translationsCache: Record<Locale, any> = {
   ru: {},
   en: {},
-  zh: {},
 };
 
 // Функция для загрузки переводов
