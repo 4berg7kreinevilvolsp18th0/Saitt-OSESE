@@ -176,10 +176,7 @@ export default function DirectionPage({ params }: { params: { slug: string } }) 
         <div className="text-xs uppercase tracking-wide text-white/90 light:text-white/80">
           Направление
         </div>
-        <h1 className="mt-2 text-3xl md:text-4xl font-bold">{direction.title}</h1>
-        <p className="mt-4 text-white/90 max-w-3xl">{direction.description}</p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Link href={`/appeal?direction=${direction.slug}`} className="px-5 py-3 rounded-xl bg-white text-oss-dark font-semibold">
+        <h1 className="mt-2 text-2xl sm:text-3xl md:text-4xl font-bold">{direction.title}</h1>
             Подать обращение
           </Link>
           <Link href="/content" className="px-5 py-3 rounded-xl border border-white/40 text-white">
