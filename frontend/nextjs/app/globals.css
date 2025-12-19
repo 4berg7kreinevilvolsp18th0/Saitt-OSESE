@@ -167,3 +167,88 @@ a {
 .light .border-white\/20 {
   border-color: #D1D5DB;
 }
+
+/* Цвета направлений для светлой темы */
+.light .text-legal {
+  color: #1F2A44;
+}
+
+.light .text-infrastructure {
+  color: #2563EB;
+}
+
+.light .text-scholarship {
+  color: #059669;
+}
+
+.light .text-international {
+  color: #D97706;
+}
+
+.light .text-neutral {
+  color: #6B7280;
+}
+
+.light .border-legal {
+  border-color: #1F2A44;
+}
+
+.light .border-infrastructure {
+  border-color: #2563EB;
+}
+
+.light .border-scholarship {
+  border-color: #059669;
+}
+
+.light .border-international {
+  border-color: #D97706;
+}
+
+.light .border-neutral {
+  border-color: #6B7280;
+}
+
+.light .bg-legal {
+  background-color: #E8EBF0;
+}
+
+.light .bg-infrastructure {
+  background-color: #DBEAFE;
+}
+
+.light .bg-scholarship {
+  background-color: #D1FAE5;
+}
+
+.light .bg-international {
+  background-color: #FEF3C7;
+}
+
+.light .bg-neutral {
+  background-color: #F3F4F6;
+}
+
+/* Улучшенные цвета для карточек в светлой теме */
+.light .bg-white\/5 {
+  background-color: #FFFFFF;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.light .bg-white\/10 {
+  background-color: #F9FAFB;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.light .hover\:bg-white\/10:hover {
+  background-color: #F3F4F6;
+}
+
+/* Цвет ссылок в светлой теме */
+.light .text-oss-red {
+  color: #D11F2A;
+}
+
+.light .text-oss-red:hover {
+  color: #B91C1C;
+}
