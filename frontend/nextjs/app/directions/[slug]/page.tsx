@@ -232,8 +232,7 @@ export default function DirectionPage({ params }: { params: { slug: string } }) 
       </section>
 
       {relatedContent.length > 0 && (
-        <section className="mt-10">
-            <h2 className="text-2xl font-semibold">Материалы по направлению</h2>
+        <section className="mt-8 sm:mt-10">
           <div className="flex items-end justify-between mb-4 sm:mb-6 flex-wrap gap-2">
             <Link
               href={`/content?direction=${direction.slug}`}
