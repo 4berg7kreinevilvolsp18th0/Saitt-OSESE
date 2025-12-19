@@ -16,3 +16,21 @@ class AttachmentNotFoundError(Exception):
     """Attachment not found"""
     pass
 
+
+class UnauthorizedError(Exception):
+    """Unauthorized access"""
+    pass
+
+
+class ForbiddenError(Exception):
+    """Forbidden access"""
+    pass
+
+
+async def appeal_not_found_handler(request: Request, exc: AppealNotFoundError):
+    return JSONResponse(
+        status_code=status.HTTP_404_NOT_FOUND,
+        content={"detail": "Appeal not found"}
+    )
+
+
