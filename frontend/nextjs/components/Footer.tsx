@@ -3,8 +3,8 @@ const year = new Date().getFullYear();
 export default function Footer() {
   return (
     <footer className="border-t border-white/10 bg-oss-dark">
-      <div className="max-w-6xl mx-auto px-6 py-10 text-sm text-white/60">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10 text-xs sm:text-sm text-white/60">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 sm:gap-4">
           <div>
             <div className="text-white/80 font-medium">Объединённый совет студентов ДВФУ</div>
             <div>Официальный сайт: обращения, гайды, новости, документы.</div>
