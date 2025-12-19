@@ -45,16 +45,16 @@ export default function ContentItem() {
 
   if (loading) {
     return (
-      <main className="max-w-4xl mx-auto px-6 py-12">
-        <div className="text-center text-white/50">Загрузка...</div>
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <div className="text-center text-white/50 text-sm sm:text-base">Загрузка...</div>
       </main>
     );
   }
 
   if (error || !content) {
     return (
-      <main className="max-w-4xl mx-auto px-6 py-12">
-        <div className="rounded-xl border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-400">
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <div className="rounded-xl border border-red-500/40 bg-red-500/10 p-4 text-xs sm:text-sm text-red-400 light:bg-red-50 light:border-red-200 light:text-red-700">
           {error || 'Контент не найден'}
         </div>
       </main>
@@ -66,16 +66,16 @@ export default function ContentItem() {
   const body = content.body || '';
 
   return (
-    <main className="max-w-4xl mx-auto px-6 py-12">
+    <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
       <article>
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <Badge variant={contentType === 'news' ? 'info' : contentType === 'guide' ? 'success' : 'warning'}>
             {contentType === 'news' ? 'Новость' : contentType === 'guide' ? 'Гайд' : 'FAQ'}
           </Badge>
         </div>
-        <h1 className="text-4xl font-bold mb-8">{title}</h1>
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 md:mb-8 light:text-gray-900">{title}</h1>
         {content.published_at && (
-          <p className="text-white/50 mb-8">
+          <p className="text-xs sm:text-sm text-white/50 mb-6 sm:mb-8 light:text-gray-500">
             Опубликовано: {new Date(content.published_at).toLocaleDateString('ru-RU')}
           </p>
         )}
