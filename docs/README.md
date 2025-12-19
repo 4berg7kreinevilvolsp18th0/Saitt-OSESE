@@ -1,67 +1,83 @@
-# Documentation Index
+# Documentation
 
-Simple guides to help you work with the OSS DVFU website.
+Документация сайта ОСС ДВФУ доступна на двух языках:
 
-## Start Here
+## 🇷🇺 Русский язык
 
-**[Getting Started](getting-started.md)**  
-Set up the project on your computer and run it locally. Takes about 15 minutes.
+**[Документация на русском →](ru/README.md)**
 
-## Main Guides
+Все руководства, инструкции и техническая документация на русском языке.
 
-**[Deployment](deployment.md)**  
-Put your site online using Vercel. Step-by-step instructions.
+## 🇬🇧 English
 
-**[Database Setup](database.md)**  
-Configure Supabase (the database). How to create tables, add users, set up roles.
+**[Documentation in English →](en/README.md)**
 
-**[Content Editing](content-editing.md)**  
-How to add and edit news, guides, and other content. Written for non-technical users.
+All guides, instructions, and technical documentation in English.
 
-**[Troubleshooting](troubleshooting.md)**  
-Common problems and how to fix them. 404 errors, database issues, build problems.
+---
 
-**[Features](features.md)**  
-Overview of site features: dark/light theme, Telegram integration, logo, etc.
+## Быстрый доступ / Quick Access
 
-## Specific Topics
+### Основные руководства / Main Guides
 
-**[Telegram Setup](telegram-setup.md)**  
-Connect the site to Telegram channel @oss_dvfu to show real posts.
+- **[Начало работы / Getting Started](ru/getting-started.md)** | [English](en/getting-started.md)
+- **[Деплой / Deployment](ru/deployment.md)** | [English](en/deployment.md)
+- **[Настройка базы данных / Database Setup](ru/database.md)** | [English](en/database.md)
+- **[Редактирование контента / Content Editing](ru/content-editing.md)** | [English](en/content-editing.md)
+- **[Решение проблем / Troubleshooting](ru/troubleshooting.md)** | [English](en/troubleshooting.md)
+- **[Функции сайта / Features](ru/features.md)** | [English](en/features.md)
 
-## Technical Docs
+### Специальные темы / Specific Topics
 
-For developers working on the codebase:
+- **[Настройка Telegram / Telegram Setup](ru/telegram-setup.md)** | [English](en/telegram-setup.md)
+- **[Система переводов / Translation System](ru/translation-guide.md)**
+- **[Модули / Modules](ru/modules-implementation.md)**
+- **[Настройка Storage / Storage Setup](ru/storage-setup.md)**
+- **[Тестовые данные / Test Data](ru/load-test-data.md)**
 
-- `TECH_SPEC.md` - Technical architecture
-- `BRAND.md` - Design system and colors
-- `OPERATIONS.md` - Operational procedures
-- `DASHBOARDS.md` - Analytics dashboards
+---
 
-## Quick Reference
+## Структура документации
 
-**Common tasks:**
+```
+docs/
+├── README.md (этот файл)
+├── ru/          # Русская документация
+│   ├── README.md
+│   ├── getting-started.md
+│   ├── deployment.md
+│   ├── database.md
+│   ├── content-editing.md
+│   ├── troubleshooting.md
+│   ├── features.md
+│   └── ...
+└── en/          # English documentation
+    ├── README.md
+    ├── getting-started.md
+    ├── deployment.md
+    ├── database.md
+    ├── content-editing.md
+    ├── troubleshooting.md
+    ├── features.md
+    └── ...
+```
 
-- First time setup → [Getting Started](getting-started.md)
-- Deploy to production → [Deployment](deployment.md)
-- Add content → [Content Editing](content-editing.md)
-- Fix errors → [Troubleshooting](troubleshooting.md)
-- Set up database → [Database Setup](database.md)
+---
 
-**Having issues?**
+## Для переводчиков / For Translators
 
-1. Check [Troubleshooting](troubleshooting.md) first
-2. Look at specific guide for your task
-3. Check Vercel/Supabase logs
-4. Verify environment variables
+Если вы хотите помочь с переводом документации:
 
-## Old Documentation
+- **[Инструкция для переводчиков](ru/for-translators.md)** (на русском)
+- Откройте файл в папке `en/` и переведите его содержимое
+- Сохраните файл с тем же именем
 
-Some older docs are still in the folder but are being replaced by the guides above:
-- `DEPLOY.md` → See [deployment.md](deployment.md)
-- `SUPABASE_SETUP.md` → See [database.md](database.md)
-- `VERCEL_SETUP.md` → See [deployment.md](deployment.md)
-- `EDITING_GUIDE.md` → See [content-editing.md](content-editing.md)
-- Various 404 fix docs → See [troubleshooting.md](troubleshooting.md)
+---
 
-The new guides above are simpler and more up-to-date.
+## Техническая документация
+
+Техническая документация находится в папке `ru/`:
+- `tech-spec.md` - Техническая архитектура
+- `brand.md` - Дизайн-система
+- `operations.md` - Операционные процедуры
+- `dashboards.md` - Аналитика
