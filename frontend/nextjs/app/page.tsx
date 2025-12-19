@@ -121,7 +121,6 @@ export default function Home() {
             <Link href="/appeal" className="px-5 sm:px-6 py-2.5 sm:py-3 bg-white text-oss-red font-semibold rounded-xl hover:bg-white/90 transition text-sm sm:text-base">
               Подать обращение
             </Link>
-            <Link href="/appeal/status" className="px-6 py-3 border border-white/80 rounded-xl hover:bg-white/10 transition">
               Проверить статус
             </Link>
             <Link href="/statistics" className="px-6 py-3 border border-white/80 rounded-xl hover:bg-white/10 transition">
