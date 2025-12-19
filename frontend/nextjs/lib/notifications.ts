@@ -104,3 +104,21 @@ export async function sendNotification(params: SendNotificationParams) {
         }
       }
     }
+
+    // Логируем уведомление
+    await supabase.from('notification_log').insert({
+      user_id: userId,
+      appeal_id: appealId || null,
+      type: results.email ? 'email' : results.push ? 'push' : 'email',
+      event_type: type,
+      title,
+      message,
+      success: results.email || results.push,
+    });
+
+    return { success: true, results };
+  } catch (error: any) {
+    console.error('Notification error:', error);
+    return { success: false, error: error.message };
+  }
+}
