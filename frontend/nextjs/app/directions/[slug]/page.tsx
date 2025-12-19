@@ -191,22 +191,23 @@ export default function DirectionPage({ params }: { params: { slug: string } }) 
         </div>
       </div>
 
+      <section className="mt-8 sm:mt-10">
         <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 light:text-gray-900">Частые кейсы</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {getCasesForDirection(direction.slug).map((c, i) => (
             <div
               key={i}
-              className="rounded-2xl border border-white/10 bg-white/5 p-6 hover:bg-white/10 transition cursor-pointer"
+              className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 hover:bg-white/10 hover:border-white/20 transition-all duration-200 cursor-pointer light:bg-white light:border-gray-200 light:hover:bg-gray-50 light:hover:border-gray-300 light:shadow-sm"
               onClick={() => {
                 // В будущем можно открыть модалку с алгоритмом или перейти на страницу
               }}
             >
-              <h3 className="text-lg font-semibold mb-2">{c.title}</h3>
-              <p className="text-sm text-white/70">{c.description}</p>
+              <h3 className="text-base sm:text-lg font-semibold mb-2 light:text-gray-900">{c.title}</h3>
+              <p className="text-sm text-white/70 light:text-gray-600">{c.description}</p>
               <div className="mt-4">
                 <Link
                   href={`/appeal?direction=${direction.slug}&case=${c.slug}`}
-                  className="text-sm text-white/80 hover:text-white underline"
+                  className="text-sm text-white/80 hover:text-white underline light:text-oss-red light:hover:text-oss-red/80"
                 >
                   Подать обращение по этому кейсу →
                 </Link>
@@ -216,14 +217,14 @@ export default function DirectionPage({ params }: { params: { slug: string } }) 
         </div>
       </section>
 
-      <section className="mt-10">
-        <h2 className="text-2xl font-semibold mb-6">Чек-лист: что подготовить</h2>
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-          <ul className="space-y-3">
+      <section className="mt-8 sm:mt-10">
+        <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 light:text-gray-900">Чек-лист: что подготовить</h2>
+        <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 light:bg-white light:border-gray-200 light:shadow-sm">
+          <ul className="space-y-2 sm:space-y-3">
             {getChecklistForDirection(direction.slug).map((item, i) => (
               <li key={i} className="flex items-start gap-3">
-                <span className="text-oss-red mt-1">✓</span>
-                <span className="text-white/80">{item}</span>
+                <span className="text-oss-red mt-1 flex-shrink-0">✓</span>
+                <span className="text-white/80 text-sm sm:text-base light:text-gray-700">{item}</span>
               </li>
             ))}
           </ul>
@@ -232,8 +233,8 @@ export default function DirectionPage({ params }: { params: { slug: string } }) 
 
       {relatedContent.length > 0 && (
         <section className="mt-10">
-          <div className="flex items-end justify-between mb-6">
             <h2 className="text-2xl font-semibold">Материалы по направлению</h2>
+          <div className="flex items-end justify-between mb-4 sm:mb-6 flex-wrap gap-2">
             <Link
               href={`/content?direction=${direction.slug}`}
               className="text-sm text-white/70 hover:text-white transition"
