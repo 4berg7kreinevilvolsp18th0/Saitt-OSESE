@@ -110,9 +110,12 @@ export default function EditContentPage() {
         if (updateError) throw updateError;
       }
 
+      toast.success(contentId === 'new' ? 'Материал создан' : 'Материал сохранён');
       router.push('/admin/content');
     } catch (err: any) {
-      setError(err.message || 'Ошибка при сохранении');
+      const errorMessage = err.message || 'Ошибка при сохранении';
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setSaving(false);
     }
