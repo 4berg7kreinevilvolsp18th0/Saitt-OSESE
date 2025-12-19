@@ -166,8 +166,10 @@ export default function Home() {
             </div>
 
             {supabaseError ? (
-                <div className="text-white/80 mb-4">{supabaseError}</div>
-                <div className="text-sm text-white/60">
+              <div className="rounded-2xl sm:rounded-3xl border border-yellow-500/50 bg-yellow-500/10 p-6 sm:p-8 md:p-10 text-center">
+                <div className="text-yellow-400 font-semibold mb-2 text-sm sm:text-base">⚠️ Предупреждение</div>
+                <div className="text-white/80 mb-4 text-sm sm:text-base">{supabaseError}</div>
+                <div className="text-xs sm:text-sm text-white/60">
                   Пожалуйста, настройте Supabase согласно инструкции в{' '}
                   <a href="/docs/SUPABASE_SETUP.md" className="text-yellow-400 hover:underline">
                     docs/SUPABASE_SETUP.md
