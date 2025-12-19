@@ -3,7 +3,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { supabase } from '../../../lib/supabaseClient';
 import AppealCard from '../../../components/AppealCard';
+import SearchBar from '../../../components/SearchBar';
 import { AppealStatus } from '../../../lib/appealStatus';
+import { useLocale } from '../../../components/LocaleProvider';
 
 type Column = { key: AppealStatus; title: string };
 
