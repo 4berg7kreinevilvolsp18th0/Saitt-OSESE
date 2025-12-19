@@ -29,7 +29,6 @@ from schemas import (
     AppealStats, MessageResponse,
     AppealAttachmentCreate, AppealAttachment
 )
-import crud
 
 # Create tables (in production, use migrations)
 Base.metadata.create_all(bind=engine)
@@ -37,10 +36,16 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="OSS DVFU API",
     description="Backend API for OSS DVFU website",
-    version="1.0.0",
+    version="2.0.0",
     docs_url="/docs",
     redoc_url="/redoc"
 )
+
+# Setup rate limiting
+app = setup_rate_limiting(app)
+
+# Add logging middleware
+app.middleware("http")(logging_middleware)
 
 # Register error handlers
 app.add_exception_handler(AppealNotFoundError, appeal_not_found_handler)
