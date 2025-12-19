@@ -210,7 +210,7 @@ function AppealPageContent() {
                 if (errors.school) setErrors({ ...errors, school: '' });
               }}
             >
-              <option value="">Выберите школу или институт</option>
+              <option value="" className="text-gray-500">Выберите школу или институт</option>
               {SCHOOLS.map((school) => (
                 <option key={school.code} value={school.code}>
                   {school.shortName} — {school.fullName}
