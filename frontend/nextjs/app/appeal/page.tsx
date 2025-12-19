@@ -138,9 +138,9 @@ function AppealPageContent() {
 
         {!presetDirection && (
           <div>
-            <label className="block text-sm font-medium mb-2">Направление (опционально)</label>
+            <label className="block text-xs sm:text-sm font-medium mb-2 light:text-gray-700">Направление (опционально)</label>
             <select
-              className="w-full rounded-xl bg-white/10 p-3 border border-white/20"
+              className="w-full rounded-xl bg-white/10 p-3 border border-white/20 text-sm sm:text-base light:bg-white light:border-gray-300 light:text-gray-900"
               value={selectedDirection}
               onChange={(e) => setSelectedDirection(e.target.value)}
             >
@@ -155,11 +155,10 @@ function AppealPageContent() {
         )}
 
         <div>
-          <label className="block text-sm font-medium mb-2">
+          <label className="block text-xs sm:text-sm font-medium mb-2 light:text-gray-700">
             Краткая тема <span className="text-red-400">*</span>
           </label>
           <input
-            className={`w-full rounded-xl bg-white/10 p-3 border ${
               errors.title ? 'border-red-500' : 'border-white/20'
             }`}
             placeholder="Например: Не пришла стипендия"
