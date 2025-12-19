@@ -97,6 +97,9 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-oss-dark text-white">
+      <section className="bg-oss-red py-12 sm:py-16 md:py-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
+          <div className="flex justify-center mb-6 sm:mb-8">
           </div>
           <h1 className="text-3xl md:text-5xl font-bold mb-4">
             ОБЪЕДИНЕННЫЙ СОВЕТ СТУДЕНТОВ
