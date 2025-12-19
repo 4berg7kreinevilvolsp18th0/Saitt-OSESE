@@ -81,7 +81,7 @@ function AppealPageContent() {
           direction_id: directionId,
           is_anonymous: isAnonymous,
         })
-        .select('public_token')
+        .select('id, public_token')
         .single();
 
       if (error) {
@@ -91,7 +91,7 @@ function AppealPageContent() {
       }
 
       if (data) {
-        const appealId = data.id || (data as any).id;
+        const appealId = data.id;
         
         // Загружаем файлы, если они есть
         if (files.length > 0 && appealId) {
