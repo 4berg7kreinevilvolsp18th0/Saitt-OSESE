@@ -3,31 +3,8 @@
 
 import React, { useState } from 'react';
 import { supabase } from '../../../lib/supabaseClient';
-
-type AppealStatus = 'new' | 'in_progress' | 'waiting' | 'closed';
-
-const statusLabels: Record<AppealStatus, { label: string; description: string; color: string }> = {
-  new: {
-    label: 'Принято',
-    description: 'Ваше обращение зарегистрировано и ожидает обработки',
-    color: 'bg-blue-500/20 border-blue-500/40 text-blue-300',
-  },
-  in_progress: {
-    label: 'В работе',
-    description: 'Обращение обрабатывается ответственным сотрудником',
-    color: 'bg-yellow-500/20 border-yellow-500/40 text-yellow-300',
-  },
-  waiting: {
-    label: 'Нужна информация',
-    description: 'Требуется дополнительная информация от вас для решения вопроса',
-    color: 'bg-orange-500/20 border-orange-500/40 text-orange-300',
-  },
-  closed: {
-    label: 'Решено',
-    description: 'Обращение закрыто. Если вопрос не решён, можете подать новое обращение',
-    color: 'bg-green-500/20 border-green-500/40 text-green-300',
-  },
-};
+import AppealStatusBadge from '../../../components/AppealStatusBadge';
+import { AppealStatus } from '../../../lib/appealStatus';
 
 export default function AppealStatusPage() {
   const [token, setToken] = useState('');
@@ -36,6 +13,7 @@ export default function AppealStatusPage() {
     title: string;
     created_at: string;
     closed_at: string | null;
+    first_response_at: string | null;
   } | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -52,7 +30,7 @@ export default function AppealStatusPage() {
 
     const { data, error: fetchError } = await supabase
       .from('appeals')
-      .select('status, title, created_at, closed_at')
+      .select('status, title, created_at, closed_at, first_response_at')
       .eq('public_token', token.trim())
       .single();
 
@@ -66,12 +44,10 @@ export default function AppealStatusPage() {
     setAppeal(data as any);
   }
 
-  const statusInfo = appeal ? statusLabels[appeal.status as AppealStatus] : null;
-
   return (
-    <main className="max-w-2xl mx-auto px-6 py-16">
-      <h1 className="text-3xl font-semibold">Проверить статус обращения</h1>
-      <p className="mt-3 text-white/70">
+    <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16">
+      <h1 className="text-2xl sm:text-3xl font-semibold light:text-gray-900">Проверить статус обращения</h1>
+      <p className="mt-3 text-sm sm:text-base text-white/70 light:text-gray-600">
         Введите код обращения, который вы получили при подаче заявки.
       </p>
 
@@ -105,25 +81,22 @@ export default function AppealStatusPage() {
           </div>
         )}
 
-        {appeal && statusInfo && (
-          <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-6 space-y-4">
+        {appeal && (
+          <div className="mt-6 rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 space-y-4 light:bg-white light:border-gray-200 light:shadow-sm">
             <div>
-              <div className="text-sm text-white/60">Тема обращения</div>
-              <div className="mt-1 font-medium">{appeal.title}</div>
+              <div className="text-xs sm:text-sm text-white/60 light:text-gray-500">Тема обращения</div>
+              <div className="mt-1 text-sm sm:text-base font-medium light:text-gray-900">{appeal.title}</div>
             </div>
 
             <div>
-              <div className="text-sm text-white/60">Статус</div>
-              <div className={`mt-2 inline-flex items-center gap-2 px-4 py-2 rounded-xl border ${statusInfo.color}`}>
-                <span className="font-semibold">{statusInfo.label}</span>
-              </div>
-              <p className="mt-2 text-sm text-white/70">{statusInfo.description}</p>
+              <div className="text-xs sm:text-sm text-white/60 light:text-gray-500 mb-2">Статус</div>
+              <AppealStatusBadge status={appeal.status} showDescription={true} size="md" />
             </div>
 
-            <div className="pt-4 border-t border-white/10 space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-white/60">Подано:</span>
-                <span className="text-white/80">
+            <div className="pt-4 border-t border-white/10 space-y-2 text-xs sm:text-sm">
+              <div className="flex justify-between flex-wrap gap-2">
+                <span className="text-white/60 light:text-gray-500">Подано:</span>
+                <span className="text-white/80 light:text-gray-700">
                   {new Date(appeal.created_at).toLocaleDateString('ru-RU', {
                     day: 'numeric',
                     month: 'long',
@@ -133,10 +106,24 @@ export default function AppealStatusPage() {
                   })}
                 </span>
               </div>
+              {appeal.first_response_at && (
+                <div className="flex justify-between flex-wrap gap-2">
+                  <span className="text-white/60 light:text-gray-500">Первый ответ:</span>
+                  <span className="text-white/80 light:text-gray-700">
+                    {new Date(appeal.first_response_at).toLocaleDateString('ru-RU', {
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </span>
+                </div>
+              )}
               {appeal.closed_at && (
-                <div className="flex justify-between">
-                  <span className="text-white/60">Закрыто:</span>
-                  <span className="text-white/80">
+                <div className="flex justify-between flex-wrap gap-2">
+                  <span className="text-white/60 light:text-gray-500">Закрыто:</span>
+                  <span className="text-white/80 light:text-gray-700">
                     {new Date(appeal.closed_at).toLocaleDateString('ru-RU', {
                       day: 'numeric',
                       month: 'long',
