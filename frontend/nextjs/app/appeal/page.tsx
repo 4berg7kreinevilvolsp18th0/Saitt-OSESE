@@ -4,6 +4,7 @@ import React, { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { supabase } from '../../lib/supabaseClient';
 import { DIRECTIONS } from '../../lib/directions';
+import FileUpload from '../../components/FileUpload';
 
 function AppealPageContent() {
   const params = useSearchParams();
@@ -17,6 +18,8 @@ function AppealPageContent() {
   const [submittedToken, setSubmittedToken] = useState<string | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
+  const [uploadingFiles, setUploadingFiles] = useState(false);
 
   function validate(): boolean {
     const newErrors: Record<string, string> = {};
@@ -88,6 +91,35 @@ function AppealPageContent() {
       }
 
       if (data) {
+        const appealId = data.id || (data as any).id;
+        
+        // Загружаем файлы, если они есть
+        if (files.length > 0 && appealId) {
+          setUploadingFiles(true);
+          try {
+            for (const file of files) {
+              const formData = new FormData();
+              formData.append('file', file);
+              formData.append('appealId', appealId);
+
+              const uploadResponse = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData,
+              });
+
+              if (!uploadResponse.ok) {
+                console.warn('Не удалось загрузить файл:', file.name);
+                // Продолжаем, даже если файл не загрузился
+              }
+            }
+          } catch (uploadError) {
+            console.error('Ошибка загрузки файлов:', uploadError);
+            // Не блокируем успешную отправку обращения
+          } finally {
+            setUploadingFiles(false);
+          }
+        }
+
         setSubmittedToken(data.public_token);
       }
     } catch (err) {
@@ -210,6 +242,13 @@ function AppealPageContent() {
           <p className="mt-1 text-xs text-white/50 light:text-gray-500">Email или Telegram (@username)</p>
         </div>
 
+        <FileUpload
+          onFilesChange={setFiles}
+          maxFiles={5}
+          maxSizeMB={10}
+          disabled={isSubmitting || uploadingFiles}
+        />
+
         <div className="flex items-center gap-3">
           <input
             type="checkbox"
@@ -236,10 +275,10 @@ function AppealPageContent() {
 
         <button
           onClick={submit}
-          disabled={isSubmitting}
+          disabled={isSubmitting || uploadingFiles}
           className="w-full rounded-xl bg-oss-red py-3 font-semibold hover:bg-oss-red/90 transition disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
         >
-          {isSubmitting ? 'Отправка...' : 'Отправить обращение'}
+          {uploadingFiles ? 'Загрузка файлов...' : isSubmitting ? 'Отправка...' : 'Отправить обращение'}
         </button>
       </div>
     </main>
