@@ -34,3 +34,18 @@ async def appeal_not_found_handler(request: Request, exc: AppealNotFoundError):
     )
 
 
+async def attachment_not_found_handler(request: Request, exc: AttachmentNotFoundError):
+    return JSONResponse(
+        status_code=status.HTTP_404_NOT_FOUND,
+        content={"detail": "Attachment not found"}
+    )
+
+
+async def unauthorized_handler(request: Request, exc: UnauthorizedError):
+    return JSONResponse(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        content={"detail": "Unauthorized"}
+    )
+
+
+async def forbidden_handler(request: Request, exc: ForbiddenError):
