@@ -249,3 +249,10 @@ def normalize_school_name(institute: Optional[str]) -> Optional[str]:
     
     return institute.strip()  # Возвращаем оригинал, если не найдено
 
+
+def get_appeals_by_school(
+    db: Session,
+    start_date: Optional[date] = None,
+    end_date: Optional[date] = None,
+    school_code: Optional[str] = None
+) -> Dict:
