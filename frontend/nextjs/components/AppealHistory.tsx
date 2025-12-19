@@ -25,3 +25,4 @@ const actionLabels: Record<string, string> = {
   priority_changed: 'Приоритет изменён',
   deadline_set: 'Дедлайн установлен',
   comment_added: 'Добавлен комментарий',
+
