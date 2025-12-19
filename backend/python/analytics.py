@@ -33,3 +33,27 @@ def get_detailed_appeal_stats(
     for status in ["new", "in_progress", "waiting", "closed"]:
         count = query.filter(Appeal.status == status).count()
         by_status[status] = count
+    
+    # By priority
+    by_priority = {}
+    for priority in ["low", "normal", "high", "urgent"]:
+        count = query.filter(Appeal.priority == priority).count()
+        by_priority[priority] = count
+    
+    # Average response time (for closed appeals)
+    closed_appeals = query.filter(
+        and_(
+            Appeal.status == "closed",
+            Appeal.first_response_at.isnot(None)
+        )
+    ).all()
+    
+    avg_response_time = None
+    if closed_appeals:
+        total_time = sum(
+            (appeal.first_response_at - appeal.created_at).total_seconds()
+            for appeal in closed_appeals
+            if appeal.first_response_at
+        )
+        avg_response_time = total_time / len(closed_appeals) / 3600  # in hours
+    
