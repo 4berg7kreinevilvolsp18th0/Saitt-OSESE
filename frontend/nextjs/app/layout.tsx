@@ -82,7 +82,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
       </head>
-      <body className="bg-oss-dark text-white antialiased transition-colors">
+      <body className="bg-oss-dark text-white antialiased transition-colors font-sf-text">
         <ThemeProvider>
           <LocaleProvider>
             <ToastProvider>
