@@ -24,6 +24,16 @@
 
 ## Настройка Email уведомлений
 
+### Использование Resend
+
+1. Зарегистрируйтесь на [Resend](https://resend.com)
+2. Получите API ключ
+3. Добавьте в переменные окружения Vercel:
+
+```
+EMAIL_SERVICE=resend
+EMAIL_API_KEY=your_resend_api_key
+EMAIL_FROM=noreply@oss-dvfu.ru
 ```
 
 ### Использование других сервисов
