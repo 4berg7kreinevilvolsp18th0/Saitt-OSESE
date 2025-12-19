@@ -49,6 +49,7 @@ create table if not exists appeal_attachments (
     mime_type text, -- MIME тип файла
     uploaded_at timestamptz default now()
 );
+
 -- Appeal comments
 create table if not exists appeal_comments (
     id uuid primary key default gen_random_uuid(),
