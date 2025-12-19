@@ -70,12 +70,12 @@ export default function AdminContentPage() {
             direction_title: item.direction_id ? directionsMap.get(item.direction_id) : undefined,
           }));
 
-          setContent(enriched as ContentItem[]);
+          setAllContent(enriched as ContentItem[]);
         } else {
-          setContent(data as ContentItem[]);
+          setAllContent(data as ContentItem[]);
         }
       } else {
-        setContent([]);
+        setAllContent([]);
       }
     } catch (err) {
       setError('Произошла ошибка при загрузке');
@@ -96,12 +96,17 @@ export default function AdminContentPage() {
 
     if (!error) {
       loadContent();
+      setSelectedItems(new Set());
+      toast.success(`Статус изменён на "${newStatus === 'published' ? 'Опубликовано' : 'Черновик'}"`);
     } else {
       setError('Не удалось изменить статус');
+      toast.error('Не удалось изменить статус');
     }
   }
 
-  const filteredContent = content.filter((item) => {
+  async function bulkUpdateStatus(newStatus: 'draft' | 'published' | 'archived') {
+    if (selectedItems.size === 0) return;
+
     if (filterStatus !== 'all' && item.status !== filterStatus) return false;
     if (filterType !== 'all' && item.type !== filterType) return false;
     return true;
