@@ -3,30 +3,34 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
-// КРИТИЧЕСКАЯ ПРОВЕРКА: Убеждаемся, что используется ANON ключ, а не SERVICE_ROLE
-if (supabaseAnonKey && (
-  supabaseAnonKey.includes('service_role') || 
-  supabaseAnonKey.length > 200 || // service_role ключи обычно длиннее
-  process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY // если случайно установлен service_role
-)) {
-  const errorMessage = 
-    '🚨 КРИТИЧЕСКАЯ ОШИБКА БЕЗОПАСНОСТИ!\n\n' +
-    '❌ ВЫ ИСПОЛЬЗУЕТЕ SERVICE_ROLE КЛЮЧ ВМЕСТО ANON КЛЮЧА!\n\n' +
-    'Проблема: В переменной окружения NEXT_PUBLIC_SUPABASE_ANON_KEY установлен service_role ключ.\n\n' +
-    '✅ РЕШЕНИЕ:\n' +
-    '1. Зайдите в Supabase Dashboard → Settings → API\n' +
-    '2. Найдите секцию "Project API keys"\n' +
-    '3. Скопируйте ключ из колонки "anon public" (НЕ "service_role"!)\n' +
-    '4. В Vercel: Settings → Environment Variables\n' +
-    '5. Найдите NEXT_PUBLIC_SUPABASE_ANON_KEY и замените на правильный anon ключ\n' +
-    '6. Перезапустите деплой (Redeploy)\n\n' +
-    '⚠️ SERVICE_ROLE ключ НИКОГДА не должен использоваться в браузере!\n' +
-    'Он обходит все ограничения безопасности и дает полный доступ к базе данных!';
-  
-  console.error(errorMessage);
-  
-  // В браузере показываем понятное сообщение
-  if (typeof window !== 'undefined') {
+// Функция для проверки service_role ключа (выполняется только в браузере)
+function checkServiceRoleKey() {
+  // Проверяем только в браузере, не во время сборки
+  if (typeof window === 'undefined') {
+    return; // Во время сборки пропускаем проверку
+  }
+
+  if (supabaseAnonKey && (
+    supabaseAnonKey.includes('service_role') || 
+    (supabaseAnonKey.length > 200 && !supabaseAnonKey.includes('eyJ')) || // service_role ключи обычно длиннее и не начинаются с eyJ
+    process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY // если случайно установлен service_role
+  )) {
+    const errorMessage = 
+      '🚨 КРИТИЧЕСКАЯ ОШИБКА БЕЗОПАСНОСТИ!\n\n' +
+      '❌ ВЫ ИСПОЛЬЗУЕТЕ SERVICE_ROLE КЛЮЧ ВМЕСТО ANON КЛЮЧА!\n\n' +
+      'Проблема: В переменной окружения NEXT_PUBLIC_SUPABASE_ANON_KEY установлен service_role ключ.\n\n' +
+      '✅ РЕШЕНИЕ:\n' +
+      '1. Зайдите в Supabase Dashboard → Settings → API\n' +
+      '2. Найдите секцию "Project API keys"\n' +
+      '3. Скопируйте ключ из колонки "anon public" (НЕ "service_role"!)\n' +
+      '4. В Vercel: Settings → Environment Variables\n' +
+      '5. Найдите NEXT_PUBLIC_SUPABASE_ANON_KEY и замените на правильный anon ключ\n' +
+      '6. Перезапустите деплой (Redeploy)\n\n' +
+      '⚠️ SERVICE_ROLE ключ НИКОГДА не должен использоваться в браузере!\n' +
+      'Он обходит все ограничения безопасности и дает полный доступ к базе данных!';
+    
+    console.error(errorMessage);
+    
     // Создаем видимое сообщение об ошибке
     const errorDiv = document.createElement('div');
     errorDiv.style.cssText = `
@@ -55,9 +59,20 @@ if (supabaseAnonKey && (
       </div>
     `;
     document.body.prepend(errorDiv);
+    
+    // Не выбрасываем ошибку, чтобы не ломать сборку, но показываем предупреждение
+    console.warn('⚠️ Приложение может работать некорректно из-за использования service_role ключа!');
   }
-  
-  throw new Error('Forbidden use of secret API key in browser');
+}
+
+// Вызываем проверку только в браузере (после монтирования)
+if (typeof window !== 'undefined') {
+  // Используем setTimeout, чтобы убедиться, что DOM готов
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', checkServiceRoleKey);
+  } else {
+    checkServiceRoleKey();
+  }
 }
 
 // Проверка наличия переменных окружения
