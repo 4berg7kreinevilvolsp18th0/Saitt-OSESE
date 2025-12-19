@@ -281,3 +281,4 @@ def delete_user_role(db: Session, role_id: UUID) -> bool:
     db.commit()
     return True
 
+
