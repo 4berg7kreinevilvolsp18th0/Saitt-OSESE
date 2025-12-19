@@ -77,10 +77,11 @@ if (typeof window !== 'undefined') {
     }
     
     // Проверка, что ключ выглядит как anon key (обычно начинается с eyJ и короче service_role)
-    if (supabaseAnonKey.length > 200) {
+    if (supabaseAnonKey.length > 200 && !supabaseAnonKey.includes('service_role')) {
       console.warn(
         '⚠️ ВНИМАНИЕ: Ключ выглядит слишком длинным для anon key.\n' +
-        'Убедитесь, что используете anon public ключ, а не service_role!'
+        'Убедитесь, что используете anon public ключ, а не service_role!\n' +
+        'Проверьте: Supabase Dashboard → Settings → API → anon public'
       );
     }
   }
