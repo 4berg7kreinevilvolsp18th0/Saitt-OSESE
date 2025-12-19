@@ -150,3 +150,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ 
       success: true, 
       message: 'Notification sent' 
+    });
+  } catch (error: any) {
+    console.error('Notification error:', error);
+    return NextResponse.json(
+      { error: error.message },
+      { status: 500 }
+    );
+  }
+}
+
