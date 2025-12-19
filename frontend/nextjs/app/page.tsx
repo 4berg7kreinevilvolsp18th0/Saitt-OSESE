@@ -118,6 +118,7 @@ export default function Home() {
             инфраструктурные, стипендиальные, адаптационные и консультационные вопросы.
           </p>
           <div className="mt-8 sm:mt-10 flex flex-wrap justify-center gap-3 sm:gap-4 px-4">
+            <Link href="/appeal" className="px-5 sm:px-6 py-2.5 sm:py-3 bg-white text-oss-red font-semibold rounded-xl hover:bg-white/90 transition text-sm sm:text-base">
               Подать обращение
             </Link>
             <Link href="/appeal/status" className="px-6 py-3 border border-white/80 rounded-xl hover:bg-white/10 transition">
