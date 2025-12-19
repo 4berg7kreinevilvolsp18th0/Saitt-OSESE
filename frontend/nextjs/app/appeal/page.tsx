@@ -99,10 +99,10 @@ function AppealPageContent() {
 
   if (submittedToken) {
     return (
-      <main className="max-w-2xl mx-auto px-6 py-16">
-        <div className="rounded-3xl border border-white/10 bg-white/5 p-8 text-center">
-          <h1 className="text-3xl font-semibold">Обращение принято</h1>
-          <p className="mt-4 text-white/70">
+      <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16">
+        <div className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/5 p-6 sm:p-8 text-center light:bg-white light:border-gray-200 light:shadow-sm">
+          <h1 className="text-2xl sm:text-3xl font-semibold light:text-gray-900">Обращение принято</h1>
+          <p className="mt-4 text-sm sm:text-base text-white/70 light:text-gray-600">
             Ваше обращение зарегистрировано. Сохраните код для проверки статуса:
           </p>
           <code className="mt-6 block rounded-xl bg-oss-dark border border-white/20 p-4 text-lg font-mono break-all">
