@@ -38,6 +38,7 @@ export default function LanguageToggle({
   const localeNames: Record<Locale, string> = {
     ru: 'Рус',
     en: 'Eng',
+    zh: '中文',
   };
 
   return (
