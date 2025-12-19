@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { supabase } from '../../../lib/supabaseClient';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, CartesianGrid, Legend } from 'recharts';
 
 type Row = { status: string; count: number };
 type StatusLabel = {
@@ -20,8 +20,10 @@ const statusLabels: StatusLabel[] = [
 
 export default function AdminDashboards() {
   const [rows, setRows] = useState<Row[]>([]);
+  const [dailyData, setDailyData] = useState<Array<{ date: string; count: number }>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [dateRange, setDateRange] = useState<'7d' | '30d' | '90d' | 'all'>('30d');
   const [stats, setStats] = useState({
     total: 0,
     new: 0,
@@ -37,9 +39,23 @@ export default function AdminDashboards() {
         setLoading(true);
         setError(null);
 
-        const { data, error: fetchError } = await supabase
+        // Вычисляем дату начала в зависимости от выбранного периода
+        let startDate: Date | null = null;
+        if (dateRange !== 'all') {
+          const days = dateRange === '7d' ? 7 : dateRange === '30d' ? 30 : 90;
+          startDate = new Date();
+          startDate.setDate(startDate.getDate() - days);
+        }
+
+        let query = supabase
           .from('appeals')
           .select('status, created_at, first_response_at, closed_at');
+
+        if (startDate) {
+          query = query.gte('created_at', startDate.toISOString());
+        }
+
+        const { data, error: fetchError } = await query;
 
         if (fetchError) {
           setError(fetchError.message);
