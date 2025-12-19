@@ -150,7 +150,8 @@
         "priority": "Priority",
         "deadline": "Deadline",
         "moveTo": "→",
-        "export": "Export CSV"
+        "export": "Export CSV",
+        "history": "History"
       },
       "priorities": {
         "low": "Low",
