@@ -122,3 +122,16 @@ export async function sendNotification(params: SendNotificationParams) {
     return { success: false, error: error.message };
   }
 }
+
+/**
+ * Отправка уведомлений всем заинтересованным пользователям при изменении обращения
+ */
+export async function notifyAppealChange(
+  appealId: string,
+  appealData: {
+    status?: string;
+    assigned_to?: string | null;
+    title: string;
+  }
+) {
+  const notifications: Promise<any>[] = [];
