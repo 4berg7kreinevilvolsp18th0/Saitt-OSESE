@@ -10,9 +10,12 @@ function checkServiceRoleKey() {
     return; // Во время сборки пропускаем проверку
   }
 
+  // Проверяем, что это НЕ service_role ключ
+  // service_role ключи обычно не начинаются с eyJ (JWT формат)
+  // или явно содержат строку "service_role"
   if (supabaseAnonKey && (
     supabaseAnonKey.includes('service_role') || 
-    (supabaseAnonKey.length > 200 && !supabaseAnonKey.includes('eyJ')) || // service_role ключи обычно длиннее и не начинаются с eyJ
+    (!supabaseAnonKey.startsWith('eyJ') && supabaseAnonKey.length > 50) || // Не JWT формат и достаточно длинный = возможно service_role
     process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY // если случайно установлен service_role
   )) {
     const errorMessage = 
