@@ -158,24 +158,46 @@ export default function AdminAppealsKanban() {
 
     setAppeals((prev) => prev.map((a) => (a.id === id ? { ...a, ...updateData } : a)));
     
-    // Отправляем Telegram уведомление (если настроено)
-    if (updatedAppeal && appeal.contact_type === 'telegram' && appeal.contact_value) {
-      try {
-        await fetch('/api/notifications/telegram', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            appealId: id,
-            status: to,
-            title: appeal.title,
-            contactValue: appeal.contact_value,
-            contactType: appeal.contact_type,
-            publicToken: updatedAppeal.public_token,
-          }),
-        });
-      } catch (notifError) {
-        console.warn('Не удалось отправить уведомление:', notifError);
-        // Не блокируем работу, если уведомление не отправилось
+    // Отправляем уведомления (если настроено)
+    if (updatedAppeal && appeal.contact_value) {
+      // Telegram уведомление
+      if (appeal.contact_type === 'telegram') {
+        try {
+          await fetch('/api/notifications/telegram', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              appealId: id,
+              status: to,
+              title: appeal.title,
+              contactValue: appeal.contact_value,
+              contactType: appeal.contact_type,
+              publicToken: updatedAppeal.public_token,
+            }),
+          });
+        } catch (notifError) {
+          console.warn('Не удалось отправить Telegram уведомление:', notifError);
+        }
+      }
+      
+      // Email уведомление
+      if (appeal.contact_type === 'email') {
+        try {
+          await fetch('/api/notifications/email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              appealId: id,
+              status: to,
+              title: appeal.title,
+              contactValue: appeal.contact_value,
+              contactType: appeal.contact_type,
+              publicToken: updatedAppeal.public_token,
+            }),
+          });
+        } catch (notifError) {
+          console.warn('Не удалось отправить Email уведомление:', notifError);
+        }
       }
     }
   }
