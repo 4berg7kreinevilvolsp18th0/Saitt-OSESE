@@ -92,7 +92,7 @@ export default function StudentOrganizations() {
         {organizations.map((org) => (
           <div
             key={org.id}
-            className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 hover:bg-white/10 transition"
+            className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 hover:bg-white/10 hover:border-white/20 transition-all duration-200 light:bg-white light:border-gray-200 light:hover:bg-gray-50 light:hover:border-gray-300 light:shadow-sm"
           >
             {org.logo_url && (
               <div className="mb-4 flex justify-center">
@@ -103,9 +103,9 @@ export default function StudentOrganizations() {
                 />
               </div>
             )}
-            <h3 className="text-lg sm:text-xl font-semibold mb-2">{org.title}</h3>
+            <h3 className="text-lg sm:text-xl font-semibold mb-2 light:text-gray-900">{org.title}</h3>
             {org.description && (
-              <p className="text-sm sm:text-base text-white/70 mb-4 line-clamp-3">
+              <p className="text-sm sm:text-base text-white/70 mb-4 line-clamp-3 light:text-gray-600">
                 {org.description}
               </p>
             )}
