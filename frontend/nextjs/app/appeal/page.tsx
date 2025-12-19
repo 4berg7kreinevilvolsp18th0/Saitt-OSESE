@@ -105,7 +105,7 @@ function AppealPageContent() {
           <p className="mt-4 text-sm sm:text-base text-white/70 light:text-gray-600">
             Ваше обращение зарегистрировано. Сохраните код для проверки статуса:
           </p>
-          <code className="mt-6 block rounded-xl bg-oss-dark border border-white/20 p-4 text-lg font-mono break-all">
+          <code className="mt-6 block rounded-xl bg-oss-dark border border-white/20 p-4 text-sm sm:text-lg font-mono break-all light:bg-gray-100 light:border-gray-300 light:text-gray-900">
             {submittedToken}
           </code>
           <p className="mt-4 text-sm text-white/60">
