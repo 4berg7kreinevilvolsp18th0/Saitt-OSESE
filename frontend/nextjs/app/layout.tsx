@@ -2,6 +2,7 @@ import './globals.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ThemeProvider from '../components/ThemeProvider';
+import { LocaleProvider } from '../components/LocaleProvider';
 import type { Metadata } from 'next';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://oss-dvfu.vercel.app';
@@ -82,9 +83,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="bg-oss-dark text-white antialiased transition-colors">
         <ThemeProvider>
-          <Header />
-          {children}
-          <Footer />
+          <LocaleProvider>
+            <Header />
+            {children}
+            <Footer />
+          </LocaleProvider>
         </ThemeProvider>
       </body>
     </html>
