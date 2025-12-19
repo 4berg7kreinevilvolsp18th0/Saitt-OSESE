@@ -33,6 +33,10 @@ export default function Header() {
           <NavLink href="/contacts">Контакты</NavLink>
           <ThemeToggle />
         </nav>
+        <div className="md:hidden flex items-center gap-2">
+          <ThemeToggle />
+          <MobileMenu />
+        </div>
       </div>
     </header>
   );
