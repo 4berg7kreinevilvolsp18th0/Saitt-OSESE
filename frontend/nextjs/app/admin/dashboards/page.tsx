@@ -285,6 +285,28 @@ export default function AdminDashboards() {
         </p>
         {loading ? (
           <div className="mt-4 sm:mt-6 h-64 sm:h-72 flex items-center justify-center text-white/50 text-sm sm:text-base light:text-gray-500">
+            Загрузка данных...
+          </div>
+        ) : dailyData.length > 0 ? (
+          <div className="mt-4 sm:mt-6 h-64 sm:h-72">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={dailyData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                <XAxis
+                  dataKey="date"
+                  tick={{ fill: '#fff', fontSize: 12 }}
+                  angle={-45}
+                  textAnchor="end"
+                  height={80}
+                />
+                <YAxis tick={{ fill: '#fff' }} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#1F2937',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    borderRadius: '8px',
+                  }}
+                />
     </main>
   );
 }
