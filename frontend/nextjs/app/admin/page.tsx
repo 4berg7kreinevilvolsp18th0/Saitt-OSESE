@@ -114,6 +114,13 @@ export default function AdminHome() {
           <div className="text-lg font-semibold">Контент</div>
           <div className="mt-2 text-white/70">Управление новостями, гайдами и FAQ.</div>
         </Link>
+        <Link
+          href="/admin/settings/notifications"
+          className="rounded-2xl border border-white/10 bg-white/5 p-6 hover:bg-white/10 transition"
+        >
+          <div className="text-lg font-semibold">Уведомления</div>
+          <div className="mt-2 text-white/70">Настройки email и push уведомлений.</div>
+        </Link>
       </div>
     </main>
   );
