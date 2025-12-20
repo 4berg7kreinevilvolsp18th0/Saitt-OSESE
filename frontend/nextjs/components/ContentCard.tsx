@@ -34,6 +34,7 @@ export default function ContentCard({
     <Link
       href={`/content/${slug}`}
       className="block rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 hover:bg-white/10 hover:border-white/20 transition-all duration-200 
+        light:premium-card light:border-gray-200/50"
     >
       <div className="flex items-start justify-between gap-3 sm:gap-4">
         <div className="flex-1 min-w-0">
