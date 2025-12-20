@@ -5,7 +5,7 @@
 /* Шрифты брендбука ОСС - SF UI Text и SF UI Display */
 @font-face {
   font-family: 'SF UI Text';
-  src: url('/fonts/SFUITEXT-LIGHT.TTF') format('truetype');
+  src: url('/fonts/SFUITEXT-LIGHT (3).TTF') format('truetype');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -13,7 +13,7 @@
 
 @font-face {
   font-family: 'SF UI Text';
-  src: url('/fonts/SFUITEXT-REGULAR.TTF') format('truetype');
+  src: url('/fonts/SFUITEXT-MEDIUM (3).TTF') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -21,7 +21,7 @@
 
 @font-face {
   font-family: 'SF UI Text';
-  src: url('/fonts/SFUITEXT-MEDIUM.TTF') format('truetype');
+  src: url('/fonts/SFUITEXT-MEDIUM (3).TTF') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -29,7 +29,7 @@
 
 @font-face {
   font-family: 'SF UI Text';
-  src: url('/fonts/SFUITEXT-SEMIBOLD.TTF') format('truetype');
+  src: url('/fonts/SFUITEXT-SEMIBOLD (3).TTF') format('truetype');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -37,15 +37,23 @@
 
 @font-face {
   font-family: 'SF UI Text';
-  src: url('/fonts/SFUITEXT-BOLD.TTF') format('truetype');
+  src: url('/fonts/SFUITEXT-BOLD (3).TTF') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
+  font-family: 'SF UI Text';
+  src: url('/fonts/SFUITEXT-HEAVY (3).TTF') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'SF UI Display';
-  src: url('/fonts/SFUIDISPLAY-ULTRALIGHT.TTF') format('truetype');
+  src: url('/fonts/SFUIDISPLAY-ULTRALIGHT (3).TTF') format('truetype');
   font-weight: 100;
   font-style: normal;
   font-display: swap;
@@ -53,7 +61,7 @@
 
 @font-face {
   font-family: 'SF UI Display';
-  src: url('/fonts/SFUIDISPLAY-THIN.TTF') format('truetype');
+  src: url('/fonts/SFUIDISPLAY-THIN (3).TTF') format('truetype');
   font-weight: 200;
   font-style: normal;
   font-display: swap;
@@ -61,7 +69,15 @@
 
 @font-face {
   font-family: 'SF UI Display';
-  src: url('/fonts/SFUIDISPLAY-REGULAR.TTF') format('truetype');
+  src: url('/fonts/SFUIDISPLAY-LIGHT (3).TTF') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF UI Display';
+  src: url('/fonts/SFUIDISPLAY-REGULAR (3).TTF') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -69,7 +85,7 @@
 
 @font-face {
   font-family: 'SF UI Display';
-  src: url('/fonts/SFUIDISPLAY-MEDIUM.TTF') format('truetype');
+  src: url('/fonts/SFUIDISPLAY-MEDIUM (3).TTF') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -77,7 +93,7 @@
 
 @font-face {
   font-family: 'SF UI Display';
-  src: url('/fonts/SFUIDISPLAY-SEMIBOLD.TTF') format('truetype');
+  src: url('/fonts/SFUIDISPLAY-SEMIBOLD (3).TTF') format('truetype');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -85,7 +101,7 @@
 
 @font-face {
   font-family: 'SF UI Display';
-  src: url('/fonts/SFUIDISPLAY-BOLD.TTF') format('truetype');
+  src: url('/fonts/SFUIDISPLAY-BOLD (3).TTF') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -93,8 +109,16 @@
 
 @font-face {
   font-family: 'SF UI Display';
-  src: url('/fonts/SFUIDISPLAY-HEAVY.TTF') format('truetype');
+  src: url('/fonts/SFUIDISPLAY-HEAVY (3).TTF') format('truetype');
   font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF UI Display';
+  src: url('/fonts/SFUIDISPLAY-BLACK (3).TTF') format('truetype');
+  font-weight: 950;
   font-style: normal;
   font-display: swap;
 }
