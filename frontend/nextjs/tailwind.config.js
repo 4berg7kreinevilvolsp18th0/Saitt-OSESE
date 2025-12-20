@@ -21,6 +21,8 @@ module.exports = {
           dark: "#0F1115",
         },
         legal: "#1F2A44",
+        'legal-gold': "#D4AF37",
+        'legal-dark-blue': "#1A2332",
         infrastructure: "#2A7FFF",
         scholarship: "#2E8B57",
         international: "#F5B301",
