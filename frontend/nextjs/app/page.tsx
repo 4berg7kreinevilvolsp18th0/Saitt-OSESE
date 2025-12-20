@@ -96,7 +96,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-oss-dark text-white">
+    <main className="min-h-screen bg-oss-dark light:bg-gray-50 text-white light:text-gray-900">
       <section className="bg-oss-red py-12 sm:py-16 md:py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
           <div className="flex justify-center mb-6 sm:mb-8">
@@ -107,7 +107,7 @@ export default function Home() {
               <Logo size={120} color="#FFFFFF" useImage={true} />
             </div>
           </div>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 px-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 px-2 text-white">
             ОБЪЕДИНЕННЫЙ СОВЕТ СТУДЕНТОВ
           </h1>
           <p className="text-base sm:text-lg md:text-xl mb-2 text-white/90">
@@ -134,8 +134,8 @@ export default function Home() {
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="flex items-end justify-between gap-4 flex-wrap mb-6">
           <div>
-            <h2 className="text-xl sm:text-2xl font-semibold">Направления</h2>
-            <p className="mt-2 text-sm sm:text-base text-white/70 max-w-2xl">
+            <h2 className="text-xl sm:text-2xl font-semibold text-white light:text-gray-900">Направления</h2>
+            <p className="mt-2 text-sm sm:text-base text-white/70 light:text-gray-600 max-w-2xl">
               Цвет каждого раздела — часть навигации: он помогает быстро понять, в каком блоке вы находитесь.
             </p>
           </div>
@@ -155,8 +155,8 @@ export default function Home() {
           <div className="lg:col-span-2">
             <div className="flex items-end justify-between gap-4 flex-wrap mb-6">
               <div>
-                <h2 className="text-xl sm:text-2xl font-semibold text-white">Новости и гайды</h2>
-                <p className="mt-2 text-sm sm:text-base text-white/70 max-w-2xl">
+                <h2 className="text-xl sm:text-2xl font-semibold text-white light:text-gray-900">Новости и гайды</h2>
+                <p className="mt-2 text-sm sm:text-base text-white/70 light:text-gray-600 max-w-2xl">
                   Публикуем актуальную информацию и инструкции по направлениям. Цель — чтобы часть вопросов решалась без обращения.
                 </p>
               </div>
