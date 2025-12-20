@@ -255,6 +255,7 @@ export default function Logo({
           <span className="text-sm font-semibold leading-tight text-white light:text-gray-900 whitespace-nowrap">
             ОБЪЕДИНЕННЫЙ СОВЕТ СТУДЕНТОВ
           </span>
+          <span className="text-xs text-white/70 light:text-gray-600 leading-tight">
             ДВФУ
           </span>
         </div>
