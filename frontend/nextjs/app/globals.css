@@ -315,6 +315,27 @@ a {
   color: #6B7280;
 }
 
+/* Градиенты для направлений - поддержка светлой темы (из брендбука ОСС) */
+.light .bg-gradient-legal {
+  background: linear-gradient(135deg, #E8EBF0 0%, #D1D9E6 50%, #E8EBF0 100%);
+}
+
+.light .bg-gradient-infrastructure {
+  background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 50%, #DBEAFE 100%);
+}
+
+.light .bg-gradient-scholarship {
+  background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 50%, #D1FAE5 100%);
+}
+
+.light .bg-gradient-international {
+  background: linear-gradient(135deg, #FFF4E6 0%, #FFE4B5 50%, #FFF4E6 100%);
+}
+
+.light .bg-gradient-neutral {
+  background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 50%, #FEE2E2 100%);
+}
+
 .light .border-legal {
   border-color: #1F2A44;
 }
