@@ -161,9 +161,9 @@ export default function DirectionPage({ params }: { params: { slug: string } }) 
   if (!direction) {
     return (
       <main className="max-w-6xl mx-auto px-6 py-12">
-        <h1 className="text-2xl font-semibold">Направление не найдено</h1>
-        <p className="mt-3 text-white/70">Проверьте ссылку или перейдите к списку направлений.</p>
-        <Link className="mt-6 inline-block underline" href="/directions">К направлениям</Link>
+        <h1 className="text-2xl font-semibold text-white light:text-gray-900">Направление не найдено</h1>
+        <p className="mt-3 text-white/70 light:text-gray-600">Проверьте ссылку или перейдите к списку направлений.</p>
+        <Link className="mt-6 inline-block underline text-white/80 light:text-oss-red hover:text-white light:hover:text-oss-red/80" href="/directions">К направлениям</Link>
       </main>
     );
   }
@@ -172,14 +172,14 @@ export default function DirectionPage({ params }: { params: { slug: string } }) 
   const borderGradient = gradientBorder(direction.colorKey);
 
   return (
-    <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 text-white light:text-gray-900">
       <div className={`relative rounded-2xl sm:rounded-3xl border-2 ${borderGradient} ${gradient} bg-opacity-90 dark:bg-opacity-90 p-6 sm:p-8 md:p-10 overflow-hidden light:bg-opacity-80`}>
         {/* Декоративный градиентный элемент */}
         <div className={`absolute top-0 right-0 w-64 h-64 ${gradient} rounded-full opacity-20 blur-3xl -translate-y-1/2 translate-x-1/2`}></div>
         <div className={`absolute bottom-0 left-0 w-48 h-48 ${gradient} rounded-full opacity-15 blur-2xl translate-y-1/2 -translate-x-1/2`}></div>
         
         <div className="relative z-10">
-        <div className="text-xs uppercase tracking-wide text-white/90 light:text-white/80">
+        <div className="text-xs uppercase tracking-wide text-white/90 light:text-gray-600">
           Направление
         </div>
         <h1 className="mt-2 text-2xl sm:text-3xl md:text-4xl font-bold">{direction.title}</h1>
