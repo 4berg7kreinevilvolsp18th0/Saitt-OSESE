@@ -44,6 +44,42 @@ export function accentBg(colorKey: ColorKey): string {
   }
 }
 
+export function gradientBg(colorKey: ColorKey): string {
+  switch (colorKey) {
+    case 'legal':
+      return 'bg-gradient-legal light:bg-gradient-legal-light';
+    case 'infrastructure':
+      return 'bg-gradient-infrastructure light:bg-gradient-infrastructure-light';
+    case 'scholarship':
+      return 'bg-gradient-scholarship light:bg-gradient-scholarship-light';
+    case 'international':
+      return 'bg-gradient-international light:bg-gradient-international-light';
+    case 'neutral':
+      return 'bg-gradient-neutral light:bg-gradient-neutral-light';
+    case 'oss':
+    default:
+      return 'bg-gradient-to-r from-oss-red to-red-600';
+  }
+}
+
+export function gradientBorder(colorKey: ColorKey): string {
+  switch (colorKey) {
+    case 'legal':
+      return 'border-legal/50 light:border-legal/30';
+    case 'infrastructure':
+      return 'border-infrastructure/50 light:border-infrastructure/30';
+    case 'scholarship':
+      return 'border-scholarship/50 light:border-scholarship/30';
+    case 'international':
+      return 'border-international/50 light:border-international/30';
+    case 'neutral':
+      return 'border-neutral/50 light:border-neutral/30';
+    case 'oss':
+    default:
+      return 'border-oss-red/50';
+  }
+}
+
 // Функции для работы с темой
 export function getTheme(): Theme {
   if (typeof window === 'undefined') return 'dark';
