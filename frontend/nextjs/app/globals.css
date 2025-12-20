@@ -293,8 +293,10 @@ a {
 
 /* Общие стили для светлой темы */
 .light {
-  background-color: #F9FAFB;
+  background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 50%, #F1F5F9 100%);
+  background-attachment: fixed;
   color: #1F2937;
+  min-height: 100vh;
 }
 
 .light .text-white {
@@ -322,7 +324,8 @@ a {
 }
 
 .light .bg-oss-dark {
-  background-color: #F9FAFB;
+  background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 50%, #F1F5F9 100%);
+  background-attachment: fixed;
 }
 
 .light .bg-white\/5 {
@@ -442,17 +445,33 @@ a {
 
 /* Улучшенные цвета для карточек в светлой теме */
 .light .bg-white\/5 {
-  background-color: #FFFFFF;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #FFFFFF 0%, #FAFBFC 100%);
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
 }
 
 .light .bg-white\/10 {
-  background-color: #F9FAFB;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
 }
 
 .light .hover\:bg-white\/10:hover {
-  background-color: #F3F4F6;
+  background: linear-gradient(135deg, #FFFFFF 0%, #F1F5F9 100%);
+  box-shadow: 
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Цвет ссылок в светлой теме */
@@ -462,4 +481,143 @@ a {
 
 .light .text-oss-red:hover {
   color: #B91C1C;
+}
+
+/* Премиум эффекты для светлой темы */
+.light .premium-card {
+  background: linear-gradient(135deg, #FFFFFF 0%, #FAFBFC 100%);
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04),
+    0 0 0 1px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.light .premium-card:hover {
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+  transform: translateY(-4px) scale(1.01);
+}
+
+.light .premium-button {
+  background: linear-gradient(135deg, #D11F2A 0%, #B91C1C 100%);
+  box-shadow: 
+    0 4px 6px -1px rgba(209, 31, 42, 0.3),
+    0 2px 4px -1px rgba(209, 31, 42, 0.2),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.light .premium-button:hover {
+  background: linear-gradient(135deg, #B91C1C 0%, #991B1B 100%);
+  box-shadow: 
+    0 10px 15px -3px rgba(209, 31, 42, 0.4),
+    0 4px 6px -2px rgba(209, 31, 42, 0.3),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.light .premium-button-secondary {
+  background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+  border: 2px solid rgba(209, 31, 42, 0.2);
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.light .premium-button-secondary:hover {
+  background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
+  border-color: rgba(209, 31, 42, 0.4);
+  box-shadow: 
+    0 10px 15px -3px rgba(209, 31, 42, 0.2),
+    0 4px 6px -2px rgba(209, 31, 42, 0.1),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
+}
+
+/* Градиентные акценты для светлой темы */
+.light .gradient-accent {
+  background: linear-gradient(135deg, rgba(209, 31, 42, 0.1) 0%, rgba(185, 28, 28, 0.05) 100%);
+  backdrop-filter: blur(10px);
+}
+
+/* Улучшенные тени для заголовков */
+.light h1, .light h2, .light h3 {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Анимация появления для карточек */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.light .animate-fade-in-up {
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Дополнительные премиум эффекты */
+.light .glass-effect {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.light .glow-effect {
+  box-shadow: 
+    0 0 20px rgba(209, 31, 42, 0.15),
+    0 0 40px rgba(209, 31, 42, 0.1),
+    0 0 60px rgba(209, 31, 42, 0.05);
+}
+
+.light .glow-effect:hover {
+  box-shadow: 
+    0 0 30px rgba(209, 31, 42, 0.25),
+    0 0 60px rgba(209, 31, 42, 0.15),
+    0 0 90px rgba(209, 31, 42, 0.1);
+}
+
+/* Плавные переходы для всех интерактивных элементов */
+.light * {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Улучшенные градиенты для направлений в светлой теме */
+.light .bg-gradient-legal {
+  background: linear-gradient(135deg, #F0F4F8 0%, #E2E8F0 50%, #CBD5E1 100%);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+}
+
+.light .bg-gradient-infrastructure {
+  background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 50%, #BFDBFE 100%);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+}
+
+.light .bg-gradient-scholarship {
+  background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 50%, #A7F3D0 100%);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+}
+
+.light .bg-gradient-international {
+  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 50%, #FDE68A 100%);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+}
+
+.light .bg-gradient-neutral {
+  background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 50%, #FECACA 100%);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
 }
