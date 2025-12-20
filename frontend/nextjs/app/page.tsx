@@ -97,16 +97,28 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-oss-dark light:bg-gray-50 text-white light:text-gray-900 animate-page-enter">
-      <section className="bg-oss-red py-12 sm:py-16 md:py-20 light:bg-gradient-to-br light:from-oss-red light:via-red-600 light:to-oss-red light:relative light:overflow-hidden">
-        {/* Декоративные элементы для светлой темы */}
+      <section className="bg-oss-red py-12 sm:py-16 md:py-20 
+        light:bg-gradient-to-b light:from-white light:via-gray-50/50 light:to-white
+        light:relative light:overflow-hidden
+        light:border-b light:border-gray-200/60">
+        {/* Декоративные элементы для светлой темы - строгие геометрические формы */}
         <div className="hidden light:block absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-white/5 rounded-full blur-3xl"></div>
+          {/* Тонкие линии для структуры */}
+          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-200/40 to-transparent"></div>
+          <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-200/40 to-transparent"></div>
+          
+          {/* Элегантные акценты */}
+          <div className="absolute top-20 right-10 w-64 h-64 bg-oss-red/5 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 left-10 w-80 h-80 bg-oss-red/3 rounded-full blur-3xl"></div>
+          
+          {/* Геометрические элементы */}
+          <div className="absolute top-1/4 right-1/4 w-2 h-2 bg-oss-red/20 rounded-full"></div>
+          <div className="absolute bottom-1/4 left-1/4 w-1.5 h-1.5 bg-oss-red/15 rounded-full"></div>
+          <div className="absolute top-1/2 right-1/3 w-1 h-1 bg-oss-red/10 rounded-full"></div>
         </div>
         
         <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center relative z-10">
-          <div className="flex justify-center mb-6 sm:mb-8">
+          <div className="flex justify-center mb-6 sm:mb-8 animate-fade-in-down">
             <div className="sm:hidden">
               <Logo size={80} color="#FFFFFF" useImage={true} />
             </div>
@@ -114,32 +126,46 @@ export default function Home() {
               <Logo size={120} color="#FFFFFF" useImage={true} />
             </div>
           </div>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 px-2 text-white light:drop-shadow-lg animate-fade-in-down">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 px-2 text-white 
+            light:text-gray-900 light:font-extrabold light:tracking-tight animate-fade-in-down">
             ОБЪЕДИНЕННЫЙ СОВЕТ СТУДЕНТОВ
           </h1>
-          <p className="text-base sm:text-lg md:text-xl mb-2 text-white/90 light:text-white light:font-medium animate-fade-in-up animate-delay-100">
-            Дальневосточный федеральный университет
-          </p>
-          <p className="text-sm sm:text-base md:text-lg max-w-3xl mx-auto text-white/80 mb-6 sm:mb-8 px-4 light:text-white/95 light:font-medium animate-fade-in-up animate-delay-200 leading-relaxed">
+          <div className="flex items-center justify-center gap-2 mb-3 sm:mb-4 animate-fade-in-up animate-delay-100">
+            <div className="hidden light:block w-12 h-px bg-gradient-to-r from-transparent via-oss-red/30 to-oss-red/30"></div>
+            <p className="text-base sm:text-lg md:text-xl text-white/90 
+              light:text-gray-600 light:font-semibold light:uppercase light:tracking-wider light:text-sm">
+              Дальневосточный федеральный университет
+            </p>
+            <div className="hidden light:block w-12 h-px bg-gradient-to-l from-transparent via-oss-red/30 to-oss-red/30"></div>
+          </div>
+          <p className="text-sm sm:text-base md:text-lg max-w-3xl mx-auto text-white/80 mb-6 sm:mb-8 px-4 
+            light:text-gray-700 light:font-medium light:leading-relaxed animate-fade-in-up animate-delay-200">
             Высший орган студенческого самоуправления ДВФУ. Решаем правовые,
             инфраструктурные, стипендиальные, адаптационные и консультационные вопросы.
           </p>
           <div className="mt-8 sm:mt-10 flex flex-wrap justify-center gap-3 sm:gap-4 px-4">
             <Link 
               href="/appeal" 
-              className="professional-button professional-button-primary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-200"
+              className="professional-button professional-button-primary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-200
+                light:shadow-[0_4px_12px_rgba(209,31,42,0.25)] light:hover:shadow-[0_8px_24px_rgba(209,31,42,0.35)]"
             >
               Подать обращение
             </Link>
             <Link 
               href="/appeal/status" 
-              className="professional-button professional-button-secondary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-300"
+              className="professional-button professional-button-secondary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-300
+                light:bg-white light:border-2 light:border-gray-300 light:text-gray-900 
+                light:hover:bg-gray-50 light:hover:border-oss-red/40 light:hover:text-oss-red
+                light:shadow-[0_2px_8px_rgba(0,0,0,0.08)] light:hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)]"
             >
               Проверить статус
             </Link>
             <Link 
               href="/statistics" 
-              className="professional-button professional-button-secondary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-400"
+              className="professional-button professional-button-secondary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-400
+                light:bg-white light:border-2 light:border-gray-300 light:text-gray-900 
+                light:hover:bg-gray-50 light:hover:border-oss-red/40 light:hover:text-oss-red
+                light:shadow-[0_2px_8px_rgba(0,0,0,0.08)] light:hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)]"
             >
               Статистика
             </Link>
