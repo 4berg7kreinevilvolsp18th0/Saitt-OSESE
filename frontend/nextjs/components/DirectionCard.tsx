@@ -16,15 +16,15 @@ export default function DirectionCard({ d }: { d: Direction }) {
         {/* Градиентный акцент сверху */}
         <div className={`absolute -top-4 -left-4 w-16 h-16 ${gradient} rounded-full opacity-20 blur-xl group-hover:opacity-30 transition-opacity duration-300`}></div>
         
-        <div className={`relative text-xs sm:text-sm uppercase tracking-wide font-semibold ${accent.split(' ')[0]} drop-shadow-sm`}>
+        <div className={`relative text-xs sm:text-sm uppercase tracking-wide font-semibold ${d.colorKey === 'legal' ? 'text-legal-gold light:text-legal-dark-blue' : accent.split(' ')[0]} drop-shadow-sm`}>
           {d.title}
         </div>
-        <div className="mt-2 text-white/90 text-xs sm:text-sm leading-relaxed light:text-gray-700 font-sf-text">
+        <div className={`mt-2 text-xs sm:text-sm leading-relaxed font-sf-text ${d.colorKey === 'legal' ? 'text-legal-dark-blue light:text-legal-dark-blue' : 'text-white/90 light:text-gray-700'}`}>
           {d.description}
         </div>
         <div className="mt-4 sm:mt-5 inline-flex items-center gap-2 text-xs sm:text-sm text-white/80 light:text-gray-600 group-hover:gap-3 transition-all">
           Перейти
-          <span className={`${accent.split(' ')[0]} group-hover:translate-x-1 transition-transform duration-300`}>→</span>
+          <span className={`${d.colorKey === 'legal' ? 'text-legal-gold light:text-legal-dark-blue' : accent.split(' ')[0]} group-hover:translate-x-1 transition-transform duration-300`}>→</span>
         </div>
       </div>
     </Link>
