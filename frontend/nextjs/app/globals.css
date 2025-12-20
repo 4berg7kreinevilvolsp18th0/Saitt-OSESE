@@ -151,6 +151,16 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-sf-display);
   font-weight: 600;
+  color: #FFFFFF;
+}
+
+.light h1,
+.light h2,
+.light h3,
+.light h4,
+.light h5,
+.light h6 {
+  color: #1F2937;
 }
 
 a {
@@ -288,14 +298,22 @@ a {
 }
 
 .light .text-white {
-  color: #1F2937;
+  color: #1F2937 !important;
 }
 
 .light .text-white\/80,
 .light .text-white\/70,
 .light .text-white\/60,
 .light .text-white\/50 {
-  color: #6B7280;
+  color: #6B7280 !important;
+}
+
+/* Исправление контрастности для основного текста */
+.light main,
+.light section,
+.light div[class*="text-white"] {
+  color: #1F2937;
+}
 }
 
 .light .bg-oss-dark {
