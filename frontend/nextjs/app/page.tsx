@@ -96,7 +96,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-oss-dark light:bg-gray-50 text-white light:text-gray-900">
+    <main className="min-h-screen bg-oss-dark light:bg-gray-50 text-white light:text-gray-900 animate-page-enter">
       <section className="bg-oss-red py-12 sm:py-16 md:py-20 light:bg-gradient-to-br light:from-oss-red light:via-red-600 light:to-oss-red light:relative light:overflow-hidden">
         {/* Декоративные элементы для светлой темы */}
         <div className="hidden light:block absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
@@ -114,27 +114,33 @@ export default function Home() {
               <Logo size={120} color="#FFFFFF" useImage={true} />
             </div>
           </div>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 px-2 text-white light:drop-shadow-lg">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 px-2 text-white light:drop-shadow-lg animate-fade-in-down">
             ОБЪЕДИНЕННЫЙ СОВЕТ СТУДЕНТОВ
           </h1>
-          <p className="text-base sm:text-lg md:text-xl mb-2 text-white/90 light:text-white light:font-medium">
+          <p className="text-base sm:text-lg md:text-xl mb-2 text-white/90 light:text-white light:font-medium animate-fade-in-up animate-delay-100">
             Дальневосточный федеральный университет
           </p>
-          <p className="text-sm sm:text-base md:text-lg max-w-3xl mx-auto text-white/80 mb-6 sm:mb-8 px-4 light:text-white/95 light:font-medium">
+          <p className="text-sm sm:text-base md:text-lg max-w-3xl mx-auto text-white/80 mb-6 sm:mb-8 px-4 light:text-white/95 light:font-medium animate-fade-in-up animate-delay-200 leading-relaxed">
             Высший орган студенческого самоуправления ДВФУ. Решаем правовые,
             инфраструктурные, стипендиальные, адаптационные и консультационные вопросы.
           </p>
           <div className="mt-8 sm:mt-10 flex flex-wrap justify-center gap-3 sm:gap-4 px-4">
-            <Link href="/appeal" className="px-5 sm:px-6 py-2.5 sm:py-3 bg-white text-oss-red font-semibold rounded-xl hover:bg-white/90 transition text-sm sm:text-base
-              light:premium-button light:text-white light:shadow-xl light:hover:shadow-2xl">
+            <Link 
+              href="/appeal" 
+              className="professional-button professional-button-primary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-200"
+            >
               Подать обращение
             </Link>
-            <Link href="/appeal/status" className="px-5 sm:px-6 py-2.5 sm:py-3 border border-white/80 rounded-xl hover:bg-white/10 transition text-sm sm:text-base
-              light:border-white/90 light:bg-white/10 light:backdrop-blur-sm light:premium-button-secondary light:text-white light:font-semibold">
+            <Link 
+              href="/appeal/status" 
+              className="professional-button professional-button-secondary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-300"
+            >
               Проверить статус
             </Link>
-            <Link href="/statistics" className="px-5 sm:px-6 py-2.5 sm:py-3 border border-white/80 rounded-xl hover:bg-white/10 transition text-sm sm:text-base
-              light:border-white/90 light:bg-white/10 light:backdrop-blur-sm light:premium-button-secondary light:text-white light:font-semibold">
+            <Link 
+              href="/statistics" 
+              className="professional-button professional-button-secondary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-400"
+            >
               Статистика
             </Link>
           </div>
@@ -142,22 +148,27 @@ export default function Home() {
       </section>
 
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        <div className="flex items-end justify-between gap-4 flex-wrap mb-6">
-          <div>
+        <div className="flex items-end justify-between gap-4 flex-wrap mb-8">
+          <div className="animate-fade-in-up">
             <h2 className="text-xl sm:text-2xl font-semibold text-white light:text-gray-900 light:font-bold">Направления</h2>
-            <p className="mt-2 text-sm sm:text-base text-white/70 light:text-gray-600 max-w-2xl light:font-medium">
+            <p className="mt-2 text-sm sm:text-base text-white/70 light:text-gray-600 max-w-2xl light:font-medium leading-relaxed">
               Цвет каждого раздела — часть навигации: он помогает быстро понять, в каком блоке вы находитесь.
             </p>
           </div>
-          <Link href="/directions" className="text-sm sm:text-base text-white/70 hover:text-white transition whitespace-nowrap
-            light:text-oss-red light:hover:text-oss-red/80 light:font-semibold light:flex light:items-center light:gap-1">
+          <Link href="/directions" className="elegant-link text-sm sm:text-base text-white/70 hover:text-white whitespace-nowrap
+            light:text-oss-red light:hover:text-oss-red/80 light:font-semibold light:flex light:items-center light:gap-1 focus-ring px-2 py-1 rounded-md animate-fade-in-up animate-delay-200">
             Все направления <span className="light:transition-transform light:group-hover:translate-x-1">→</span>
           </Link>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {DIRECTIONS.map((d) => (
-            <DirectionCard key={d.slug} d={d} />
-          ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          {DIRECTIONS.map((d, index) => {
+            const delayClass = index === 0 ? 'animate-delay-100' : index === 1 ? 'animate-delay-200' : index === 2 ? 'animate-delay-300' : index === 3 ? 'animate-delay-400' : 'animate-delay-500';
+            return (
+              <div key={d.slug} className={`animate-fade-in-up ${delayClass}`}>
+                <DirectionCard d={d} />
+              </div>
+            );
+          })}
         </div>
       </section>
 
