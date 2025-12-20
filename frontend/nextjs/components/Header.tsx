@@ -10,11 +10,9 @@ import { useLocale } from './LocaleProvider';
 const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
   <Link
     href={href}
-    className="text-sm text-white/80 hover:text-white transition-all duration-200 
-      light:text-gray-700 light:hover:text-oss-red light:font-medium light:relative
-      light:after:absolute light:after:bottom-0 light:after:left-0 light:after:w-0 light:after:h-0.5
-      light:after:bg-oss-red light:after:transition-all light:after:duration-300
-      light:hover:after:w-full"
+    className="elegant-link text-sm text-white/80 hover:text-white font-medium
+      light:text-gray-700 light:hover:text-oss-red
+      focus-ring px-2 py-1 rounded-md"
   >
     {children}
   </Link>
@@ -24,9 +22,10 @@ export default function Header() {
   const { t } = useLocale();
 
   return (
-    <header className="sticky top-0 z-50 bg-oss-dark/80 backdrop-blur border-b border-white/10 
-      light:bg-white/95 light:backdrop-blur-md light:border-gray-200/50
-      light:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)]">
+    <header className="sticky top-0 z-50 bg-oss-dark/90 backdrop-blur-md border-b border-white/10 
+      light:bg-white/98 light:backdrop-blur-lg light:border-gray-200/60
+      light:shadow-[0_1px_3px_rgba(0,0,0,0.05)] 
+      animate-fade-in-down">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition">
           <Logo size={32} showText={false} useImage={true} />
