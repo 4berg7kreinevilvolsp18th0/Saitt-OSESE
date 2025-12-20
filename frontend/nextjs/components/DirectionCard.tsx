@@ -10,16 +10,12 @@ export default function DirectionCard({ d }: { d: Direction }) {
   return (
     <Link
       href={`/directions/${d.slug}`}
-      className={`group block rounded-xl sm:rounded-2xl border-2 ${borderGradient} ${gradient} bg-opacity-20 p-4 sm:p-6 hover:bg-opacity-30 hover:scale-[1.02] hover:shadow-lg hover:shadow-current/20 transition-all duration-300 
+      className={`group professional-card block rounded-xl sm:rounded-2xl border-2 ${borderGradient} ${gradient} bg-opacity-20 p-5 sm:p-7 
+        hover:bg-opacity-30 hover-lift
         light:bg-opacity-0 
         light:bg-gradient-to-br light:from-white light:via-white light:to-gray-50
         light:border-opacity-30
-        light:shadow-[0_8px_30px_rgb(0,0,0,0.08)]
-        light:hover:shadow-[0_20px_50px_rgb(0,0,0,0.12)]
-        light:hover:scale-[1.03]
-        light:hover:border-opacity-50
-        light:backdrop-blur-sm
-        animate-fade-in-up`}
+        animate-fade-in-up focus-ring`}
     >
       <div className="relative overflow-hidden">
         {/* Градиентный акцент сверху */}
