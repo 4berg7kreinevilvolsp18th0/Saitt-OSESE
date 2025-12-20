@@ -127,6 +127,12 @@
   color-scheme: dark;
   --font-sf-text: 'SF UI Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-sf-display: 'SF UI Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  /* Профессиональные easing функции */
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 /* Светлая тема */
@@ -142,16 +148,26 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: var(--font-sf-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern" 1;
+  font-kerning: normal;
 }
 
+/* Строгая типографика для заголовков */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-sf-display);
   font-weight: 600;
   color: #FFFFFF;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 .light h1,
@@ -161,19 +177,280 @@ h1, h2, h3, h4, h5, h6 {
 .light h5,
 .light h6 {
   color: #1F2937;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+h3 {
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  font-weight: 600;
+  line-height: 1.3;
 }
 
 a {
   text-decoration: none;
+  transition: all 0.3s var(--ease-out-quart);
 }
 
-/* Markdown content styles */
+/* ============================================
+   ПРОФЕССИОНАЛЬНЫЕ АНИМАЦИИ И ПЕРЕХОДЫ
+   ============================================ */
+
+/* Плавное появление страницы */
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+/* Применение анимаций */
+.animate-page-enter {
+  animation: pageFadeIn 0.6s var(--ease-out-expo) forwards;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s var(--ease-out-expo) forwards;
+}
+
+.animate-fade-in-down {
+  animation: fadeInDown 0.8s var(--ease-out-expo) forwards;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.8s var(--ease-out-expo) forwards;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.8s var(--ease-out-expo) forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.6s var(--ease-out-expo) forwards;
+}
+
+/* Задержки для каскадных анимаций */
+.animate-delay-100 { animation-delay: 0.1s; opacity: 0; }
+.animate-delay-200 { animation-delay: 0.2s; opacity: 0; }
+.animate-delay-300 { animation-delay: 0.3s; opacity: 0; }
+.animate-delay-400 { animation-delay: 0.4s; opacity: 0; }
+.animate-delay-500 { animation-delay: 0.5s; opacity: 0; }
+
+/* ============================================
+   СТРОГИЙ ПРОФЕССИОНАЛЬНЫЙ СТИЛЬ
+   ============================================ */
+
+/* Элегантные карточки с четкими границами */
+.professional-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  transition: all 0.4s var(--ease-out-quart);
+  backdrop-filter: blur(10px);
+}
+
+.professional-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.light .professional-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.light .professional-card:hover {
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    0 8px 24px rgba(0, 0, 0, 0.04);
+  transform: translateY(-4px);
+}
+
+/* Строгие кнопки с элегантными эффектами */
+.professional-button {
+  position: relative;
+  overflow: hidden;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition: all 0.3s var(--ease-out-quart);
+  border: 2px solid transparent;
+}
+
+.professional-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.professional-button:hover::before {
+  left: 100%;
+}
+
+.professional-button-primary {
+  background: linear-gradient(135deg, #D11F2A 0%, #B91C1C 100%);
+  color: #FFFFFF;
+  box-shadow: 
+    0 4px 12px rgba(209, 31, 42, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.professional-button-primary:hover {
+  background: linear-gradient(135deg, #B91C1C 0%, #991B1B 100%);
+  box-shadow: 
+    0 8px 24px rgba(209, 31, 42, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.professional-button-secondary {
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: #FFFFFF;
+}
+
+.professional-button-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.light .professional-button-primary {
+  box-shadow: 
+    0 2px 8px rgba(209, 31, 42, 0.25),
+    0 4px 16px rgba(209, 31, 42, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.light .professional-button-primary:hover {
+  box-shadow: 
+    0 4px 16px rgba(209, 31, 42, 0.35),
+    0 8px 32px rgba(209, 31, 42, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.light .professional-button-secondary {
+  border-color: rgba(0, 0, 0, 0.15);
+  color: #1F2937;
+}
+
+.light .professional-button-secondary:hover {
+  background: rgba(209, 31, 42, 0.05);
+  border-color: rgba(209, 31, 42, 0.3);
+  color: #D11F2A;
+}
+
+/* Элегантные разделители */
+.professional-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  margin: 2rem 0;
+}
+
+.light .professional-divider {
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1), transparent);
+}
+
+/* ============================================
+   Markdown content styles
+   ============================================ */
+
 .markdown-content {
   @apply text-white/80;
 }
 
 .light .markdown-content {
-  @apply text-gray-800;
+  @apply text-gray-700;
 }
 
 .markdown-content h1 {
@@ -275,7 +552,10 @@ a {
   @apply bg-gray-100 text-gray-900;
 }
 
-/* Toast animations */
+/* ============================================
+   Toast animations
+   ============================================ */
+
 @keyframes slide-in {
   from {
     transform: translateX(100%);
@@ -288,12 +568,15 @@ a {
 }
 
 .animate-slide-in {
-  animation: slide-in 0.3s ease-out;
+  animation: slide-in 0.3s var(--ease-out-quart);
 }
 
-/* Общие стили для светлой темы */
+/* ============================================
+   СВЕТЛАЯ ТЕМА - ЭЛЕГАНТНЫЙ ПРОФЕССИОНАЛЬНЫЙ СТИЛЬ
+   ============================================ */
+
 .light {
-  background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 50%, #F1F5F9 100%);
+  background: linear-gradient(135deg, #FFFFFF 0%, #FAFBFC 50%, #F5F7FA 100%);
   background-attachment: fixed;
   color: #1F2937;
   min-height: 100vh;
@@ -310,7 +593,6 @@ a {
   color: #6B7280 !important;
 }
 
-/* Исправление контрастности для основного текста */
 .light main,
 .light section,
 .light div[class*="text-white"] {
@@ -324,24 +606,41 @@ a {
 }
 
 .light .bg-oss-dark {
-  background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 50%, #F1F5F9 100%);
+  background: linear-gradient(135deg, #FFFFFF 0%, #FAFBFC 50%, #F5F7FA 100%);
   background-attachment: fixed;
 }
 
 .light .bg-white\/5 {
-  background-color: #FFFFFF;
+  background: #FFFFFF;
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    0 4px 12px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .light .bg-white\/10 {
-  background-color: #F3F4F6;
+  background: #FAFBFC;
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    0 4px 12px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.light .hover\:bg-white\/10:hover {
+  background: #F5F7FA;
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    0 8px 24px rgba(0, 0, 0, 0.04);
+  transform: translateY(-2px);
+  transition: all 0.3s var(--ease-out-quart);
 }
 
 .light .border-white\/10 {
-  border-color: #E5E7EB;
+  border-color: rgba(0, 0, 0, 0.08);
 }
 
 .light .border-white\/20 {
-  border-color: #D1D5DB;
+  border-color: rgba(0, 0, 0, 0.12);
 }
 
 /* Цвета направлений для светлой темы */
@@ -349,7 +648,6 @@ a {
   color: #1F2A44;
 }
 
-/* Золотистый и темно-синий для правового комитета */
 .text-legal-gold {
   color: #D4AF37;
 }
@@ -382,25 +680,30 @@ a {
   color: #6B7280;
 }
 
-/* Градиенты для направлений - поддержка светлой темы (из брендбука ОСС) */
+/* Градиенты для направлений - поддержка светлой темы */
 .light .bg-gradient-legal {
-  background: linear-gradient(135deg, #E8EBF0 0%, #D1D9E6 50%, #E8EBF0 100%);
+  background: linear-gradient(135deg, #F0F4F8 0%, #E2E8F0 50%, #CBD5E1 100%);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
 }
 
 .light .bg-gradient-infrastructure {
-  background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 50%, #DBEAFE 100%);
+  background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 50%, #BFDBFE 100%);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
 }
 
 .light .bg-gradient-scholarship {
-  background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 50%, #D1FAE5 100%);
+  background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 50%, #A7F3D0 100%);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
 }
 
 .light .bg-gradient-international {
-  background: linear-gradient(135deg, #FFF4E6 0%, #FFE4B5 50%, #FFF4E6 100%);
+  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 50%, #FDE68A 100%);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
 }
 
 .light .bg-gradient-neutral {
-  background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 50%, #FEE2E2 100%);
+  background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 50%, #FECACA 100%);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
 }
 
 .light .border-legal {
@@ -443,37 +746,6 @@ a {
   background-color: #F3F4F6;
 }
 
-/* Улучшенные цвета для карточек в светлой теме */
-.light .bg-white\/5 {
-  background: linear-gradient(135deg, #FFFFFF 0%, #FAFBFC 100%);
-  box-shadow: 
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06),
-    0 0 0 1px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-}
-
-.light .bg-white\/10 {
-  background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
-  box-shadow: 
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06),
-    0 0 0 1px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-}
-
-.light .hover\:bg-white\/10:hover {
-  background: linear-gradient(135deg, #FFFFFF 0%, #F1F5F9 100%);
-  box-shadow: 
-    0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05),
-    0 0 0 1px rgba(0, 0, 0, 0.05);
-  transform: translateY(-2px);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
 /* Цвет ссылок в светлой теме */
 .light .text-oss-red {
   color: #D11F2A;
@@ -485,76 +757,81 @@ a {
 
 /* Премиум эффекты для светлой темы */
 .light .premium-card {
-  background: linear-gradient(135deg, #FFFFFF 0%, #FAFBFC 100%);
+  background: #FFFFFF;
   box-shadow: 
-    0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04),
-    0 0 0 1px rgba(0, 0, 0, 0.05),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(20px);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    0 4px 12px rgba(0, 0, 0, 0.03),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  transition: all 0.4s var(--ease-out-quart);
 }
 
 .light .premium-card:hover {
   box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.15),
-    0 0 0 1px rgba(0, 0, 0, 0.05),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    0 8px 24px rgba(0, 0, 0, 0.04),
+    0 0 0 1px rgba(0, 0, 0, 0.08);
   transform: translateY(-4px) scale(1.01);
 }
 
 .light .premium-button {
   background: linear-gradient(135deg, #D11F2A 0%, #B91C1C 100%);
   box-shadow: 
-    0 4px 6px -1px rgba(209, 31, 42, 0.3),
-    0 2px 4px -1px rgba(209, 31, 42, 0.2),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    0 2px 8px rgba(209, 31, 42, 0.25),
+    0 4px 16px rgba(209, 31, 42, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transition: all 0.3s var(--ease-out-quart);
 }
 
 .light .premium-button:hover {
   background: linear-gradient(135deg, #B91C1C 0%, #991B1B 100%);
   box-shadow: 
-    0 10px 15px -3px rgba(209, 31, 42, 0.4),
-    0 4px 6px -2px rgba(209, 31, 42, 0.3),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+    0 4px 16px rgba(209, 31, 42, 0.35),
+    0 8px 32px rgba(209, 31, 42, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
 }
 
 .light .premium-button-secondary {
-  background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
-  border: 2px solid rgba(209, 31, 42, 0.2);
+  background: #FFFFFF;
+  border: 2px solid rgba(0, 0, 0, 0.1);
   box-shadow: 
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    0 4px 12px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s var(--ease-out-quart);
 }
 
 .light .premium-button-secondary:hover {
-  background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
-  border-color: rgba(209, 31, 42, 0.4);
+  background: #FAFBFC;
+  border-color: rgba(209, 31, 42, 0.3);
   box-shadow: 
-    0 10px 15px -3px rgba(209, 31, 42, 0.2),
-    0 4px 6px -2px rgba(209, 31, 42, 0.1),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+    0 4px 12px rgba(209, 31, 42, 0.15),
+    0 8px 24px rgba(209, 31, 42, 0.08);
   transform: translateY(-2px);
 }
 
 /* Градиентные акценты для светлой темы */
 .light .gradient-accent {
-  background: linear-gradient(135deg, rgba(209, 31, 42, 0.1) 0%, rgba(185, 28, 28, 0.05) 100%);
+  background: linear-gradient(135deg, rgba(209, 31, 42, 0.08) 0%, rgba(185, 28, 28, 0.04) 100%);
   backdrop-filter: blur(10px);
 }
 
 /* Улучшенные тени для заголовков */
 .light h1, .light h2, .light h3 {
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
-/* Анимация появления для карточек */
-@keyframes fadeInUp {
+/* Плавные переходы для всех интерактивных элементов */
+.light * {
+  transition-timing-function: var(--ease-out-quart);
+}
+
+/* ============================================
+   МИКРО-АНИМАЦИИ ДЛЯ ИНТЕРАКТИВНЫХ ЭЛЕМЕНТОВ
+   ============================================ */
+
+/* Плавное появление при скролле */
+@keyframes reveal {
   from {
     opacity: 0;
     transform: translateY(20px);
@@ -565,59 +842,88 @@ a {
   }
 }
 
-.light .animate-fade-in-up {
-  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+.reveal-on-scroll {
+  opacity: 0;
+  animation: reveal 0.8s var(--ease-out-expo) forwards;
 }
 
-/* Дополнительные премиум эффекты */
-.light .glass-effect {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+/* Элегантный hover эффект для ссылок */
+.elegant-link {
+  position: relative;
+  transition: color 0.3s var(--ease-out-quart);
 }
 
-.light .glow-effect {
+.elegant-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: currentColor;
+  transition: width 0.4s var(--ease-out-quart);
+}
+
+.elegant-link:hover::after {
+  width: 100%;
+}
+
+/* Плавное масштабирование при hover */
+.hover-lift {
+  transition: transform 0.3s var(--ease-out-quart), box-shadow 0.3s var(--ease-out-quart);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+}
+
+.light .hover-lift:hover {
   box-shadow: 
-    0 0 20px rgba(209, 31, 42, 0.15),
-    0 0 40px rgba(209, 31, 42, 0.1),
-    0 0 60px rgba(209, 31, 42, 0.05);
+    0 8px 24px rgba(0, 0, 0, 0.1),
+    0 16px 48px rgba(0, 0, 0, 0.05);
 }
 
-.light .glow-effect:hover {
+/* ============================================
+   УТИЛИТЫ ДЛЯ ПРОФЕССИОНАЛЬНОГО ДИЗАЙНА
+   ============================================ */
+
+/* Четкие границы */
+.sharp-border {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.light .sharp-border {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Элегантные тени */
+.elegant-shadow {
   box-shadow: 
-    0 0 30px rgba(209, 31, 42, 0.25),
-    0 0 60px rgba(209, 31, 42, 0.15),
-    0 0 90px rgba(209, 31, 42, 0.1);
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
-/* Плавные переходы для всех интерактивных элементов */
-.light * {
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+.light .elegant-shadow {
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    0 4px 16px rgba(0, 0, 0, 0.04);
 }
 
-/* Улучшенные градиенты для направлений в светлой теме */
-.light .bg-gradient-legal {
-  background: linear-gradient(135deg, #F0F4F8 0%, #E2E8F0 50%, #CBD5E1 100%);
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+/* Плавные переходы */
+.smooth-transition {
+  transition: all 0.3s var(--ease-out-quart);
 }
 
-.light .bg-gradient-infrastructure {
-  background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 50%, #BFDBFE 100%);
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+/* Фокус для доступности */
+.focus-ring {
+  outline: none;
+  transition: box-shadow 0.2s;
 }
 
-.light .bg-gradient-scholarship {
-  background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 50%, #A7F3D0 100%);
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+.focus-ring:focus {
+  box-shadow: 0 0 0 3px rgba(209, 31, 42, 0.3);
 }
 
-.light .bg-gradient-international {
-  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 50%, #FDE68A 100%);
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
-}
-
-.light .bg-gradient-neutral {
-  background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 50%, #FECACA 100%);
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+.light .focus-ring:focus {
+  box-shadow: 0 0 0 3px rgba(209, 31, 42, 0.2);
 }
