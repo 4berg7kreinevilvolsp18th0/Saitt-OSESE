@@ -1,24 +1,26 @@
 # Шрифты брендбука ОСС
 
-## Размещение шрифтов
+## ✅ Шрифты загружены
 
-Поместите следующие файлы шрифтов в эту папку (`public/fonts/`):
+Все необходимые файлы шрифтов находятся в этой папке.
 
-### SF UI Text
-- `SFUITEXT-BOLD.TTF`
-- `SFUITEXT-SEMIBOLD.TTF`
-- `SFUITEXT-LIGHT.TTF`
-- `SFUITEXT-MEDIUM.TTF`
-- `SFUITEXT-REGULAR.TTF` (если есть)
+### SF UI Text (загружено)
+- ✅ `SFUITEXT-LIGHT (3).TTF` - Light (300)
+- ✅ `SFUITEXT-MEDIUM (3).TTF` - Medium (500), используется для Regular (400)
+- ✅ `SFUITEXT-SEMIBOLD (3).TTF` - Semibold (600)
+- ✅ `SFUITEXT-BOLD (3).TTF` - Bold (700)
+- ✅ `SFUITEXT-HEAVY (3).TTF` - Heavy (800)
 
-### SF UI Display
-- `SFUIDISPLAY-HEAVY.TTF`
-- `SFUIDISPLAY-SEMIBOLD.TTF`
-- `SFUIDISPLAY-BOLD.TTF`
-- `SFUIDISPLAY-MEDIUM.TTF`
-- `SFUIDISPLAY-ULTRALIGHT.TTF`
-- `SFUIDISPLAY-THIN.TTF`
-- `SFUIDISPLAY-REGULAR.TTF` (если есть)
+### SF UI Display (загружено)
+- ✅ `SFUIDISPLAY-ULTRALIGHT (3).TTF` - Ultralight (100)
+- ✅ `SFUIDISPLAY-THIN (3).TTF` - Thin (200)
+- ✅ `SFUIDISPLAY-LIGHT (3).TTF` - Light (300)
+- ✅ `SFUIDISPLAY-REGULAR (3).TTF` - Regular (400)
+- ✅ `SFUIDISPLAY-MEDIUM (3).TTF` - Medium (500)
+- ✅ `SFUIDISPLAY-SEMIBOLD (3).TTF` - Semibold (600)
+- ✅ `SFUIDISPLAY-BOLD (3).TTF` - Bold (700)
+- ✅ `SFUIDISPLAY-HEAVY (3).TTF` - Heavy (900)
+- ✅ `SFUIDISPLAY-BLACK (3).TTF` - Black (950)
 
 ## Использование
 
