@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getTheme } from '../lib/theme';
 
 interface LogoProps {
   className?: string;
@@ -13,13 +14,17 @@ interface LogoProps {
 export default function Logo({ 
   className = '', 
   size = 40, 
-  color = '#D11F2A',
+  color,
   showText = false,
   useImage = true
 }: LogoProps) {
   const [imageError, setImageError] = useState(false);
-  // Пробуем разные варианты логотипов в порядке приоритета
-  const [currentSrc, setCurrentSrc] = useState('/Лого вектор белое.png');
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    setTheme(getTheme());
   
   const handleImageError = () => {
     const fallbacks = [
