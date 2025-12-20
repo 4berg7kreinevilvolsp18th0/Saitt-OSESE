@@ -314,6 +314,11 @@ a {
 .light div[class*="text-white"] {
   color: #1F2937;
 }
+
+.light p[class*="text-white"],
+.light span[class*="text-white"],
+.light div[class*="text-white"]:not([class*="bg-"]) {
+  color: #1F2937 !important;
 }
 
 .light .bg-oss-dark {
@@ -339,6 +344,23 @@ a {
 /* Цвета направлений для светлой темы */
 .light .text-legal {
   color: #1F2A44;
+}
+
+/* Золотистый и темно-синий для правового комитета */
+.text-legal-gold {
+  color: #D4AF37;
+}
+
+.light .text-legal-gold {
+  color: #B8941F;
+}
+
+.text-legal-dark-blue {
+  color: #1A2332;
+}
+
+.light .text-legal-dark-blue {
+  color: #0F1419;
 }
 
 .light .text-infrastructure {
