@@ -25,14 +25,67 @@ export default function Logo({
   useEffect(() => {
     setMounted(true);
     setTheme(getTheme());
+    
+    // Слушаем изменения темы
+    const handleThemeChange = () => {
+      setTheme(getTheme());
+    };
+    
+    // Проверяем изменения темы каждые 100ms (для синхронизации)
+    const interval = setInterval(() => {
+      const currentTheme = getTheme();
+      setTheme((prevTheme) => {
+        if (currentTheme !== prevTheme) {
+          return currentTheme;
+        }
+        return prevTheme;
+      });
+    }, 100);
+    
+    // Также слушаем изменения в localStorage
+    window.addEventListener('storage', handleThemeChange);
+    
+    // Слушаем изменения класса на documentElement
+    const observer = new MutationObserver(() => {
+      setTheme(getTheme());
+    });
+    
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+    
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('storage', handleThemeChange);
+      observer.disconnect();
+    };
+  }, []);
+
+  // Определяем цвет и источник логотипа в зависимости от темы
+  const logoColor = color || (theme === 'light' ? '#D11F2A' : '#FFFFFF');
+  const lightLogoSrc = '/Лого вектор красное.png';
+  const darkLogoSrc = '/Лого вектор белое.png';
+  const [currentSrc, setCurrentSrc] = useState(theme === 'light' ? lightLogoSrc : darkLogoSrc);
+  
+  useEffect(() => {
+    if (mounted) {
+      setCurrentSrc(theme === 'light' ? lightLogoSrc : darkLogoSrc);
+    }
+  }, [theme, mounted]);
   
   const handleImageError = () => {
-    const fallbacks = [
-      '/Лого вектор белое.svg',
-      '/Лого вектор красное.png',
-      '/logo.png',
-      '/logo.svg'
-    ];
+    const fallbacks = theme === 'light' 
+      ? [
+          '/Лого вектор красное.svg',
+          '/logo.png',
+          '/logo.svg'
+        ]
+      : [
+          '/Лого вектор белое.svg',
+          '/logo.png',
+          '/logo.svg'
+        ];
     
     const currentIndex = fallbacks.indexOf(currentSrc);
     if (currentIndex < fallbacks.length - 1) {
@@ -67,6 +120,7 @@ export default function Logo({
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           className="flex-shrink-0"
+          style={{ color: logoColor }}
         >
           {/* Внешние концентрические дуги - левая сторона */}
           <path
@@ -198,10 +252,9 @@ export default function Logo({
       
       {showText && (
         <div className="flex flex-col">
-          <span className="text-sm font-semibold leading-tight text-white whitespace-nowrap">
+          <span className="text-sm font-semibold leading-tight text-white light:text-gray-900 whitespace-nowrap">
             ОБЪЕДИНЕННЫЙ СОВЕТ СТУДЕНТОВ
           </span>
-          <span className="text-xs text-white/70 leading-tight">
             ДВФУ
           </span>
         </div>
