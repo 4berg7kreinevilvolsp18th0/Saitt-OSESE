@@ -11,7 +11,7 @@ export type Theme = 'dark' | 'light';
 export function accentClass(colorKey: ColorKey): string {
   switch (colorKey) {
     case 'legal':
-      return 'text-legal border-legal';
+      return 'text-legal-gold border-legal-dark-blue';
     case 'infrastructure':
       return 'text-infrastructure border-infrastructure';
     case 'scholarship':
