@@ -134,6 +134,7 @@ export default function Home() {
               Проверить статус
             </Link>
             <Link href="/statistics" className="px-5 sm:px-6 py-2.5 sm:py-3 border border-white/80 rounded-xl hover:bg-white/10 transition text-sm sm:text-base
+              light:border-white/90 light:bg-white/10 light:backdrop-blur-sm light:premium-button-secondary light:text-white light:font-semibold">
               Статистика
             </Link>
           </div>
@@ -143,13 +144,14 @@ export default function Home() {
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="flex items-end justify-between gap-4 flex-wrap mb-6">
           <div>
-            <h2 className="text-xl sm:text-2xl font-semibold text-white light:text-gray-900">Направления</h2>
-            <p className="mt-2 text-sm sm:text-base text-white/70 light:text-gray-600 max-w-2xl">
+            <h2 className="text-xl sm:text-2xl font-semibold text-white light:text-gray-900 light:font-bold">Направления</h2>
+            <p className="mt-2 text-sm sm:text-base text-white/70 light:text-gray-600 max-w-2xl light:font-medium">
               Цвет каждого раздела — часть навигации: он помогает быстро понять, в каком блоке вы находитесь.
             </p>
           </div>
-          <Link href="/directions" className="text-sm sm:text-base text-white/70 hover:text-white transition whitespace-nowrap">
-            Все направления →
+          <Link href="/directions" className="text-sm sm:text-base text-white/70 hover:text-white transition whitespace-nowrap
+            light:text-oss-red light:hover:text-oss-red/80 light:font-semibold light:flex light:items-center light:gap-1">
+            Все направления <span className="light:transition-transform light:group-hover:translate-x-1">→</span>
           </Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -208,7 +210,9 @@ export default function Home() {
           </div>
           
           <div className="lg:col-span-1">
-            <TelegramPosts limit={3} />
+            <div className="light:premium-card light:rounded-2xl light:p-6 light:sticky light:top-24">
+              <TelegramPosts limit={3} />
+            </div>
           </div>
         </div>
       </section>
