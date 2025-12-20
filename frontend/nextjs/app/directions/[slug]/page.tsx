@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { DIRECTIONS } from '../../../lib/directions';
-import { accentBg } from '../../../lib/theme';
+import { accentBg, gradientBg, gradientBorder } from '../../../lib/theme';
 import { supabase } from '../../../lib/supabaseClient';
 import ContentCard from '../../../components/ContentCard';
 
@@ -168,26 +168,33 @@ export default function DirectionPage({ params }: { params: { slug: string } }) 
     );
   }
 
-  const accent = accentBg(direction.colorKey);
+  const gradient = gradientBg(direction.colorKey);
+  const borderGradient = gradientBorder(direction.colorKey);
 
   return (
     <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-      <div className={`rounded-2xl sm:rounded-3xl ${accent} p-6 sm:p-8 md:p-10`}>
+      <div className={`relative rounded-2xl sm:rounded-3xl border-2 ${borderGradient} ${gradient} bg-opacity-90 dark:bg-opacity-90 p-6 sm:p-8 md:p-10 overflow-hidden light:bg-opacity-80`}>
+        {/* Декоративный градиентный элемент */}
+        <div className={`absolute top-0 right-0 w-64 h-64 ${gradient} rounded-full opacity-20 blur-3xl -translate-y-1/2 translate-x-1/2`}></div>
+        <div className={`absolute bottom-0 left-0 w-48 h-48 ${gradient} rounded-full opacity-15 blur-2xl translate-y-1/2 -translate-x-1/2`}></div>
+        
+        <div className="relative z-10">
         <div className="text-xs uppercase tracking-wide text-white/90 light:text-white/80">
           Направление
         </div>
         <h1 className="mt-2 text-2xl sm:text-3xl md:text-4xl font-bold">{direction.title}</h1>
         <p className="mt-4 text-base sm:text-lg text-white/90 max-w-3xl light:text-white/95">{direction.description}</p>
         <div className="mt-6 sm:mt-8 flex flex-wrap gap-3">
-          <Link href={`/appeal?direction=${direction.slug}`} className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white text-oss-dark font-semibold hover:bg-white/90 transition text-sm sm:text-base">
+          <Link href={`/appeal?direction=${direction.slug}`} className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white text-oss-dark font-semibold hover:bg-white/90 hover:scale-105 transition-all duration-200 text-sm sm:text-base shadow-lg">
             Подать обращение
           </Link>
-          <Link href="/content" className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl border border-white/40 text-white hover:bg-white/10 transition text-sm sm:text-base">
+          <Link href="/content" className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl border-2 border-white/60 text-white hover:bg-white/20 hover:border-white/80 hover:scale-105 transition-all duration-200 text-sm sm:text-base backdrop-blur-sm">
             Гайды и новости
           </Link>
-          <Link href="/documents" className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl border border-white/40 text-white hover:bg-white/10 transition text-sm sm:text-base">
+          <Link href="/documents" className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl border-2 border-white/60 text-white hover:bg-white/20 hover:border-white/80 hover:scale-105 transition-all duration-200 text-sm sm:text-base backdrop-blur-sm">
             Документы
           </Link>
+        </div>
         </div>
       </div>
 
@@ -197,7 +204,7 @@ export default function DirectionPage({ params }: { params: { slug: string } }) 
           {getCasesForDirection(direction.slug).map((c, i) => (
             <div
               key={i}
-              className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 hover:bg-white/10 hover:border-white/20 transition-all duration-200 cursor-pointer light:bg-white light:border-gray-200 light:hover:bg-gray-50 light:hover:border-gray-300 light:shadow-sm"
+              className={`group rounded-xl sm:rounded-2xl border-2 ${borderGradient} ${gradient} bg-opacity-5 dark:bg-opacity-10 p-4 sm:p-6 hover:bg-opacity-15 dark:hover:bg-opacity-20 hover:scale-[1.02] hover:shadow-lg transition-all duration-300 cursor-pointer light:bg-opacity-10 light:hover:bg-opacity-20 light:shadow-md`}
               onClick={() => {
                 // В будущем можно открыть модалку с алгоритмом или перейти на страницу
               }}
