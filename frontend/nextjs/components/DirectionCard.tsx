@@ -1,21 +1,31 @@
 import Link from 'next/link';
 import { Direction } from '../lib/directions';
-import { accentClass } from '../lib/theme';
+import { accentClass, gradientBg, gradientBorder } from '../lib/theme';
 
 export default function DirectionCard({ d }: { d: Direction }) {
   const accent = accentClass(d.colorKey);
+  const gradient = gradientBg(d.colorKey);
+  const borderGradient = gradientBorder(d.colorKey);
+  
   return (
     <Link
       href={`/directions/${d.slug}`}
-      className={`block rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 hover:bg-white/10 hover:border-white/20 transition-all duration-200 light:bg-white light:border-gray-200 light:hover:bg-gray-50 light:hover:border-gray-300 light:shadow-sm`}
+      className={`group block rounded-xl sm:rounded-2xl border-2 ${borderGradient} ${gradient} bg-opacity-20 p-4 sm:p-6 hover:bg-opacity-30 hover:scale-[1.02] hover:shadow-lg hover:shadow-current/20 transition-all duration-300 light:bg-opacity-30 light:hover:bg-opacity-40 light:shadow-md`}
     >
-      <div className={`text-xs sm:text-sm uppercase tracking-wide font-semibold ${accent.split(' ')[0]}`}>
-        {d.title}
-      </div>
-      <div className="mt-2 text-white/80 text-xs sm:text-sm leading-relaxed light:text-gray-600">{d.description}</div>
-      <div className="mt-4 sm:mt-5 inline-flex items-center gap-2 text-xs sm:text-sm text-white/70 light:text-gray-500">
-        Перейти
-        <span className="text-white/40 light:text-gray-400">→</span>
+      <div className="relative">
+        {/* Градиентный акцент сверху */}
+        <div className={`absolute -top-4 -left-4 w-16 h-16 ${gradient} rounded-full opacity-20 blur-xl group-hover:opacity-30 transition-opacity duration-300`}></div>
+        
+        <div className={`relative text-xs sm:text-sm uppercase tracking-wide font-semibold ${accent.split(' ')[0]} drop-shadow-sm`}>
+          {d.title}
+        </div>
+        <div className="mt-2 text-white/90 text-xs sm:text-sm leading-relaxed light:text-gray-700 font-sf-text">
+          {d.description}
+        </div>
+        <div className="mt-4 sm:mt-5 inline-flex items-center gap-2 text-xs sm:text-sm text-white/80 light:text-gray-600 group-hover:gap-3 transition-all">
+          Перейти
+          <span className={`${accent.split(' ')[0]} group-hover:translate-x-1 transition-transform duration-300`}>→</span>
+        </div>
       </div>
     </Link>
   );
