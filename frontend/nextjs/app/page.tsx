@@ -97,8 +97,15 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-oss-dark light:bg-gray-50 text-white light:text-gray-900">
-      <section className="bg-oss-red py-12 sm:py-16 md:py-20">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
+      <section className="bg-oss-red py-12 sm:py-16 md:py-20 light:bg-gradient-to-br light:from-oss-red light:via-red-600 light:to-oss-red light:relative light:overflow-hidden">
+        {/* Декоративные элементы для светлой темы */}
+        <div className="hidden light:block absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-white/5 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center relative z-10">
           <div className="flex justify-center mb-6 sm:mb-8">
             <div className="sm:hidden">
               <Logo size={80} color="#FFFFFF" useImage={true} />
