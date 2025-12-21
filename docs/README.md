@@ -1,84 +1,204 @@
-# Documentation
+# Сайт ОСС ДВФУ
 
-Документация сайта ОСС ДВФУ доступна на двух языках:
+Официальный сайт Объединённого совета студентов ДВФУ. Единое окно для обращений, гайдов, новостей и документов.
 
-## 🇷🇺 Русский язык
+## 🚀 Быстрый старт
 
-**[Документация на русском →](ru/README.md)**
+### Требования
 
-Все руководства, инструкции и техническая документация на русском языке.
+- Node.js 18+ (LTS)
+- npm/pnpm/yarn
+- Python 3.11+ (для backend, опционально)
+- Supabase аккаунт и проект
+- GitHub аккаунт (для деплоя)
+- Vercel аккаунт (для деплоя)
 
-## 🇬🇧 English
+### Локальная разработка
 
-**[Documentation in English →](en/README.md)**
-
-All guides, instructions, and technical documentation in English.
-
----
-
-## Быстрый доступ / Quick Access
-
-### Основные руководства / Main Guides
-
-- **[Начало работы / Getting Started](ru/getting-started.md)** | [English](en/getting-started.md)
-- **[Деплой / Deployment](ru/deployment.md)** | [English](en/deployment.md)
-- **[Настройка базы данных / Database Setup](ru/database.md)** | [English](en/database.md)
-- **[Редактирование контента / Content Editing](ru/content-editing.md)** | [English](en/content-editing.md)
-- **[Решение проблем / Troubleshooting](ru/troubleshooting.md)** | [English](en/troubleshooting.md)
-- **[Функции сайта / Features](ru/features.md)** | [English](en/features.md)
-
-### Специальные темы / Specific Topics
-
-- **[Настройка Telegram / Telegram Setup](ru/telegram-setup.md)** | [English](en/telegram-setup.md)
-- **[Система переводов / Translation System](ru/translation.md)**
-- **[Уведомления / Notifications](ru/notifications.md)**
-- **[Шрифты / Fonts](ru/fonts.md)**
-- **[Настройка домена / Domain Setup](ru/domain.md)**
-- **[Модули / Modules](ru/modules-implementation.md)**
-- **[Настройка Storage / Storage Setup](ru/storage-setup.md)**
-- **[Тестовые данные / Test Data](ru/load-test-data.md)**
-
----
-
-## Структура документации
-
-```
-docs/
-├── README.md (этот файл)
-├── ru/          # Русская документация
-│   ├── README.md
-│   ├── getting-started.md
-│   ├── deployment.md
-│   ├── database.md
-│   ├── content-editing.md
-│   ├── troubleshooting.md
-│   ├── features.md
-│   └── ...
-└── en/          # English documentation
-    ├── README.md
-    ├── getting-started.md
-    ├── deployment.md
-    ├── database.md
-    ├── content-editing.md
-    ├── troubleshooting.md
-    ├── features.md
-    └── ...
+1. Клонируйте репозиторий:
+```bash
+git clone <repository-url>
+cd "Saitt OSESE"
 ```
 
----
+2. Установите зависимости frontend:
+```bash
+cd frontend/nextjs
+npm install
+# или
+pnpm install
+```
 
-## Для дизайнеров
+3. Создайте файл `.env.local` в `frontend/nextjs/`:
+```bash
+cp .env.example .env.local
+```
 
-- **[Работа с дизайном](ru/designer-integration.md)** — полное руководство для веб-дизайнеров
-- **[Быстрый старт для дизайнера](ru/designer-quickstart.md)** — чеклист для начала работы
-- **[Экспорт дизайна из Figma](ru/figma-export-guide.md)** — как экспортировать дизайн в код
+4. Заполните переменные окружения:
+- `NEXT_PUBLIC_SUPABASE_URL` — URL вашего Supabase проекта
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` — анонимный ключ Supabase
+- `NEXT_PUBLIC_SITE_URL` — URL сайта (для локальной разработки: `http://localhost:3000`)
 
----
+5. Настройте базу данных:
+- Создайте проект в Supabase
+- Примените `database/schema.sql` в SQL Editor
+- Примените `database/analytics.sql` для публичной статистики
+- (Опционально) Загрузите тестовые данные из `database/seed.sql`
 
-## Техническая документация
+6. Запустите dev-сервер:
+```bash
+npm run dev
+# или
+pnpm dev
+```
 
-Техническая документация находится в папке `ru/`:
-- `tech-spec.md` - Техническая архитектура
-- `brand.md` - Дизайн-система
-- `operations.md` - Операционные процедуры
-- `dashboards.md` - Аналитика
+Сайт будет доступен по адресу [http://localhost:3000](http://localhost:3000)
+
+### Deployment
+
+See **[Deployment Guide](docs/deployment.md)** for step-by-step instructions.
+
+Quick version:
+1. Push code to GitHub
+2. Connect repository to Vercel
+3. Set environment variables
+4. Deploy happens automatically
+
+### Content Editing
+
+See **[Content Editing Guide](docs/content-editing.md)** for how to add/edit content.
+
+Quick start:
+1. Go to `/admin/login`
+2. Click "Контент"
+3. Create or edit content
+4. Save and publish
+
+## 📁 Структура проекта
+
+```
+├── frontend/nextjs/     # Next.js приложение
+│   ├── app/            # Страницы (App Router)
+│   ├── components/     # React компоненты
+│   ├── lib/            # Утилиты и конфигурация
+│   └── content/        # Контент для CMS
+├── backend/python/      # FastAPI backend (опционально)
+├── database/           # SQL схемы и миграции
+├── docs/               # Документация проекта
+└── cms/                # Конфигурация CMS
+```
+
+## 🛠 Разработка
+
+### Frontend
+
+- **Фреймворк:** Next.js 14 (App Router)
+- **Стили:** Tailwind CSS
+- **CMS:** Keystatic
+- **База данных:** Supabase (PostgreSQL)
+
+### Основные команды
+
+```bash
+# Разработка
+npm run dev
+
+# Сборка
+npm run build
+
+# Запуск production
+npm run start
+
+# Линтинг
+npm run lint
+```
+
+### Backend (опционально)
+
+```bash
+cd backend/python
+pip install -r requirements.txt
+uvicorn main:app --reload
+```
+
+## 📚 Documentation
+
+Main guides (in English, simple language):
+
+- **[Getting Started](docs/getting-started.md)** - Set up and run locally
+- **[Deployment](docs/deployment.md)** - Deploy to Vercel
+- **[Database Setup](docs/database.md)** - Configure Supabase
+- **[Content Editing](docs/content-editing.md)** - How to add/edit content
+- **[Troubleshooting](docs/troubleshooting.md)** - Fix common problems
+- **[Features](docs/features.md)** - Theme, Telegram, and other features
+
+Technical docs (for developers):
+
+- `TECH_SPEC.md` - Technical specification
+- `BRAND.md` - Design system and branding
+- `OPERATIONS.md` - Operations procedures
+
+## 🎨 Дизайн-система
+
+- **Главная:** OSS-red (#D11F2A)
+- **Правовой:** тёмно-синий (#1F2A44)
+- **Инфраструктура:** сине-голубой (#2A7FFF)
+- **Стипендии:** холодно-зелёный (#2E8B57)
+- **Иностранные студенты:** ярко-жёлтый (#F5B301)
+- **Нейтральное:** серый (#6B7280)
+
+Подробнее в `docs/BRAND.md`
+
+### Для дизайнеров
+
+Если вы веб-дизайнер, работающий в Figma или Tilda:
+
+- **[Интеграция дизайнера в проект](docs/ru/designer-integration.md)** - Полное руководство по работе с проектом
+- **[Экспорт дизайна из Figma](docs/ru/figma-export-guide.md)** - Как экспортировать дизайн в код
+- **[Профессиональная система дизайна](docs/ru/professional-design-system.md)** - Текущая система дизайна
+- **[Градиенты из брендбука](docs/ru/gradients-brandbook.md)** - Цветовые градиенты для направлений
+
+### Для администраторов ОСС
+
+- **[Настройка уведомлений](docs/ru/admin-notifications-setup.md)** - Как настроить Email, Push и Telegram уведомления
+- **[Функции защиты прав студентов](docs/ru/student-rights-protection-features.md)** - Предложения по улучшению защиты прав
+
+## 🔐 Роли и доступ
+
+- `student` — внешний пользователь (без аккаунта)
+- `member` — член ОСС
+- `lead` — руководитель направления
+- `board` — руководство ОСС
+- `staff` — аппарат (техподдержка)
+
+Доступ контролируется через Supabase RLS (Row Level Security).
+
+## 🚢 Деплой
+
+Проект настроен для деплоя на Vercel:
+
+1. Подключите репозиторий к Vercel
+2. Настройте переменные окружения
+3. Настройте Preview/Production окружения
+
+Подробнее в `docs/OPERATIONS.md`
+
+## 📝 Лицензия
+
+Проект создан для ОСС ДВФУ.
+
+## 🤝 Support
+
+Having issues? Check these guides:
+
+1. **[Troubleshooting](docs/troubleshooting.md)** - Common problems and fixes
+2. **[Getting Started](docs/getting-started.md)** - Initial setup
+3. **[Deployment](docs/deployment.md)** - Deployment issues
+4. **[Database Setup](docs/database.md)** - Supabase configuration
+
+Still stuck? Check:
+- Vercel build logs
+- Supabase logs  
+- Browser console (F12)
+- Environment variables
+
