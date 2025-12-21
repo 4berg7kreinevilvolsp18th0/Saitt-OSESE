@@ -76,8 +76,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="ru" suppressHydrationWarning>
       <head>
         <link rel="canonical" href={siteUrl} />
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.ico" />
       </head>
       <body className="bg-oss-dark light:bg-gradient-to-br light:from-white light:via-gray-50 light:to-gray-100 text-white light:text-gray-900 antialiased transition-all duration-500 font-sf-text">
         <ThemeProvider>
