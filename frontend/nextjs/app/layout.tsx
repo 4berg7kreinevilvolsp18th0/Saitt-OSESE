@@ -27,10 +27,7 @@ export const metadata: Metadata = {
   creator: 'ОСС ДВФУ',
   publisher: 'ОСС ДВФУ',
   icons: {
-    icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/favicon.ico', type: 'image/x-icon' },
-    ],
+    icon: '/favicon.ico',
     shortcut: '/favicon.ico',
     apple: '/favicon.ico',
   },

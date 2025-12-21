@@ -17,17 +17,35 @@ export default function AdminLoginPage() {
     setError(null);
     setLoading(true);
 
-    const { error: signInError } = await signIn(email, password);
+    try {
+      const { error: signInError } = await signIn(email, password);
 
-    setLoading(false);
+      if (signInError) {
+        // Более понятные сообщения об ошибках
+        let errorMessage = 'Ошибка входа';
+        
+        if (signInError.message?.includes('Invalid login credentials')) {
+          errorMessage = 'Неверный email или пароль';
+        } else if (signInError.message?.includes('Email not confirmed')) {
+          errorMessage = 'Email не подтвержден. Проверьте почту.';
+        } else if (signInError.message?.includes('Too many requests')) {
+          errorMessage = 'Слишком много попыток. Попробуйте позже.';
+        } else if (signInError.message) {
+          errorMessage = signInError.message;
+        }
+        
+        setError(errorMessage);
+        setLoading(false);
+        return;
+      }
 
-    if (signInError) {
-      setError(signInError.message || 'Ошибка входа');
-      return;
+      // Успешный вход
+      router.push('/admin');
+      router.refresh();
+    } catch (err: any) {
+      setError(err.message || 'Неожиданная ошибка при входе');
+      setLoading(false);
     }
-
-    router.push('/admin');
-    router.refresh();
   }
 
   return (
