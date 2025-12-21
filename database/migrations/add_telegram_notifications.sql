@@ -20,6 +20,14 @@ ALTER TABLE notification_settings
   ADD COLUMN IF NOT EXISTS telegram_appeal_overdue boolean DEFAULT true,
   ADD COLUMN IF NOT EXISTS telegram_appeal_escalated boolean DEFAULT true;
 
+-- Обновляем check constraint для notification_log.type
+ALTER TABLE notification_log 
+  DROP CONSTRAINT IF EXISTS notification_log_type_check;
+
+ALTER TABLE notification_log 
+  ADD CONSTRAINT notification_log_type_check 
+  CHECK (type IN ('email', 'push', 'telegram'));
+
 -- Обновляем check constraint для notification_log.event_type
 ALTER TABLE notification_log 
   DROP CONSTRAINT IF EXISTS notification_log_event_type_check;
