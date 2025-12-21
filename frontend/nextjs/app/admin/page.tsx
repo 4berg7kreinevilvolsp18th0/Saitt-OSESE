@@ -128,6 +128,13 @@ export default function AdminHome() {
           <div className="text-lg font-semibold">Статистика по школам</div>
           <div className="mt-2 text-white/70">Распределение обращений по школам ДВФУ.</div>
         </Link>
+        <Link
+          href="/admin/profile"
+          className="rounded-2xl border border-white/10 bg-white/5 p-6 hover:bg-white/10 transition"
+        >
+          <div className="text-lg font-semibold">Личный кабинет</div>
+          <div className="mt-2 text-white/70">Профиль, статистика, настройки аккаунта.</div>
+        </Link>
       </div>
     </main>
   );
