@@ -11,6 +11,9 @@ create table if not exists notification_settings (
     email_appeal_status boolean default true, -- Уведомления об изменении статуса обращений
     email_appeal_assigned boolean default true, -- Уведомления о назначении обращений
     email_appeal_comment boolean default true, -- Уведомления о комментариях
+    email_appeal_new boolean default true, -- Уведомления о новых обращениях
+    email_appeal_overdue boolean default true, -- Уведомления о просроченных обращениях
+    email_appeal_escalated boolean default true, -- Уведомления об эскалации
     email_daily_summary boolean default false, -- Ежедневная сводка
     -- Push notifications
     push_enabled boolean default false,
@@ -18,6 +21,19 @@ create table if not exists notification_settings (
     push_appeal_status boolean default true,
     push_appeal_assigned boolean default true,
     push_appeal_comment boolean default true,
+    push_appeal_new boolean default true,
+    push_appeal_overdue boolean default true,
+    push_appeal_escalated boolean default true,
+    -- Telegram notifications (для админов)
+    telegram_enabled boolean default false,
+    telegram_chat_id text, -- Telegram chat_id пользователя (получается через бота)
+    telegram_username text, -- Telegram username для удобства
+    telegram_appeal_status boolean default true,
+    telegram_appeal_assigned boolean default true,
+    telegram_appeal_comment boolean default true,
+    telegram_appeal_new boolean default true,
+    telegram_appeal_overdue boolean default true,
+    telegram_appeal_escalated boolean default true,
     created_at timestamptz default now(),
     updated_at timestamptz default now(),
     unique(user_id)
