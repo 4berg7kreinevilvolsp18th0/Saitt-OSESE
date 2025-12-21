@@ -25,16 +25,15 @@ export default function DirectionCard({ d }: { d: Direction }) {
         {/* Декоративный элемент для светлой темы */}
         <div className={`absolute top-0 right-0 w-32 h-32 ${gradient} rounded-full opacity-0 light:opacity-5 light:blur-3xl light:group-hover:opacity-10 transition-opacity duration-500 -translate-y-1/2 translate-x-1/2`}></div>
         
-        <div className={`relative text-xs sm:text-sm uppercase tracking-wide font-semibold ${d.colorKey === 'legal' ? 'text-legal-gold light:text-legal-dark-blue' : accent.split(' ')[0]} drop-shadow-sm 
-          light:drop-shadow-none light:font-bold`}>
+        <div className={`relative text-sm sm:text-base uppercase tracking-wider font-bold mb-3 ${d.colorKey === 'legal' ? 'text-legal-gold light:text-legal-dark-blue' : accent.split(' ')[0]} 
+          drop-shadow-sm light:drop-shadow-none`}>
           {d.title}
         </div>
-        <div className={`mt-2 text-xs sm:text-sm leading-relaxed font-sf-text ${d.colorKey === 'legal' ? 'text-legal-dark-blue light:text-legal-dark-blue' : 'text-white/90 light:text-gray-700'} 
+        <div className={`text-sm sm:text-base leading-relaxed font-sf-text mb-4 ${d.colorKey === 'legal' ? 'text-white/95 light:text-gray-800' : 'text-white/90 light:text-gray-700'} 
           light:font-medium`}>
           {d.description}
         </div>
-        <div className="mt-4 sm:mt-5 inline-flex items-center gap-2 text-xs sm:text-sm text-white/80 light:text-gray-600 group-hover:gap-3 transition-all
-          light:font-semibold light:text-gray-700">
+        <div className="inline-flex items-center gap-2 text-sm sm:text-base font-semibold text-white/90 light:text-gray-700 group-hover:gap-3 transition-all">
           Перейти
           <span className={`${d.colorKey === 'legal' ? 'text-legal-gold light:text-legal-dark-blue' : accent.split(' ')[0]} group-hover:translate-x-1 transition-transform duration-300
             light:text-oss-red light:group-hover:text-oss-red/80`}>→</span>

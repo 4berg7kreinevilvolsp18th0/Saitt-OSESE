@@ -30,7 +30,10 @@ All guides, instructions, and technical documentation in English.
 ### Специальные темы / Specific Topics
 
 - **[Настройка Telegram / Telegram Setup](ru/telegram-setup.md)** | [English](en/telegram-setup.md)
-- **[Система переводов / Translation System](ru/translation-guide.md)**
+- **[Система переводов / Translation System](ru/translation.md)**
+- **[Уведомления / Notifications](ru/notifications.md)**
+- **[Шрифты / Fonts](ru/fonts.md)**
+- **[Настройка домена / Domain Setup](ru/domain.md)**
 - **[Модули / Modules](ru/modules-implementation.md)**
 - **[Настройка Storage / Storage Setup](ru/storage-setup.md)**
 - **[Тестовые данные / Test Data](ru/load-test-data.md)**
@@ -64,13 +67,11 @@ docs/
 
 ---
 
-## Для переводчиков / For Translators
+## Для дизайнеров
 
-Если вы хотите помочь с переводом документации:
-
-- **[Инструкция для переводчиков](ru/for-translators.md)** (на русском)
-- Откройте файл в папке `en/` и переведите его содержимое
-- Сохраните файл с тем же именем
+- **[Работа с дизайном](ru/designer-integration.md)** — полное руководство для веб-дизайнеров
+- **[Быстрый старт для дизайнера](ru/designer-quickstart.md)** — чеклист для начала работы
+- **[Экспорт дизайна из Figma](ru/figma-export-guide.md)** — как экспортировать дизайн в код
 
 ---
 

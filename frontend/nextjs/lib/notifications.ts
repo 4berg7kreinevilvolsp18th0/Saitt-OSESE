@@ -1,6 +1,12 @@
 import { supabase } from './supabaseClient';
 
-export type NotificationType = 'appeal_status' | 'appeal_assigned' | 'appeal_comment';
+export type NotificationType = 
+  | 'appeal_status' 
+  | 'appeal_assigned' 
+  | 'appeal_comment' 
+  | 'appeal_new' 
+  | 'appeal_overdue' 
+  | 'appeal_escalated';
 
 interface SendNotificationParams {
   userId: string;
@@ -33,6 +39,7 @@ export async function sendNotification(params: SendNotificationParams) {
     const results = {
       email: false,
       push: false,
+      telegram: false,
     };
 
     // Отправляем email уведомление
@@ -41,6 +48,9 @@ export async function sendNotification(params: SendNotificationParams) {
       if (type === 'appeal_status' && settings.email_appeal_status) emailEnabled = true;
       if (type === 'appeal_assigned' && settings.email_appeal_assigned) emailEnabled = true;
       if (type === 'appeal_comment' && settings.email_appeal_comment) emailEnabled = true;
+      if (type === 'appeal_new' && settings.email_appeal_new) emailEnabled = true;
+      if (type === 'appeal_overdue' && settings.email_appeal_overdue) emailEnabled = true;
+      if (type === 'appeal_escalated' && settings.email_appeal_escalated) emailEnabled = true;
 
       if (emailEnabled) {
         try {
@@ -80,6 +90,9 @@ export async function sendNotification(params: SendNotificationParams) {
       if (type === 'appeal_status' && settings.push_appeal_status) pushEnabled = true;
       if (type === 'appeal_assigned' && settings.push_appeal_assigned) pushEnabled = true;
       if (type === 'appeal_comment' && settings.push_appeal_comment) pushEnabled = true;
+      if (type === 'appeal_new' && settings.push_appeal_new) pushEnabled = true;
+      if (type === 'appeal_overdue' && settings.push_appeal_overdue) pushEnabled = true;
+      if (type === 'appeal_escalated' && settings.push_appeal_escalated) pushEnabled = true;
 
       if (pushEnabled) {
         try {
@@ -105,15 +118,50 @@ export async function sendNotification(params: SendNotificationParams) {
       }
     }
 
+    // Отправляем Telegram уведомление
+    if (settings.telegram_enabled && settings.telegram_chat_id) {
+      let telegramEnabled = false;
+      if (type === 'appeal_status' && settings.telegram_appeal_status) telegramEnabled = true;
+      if (type === 'appeal_assigned' && settings.telegram_appeal_assigned) telegramEnabled = true;
+      if (type === 'appeal_comment' && settings.telegram_appeal_comment) telegramEnabled = true;
+      if (type === 'appeal_new' && settings.telegram_appeal_new) telegramEnabled = true;
+      if (type === 'appeal_overdue' && settings.telegram_appeal_overdue) telegramEnabled = true;
+      if (type === 'appeal_escalated' && settings.telegram_appeal_escalated) telegramEnabled = true;
+
+      if (telegramEnabled) {
+        try {
+          const response = await fetch('/api/notifications/telegram/admin', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              userId,
+              appealId,
+              type,
+              title,
+              message,
+              url,
+            }),
+          });
+
+          if (response.ok) {
+            results.telegram = true;
+          }
+        } catch (error) {
+          console.error('Telegram notification error:', error);
+        }
+      }
+    }
+
     // Логируем уведомление
+    const notificationType = results.email ? 'email' : results.push ? 'push' : results.telegram ? 'telegram' : 'email';
     await supabase.from('notification_log').insert({
       user_id: userId,
       appeal_id: appealId || null,
-      type: results.email ? 'email' : results.push ? 'push' : 'email',
+      type: notificationType,
       event_type: type,
       title,
       message,
-      success: results.email || results.push,
+      success: results.email || results.push || results.telegram,
     });
 
     return { success: true, results };
