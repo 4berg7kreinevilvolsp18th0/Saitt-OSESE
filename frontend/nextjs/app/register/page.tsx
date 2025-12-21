@@ -1,3 +1,121 @@
+'use client';
+
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { supabase } from '../../lib/supabaseClient';
+
+export default function RegisterPage() {
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    role: 'member' as 'member' | 'lead',
+    directionId: '',
+  });
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [directions, setDirections] = useState<any[]>([]);
+
+  React.useEffect(() => {
+    loadDirections();
+  }, []);
+
+  async function loadDirections() {
+    try {
+      const { data } = await supabase
+        .from('directions')
+        .select('id, title, slug')
+        .eq('is_active', true)
+        .order('title');
+      
+      if (data) {
+        setDirections(data);
+      }
+    } catch (err) {
+      console.error('Error loading directions:', err);
+    }
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+
+    // Валидация
+    if (formData.password.length < 8) {
+      setError('Пароль должен быть не менее 8 символов');
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      setError('Пароли не совпадают');
+      return;
+    }
+
+    if (!formData.email.includes('@')) {
+      setError('Неверный формат email');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // Регистрация через Supabase Auth
+      const { data: authData, error: signUpError } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          data: {
+            full_name: formData.fullName,
+            role: formData.role,
+          },
+        },
+      });
+
+      if (signUpError) {
+        setError(signUpError.message || 'Ошибка регистрации');
+        setLoading(false);
+        return;
+      }
+
+      if (!authData.user) {
+        setError('Не удалось создать пользователя');
+        setLoading(false);
+        return;
+      }
+
+      // Назначить роль (требует подтверждения администратором)
+      if (formData.role && formData.directionId) {
+        const { error: roleError } = await supabase.from('user_roles').insert({
+          user_id: authData.user.id,
+          role: formData.role,
+          direction_id: formData.directionId || null,
+        });
+
+        if (roleError) {
+          console.error('Role assignment error:', roleError);
+          // Не критично, можно назначить позже
+        }
+      }
+
+      // Создать настройки уведомлений
+      const { error: settingsError } = await supabase.from('notification_settings').insert({
+        user_id: authData.user.id,
+        email_enabled: true,
+        push_enabled: false,
+        telegram_enabled: false,
+      });
+
+      if (settingsError) {
+        console.error('Settings error:', settingsError);
+        // Не критично
+      }
+
+      setSuccess(true);
+      setLoading(false);
 
       // Логирование регистрации
       await logRegistration(formData.email, formData.role);
@@ -132,6 +250,45 @@
             {formData.role === 'lead' && (
               <div>
                 <label className="block text-sm font-medium mb-2">Направление</label>
+                <select
+                  required
+                  className="w-full rounded-xl bg-white/10 p-3 border border-white/20 text-white focus:outline-none focus:border-oss-red transition"
+                  value={formData.directionId}
+                  onChange={(e) => setFormData({ ...formData, directionId: e.target.value })}
+                >
+                  <option value="">Выберите направление</option>
+                  {directions.map((dir) => (
+                    <option key={dir.id} value={dir.id}>
+                      {dir.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            {error && (
+              <div className="rounded-xl border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-400">
+                {error}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full rounded-xl bg-oss-red py-3 font-semibold hover:bg-oss-red/90 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? 'Регистрация...' : 'Зарегистрироваться'}
+            </button>
+          </form>
+
+          <div className="mt-6 pt-6 border-t border-white/10 text-center">
+            <Link
+              href="/login"
+              className="text-sm text-white/60 hover:text-white/80 transition"
+            >
+              Уже есть аккаунт? Войти
+            </Link>
+          </div>
 
           <div className="mt-4 text-xs text-white/40 text-center">
             <p>Регистрация требует подтверждения администратором.</p>
