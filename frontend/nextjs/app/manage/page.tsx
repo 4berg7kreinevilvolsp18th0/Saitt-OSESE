@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { getCurrentUser, getUserRoles, signOut, type UserRoleWithDirection } from '../../lib/auth';
 
-export default function ManagePage() {
+export default function AdminHome() {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
   const [roles, setRoles] = useState<UserRoleWithDirection[]>([]);
@@ -15,19 +15,20 @@ export default function ManagePage() {
     async function checkAuth() {
       const { user: currentUser } = await getCurrentUser();
       if (!currentUser) {
-        router.push('/login');
+        router.push('/admin/login');
         return;
       }
 
       setUser(currentUser);
       const userRoles = await getUserRoles();
+      setRoles(userRoles);
 
       if (userRoles.length === 0) {
-        router.push('/login');
+        // User has no roles, redirect to login
+        router.push('/admin/login');
         return;
       }
 
-      setRoles(userRoles);
       setLoading(false);
     }
 
@@ -36,7 +37,7 @@ export default function ManagePage() {
 
   async function handleSignOut() {
     await signOut();
-    router.push('/login');
+    router.push('/admin/login');
   }
 
   if (loading) {
@@ -58,9 +59,9 @@ export default function ManagePage() {
     <main className="max-w-6xl mx-auto px-6 py-12">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-semibold">Управление</h1>
+          <h1 className="text-3xl font-semibold">Админ-панель</h1>
           <p className="mt-2 text-white/70">
-            Панель управления ОСС ДВФУ
+            Раздел доступен только пользователям с правами. Доступ определяется Supabase Auth + RLS.
           </p>
         </div>
         <button
@@ -93,42 +94,42 @@ export default function ManagePage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Link
-          href="/manage/appeals"
+          href="/admin/appeals"
           className="rounded-2xl border border-white/10 bg-white/5 p-6 hover:bg-white/10 transition"
         >
           <div className="text-lg font-semibold">Обращения</div>
           <div className="mt-2 text-white/70">Канбан и обработка обращений.</div>
         </Link>
         <Link
-          href="/manage/dashboards"
+          href="/admin/dashboards"
           className="rounded-2xl border border-white/10 bg-white/5 p-6 hover:bg-white/10 transition"
         >
           <div className="text-lg font-semibold">Дашборды</div>
           <div className="mt-2 text-white/70">Нагрузка, очередь, управленческие метрики.</div>
         </Link>
         <Link
-          href="/manage/content"
+          href="/admin/content"
           className="rounded-2xl border border-white/10 bg-white/5 p-6 hover:bg-white/10 transition"
         >
           <div className="text-lg font-semibold">Контент</div>
           <div className="mt-2 text-white/70">Управление новостями, гайдами и FAQ.</div>
         </Link>
         <Link
-          href="/manage/settings/notifications"
+          href="/admin/settings/notifications"
           className="rounded-2xl border border-white/10 bg-white/5 p-6 hover:bg-white/10 transition"
         >
           <div className="text-lg font-semibold">Уведомления</div>
           <div className="mt-2 text-white/70">Настройки email и push уведомлений.</div>
         </Link>
         <Link
-          href="/manage/dashboards/schools"
+          href="/admin/dashboards/schools"
           className="rounded-2xl border border-white/10 bg-white/5 p-6 hover:bg-white/10 transition"
         >
           <div className="text-lg font-semibold">Статистика по школам</div>
           <div className="mt-2 text-white/70">Распределение обращений по школам ДВФУ.</div>
         </Link>
         <Link
-          href="/manage/profile"
+          href="/admin/profile"
           className="rounded-2xl border border-white/10 bg-white/5 p-6 hover:bg-white/10 transition"
         >
           <div className="text-lg font-semibold">Личный кабинет</div>
@@ -138,4 +139,3 @@ export default function ManagePage() {
     </main>
   );
 }
-
