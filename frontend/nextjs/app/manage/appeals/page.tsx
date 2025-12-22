@@ -89,12 +89,34 @@ export default function AdminAppealsKanban() {
       .from('user_roles')
       .select('user_id, role')
       .limit(50);
+
+    // Для MVP создаем упрощенный список
+    const availableUsersList = (availableUsers || []).map((ur: any) => ({
+      id: ur.user_id,
+      email: `user-${ur.user_id.substring(0, 8)}@example.com`,
+    }));
+
+    setUsers(availableUsersList);
+    setLoading(false);
+  }
+
+  // Фильтрация по поисковому запросу
   useEffect(() => {
-    // Временно редиректим на старую страницу
-    // Позже можно скопировать код из /admin/appeals
-    router.replace('/admin/appeals');
-  }, [router]);
+    if (!searchQuery.trim()) {
+      setFilteredAppeals(appeals);
+      return;
+    }
 
-  return <div>Перенаправление...</div>;
-}
+    const query = searchQuery.toLowerCase();
+    const filtered = appeals.filter((appeal) => {
+      return (
+        appeal.title?.toLowerCase().includes(query) ||
+        appeal.description?.toLowerCase().includes(query) ||
+        appeal.contact_value?.toLowerCase().includes(query)
+      );
+    });
+    setFilteredAppeals(filtered);
+  }, [searchQuery, appeals]);
 
+  useEffect(() => {
+    load();
