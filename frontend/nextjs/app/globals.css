@@ -794,6 +794,16 @@ a {
 .bg-blur-neutral-2 {
   background-color: #D026D9;
 }
+
+/* OSS - красные размытые элементы */
+.bg-blur-oss-1 {
+  background-color: #D11F2A;
+}
+
+.bg-blur-oss-2 {
+  background-color: #B91C1C;
+}
+
 /* Цвет ссылок в светлой теме */
 .light .text-oss-red {
   color: #D11F2A;
