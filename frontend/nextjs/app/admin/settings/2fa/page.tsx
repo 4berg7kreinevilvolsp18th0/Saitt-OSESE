@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCurrentUser } from '../../../../lib/auth';
 import { supabase } from '../../../../lib/supabaseClient';
-import { verify2FAToken, is2FAEnabled } from '../../../../lib/2fa';
+import { is2FAEnabled } from '../../../../lib/2fa';
 import QRCode from 'qrcode';
 
 export default function TwoFactorAuthPage() {
