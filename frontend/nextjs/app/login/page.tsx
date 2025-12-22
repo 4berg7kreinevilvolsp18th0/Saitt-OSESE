@@ -92,7 +92,7 @@ export default function LoginPage() {
       // Логирование попытки входа
       await logLoginAttempt(email, 'attempt');
 
-      const { error: signInError } = await signIn(email, password);
+      const { data, error: signInError } = await signIn(email, password);
 
       if (signInError) {
         // Увеличить счетчик попыток
