@@ -113,7 +113,7 @@ export function getBlurColor2(colorKey: ColorKey): string {
       return 'bg-blur-neutral-2';
     case 'oss':
     default:
-      return 'bg-red-600';
+      return 'bg-blur-oss-2';
   }
 }
 
