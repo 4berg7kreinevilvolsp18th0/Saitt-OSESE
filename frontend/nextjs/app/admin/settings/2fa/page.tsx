@@ -108,3 +108,36 @@ export default function TwoFactorAuthPage() {
 
     setError(null);
     setSuccess(null);
+
+    try {
+      const { error } = await supabase
+        .from('user_2fa')
+        .update({ enabled: false })
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+
+      setEnabled(false);
+      setSuccess('2FA отключена');
+    } catch (err: any) {
+      setError(err.message || 'Ошибка отключения 2FA');
+    }
+  }
+
+  if (loading) {
+    return (
+      <main className="max-w-4xl mx-auto px-6 py-12">
+        <div className="text-center">Загрузка...</div>
+      </main>
+    );
+  }
+
+  return (
+    <main className="max-w-4xl mx-auto px-6 py-12">
+      <h1 className="text-3xl font-semibold mb-8">Двухфакторная аутентификация (2FA)</h1>
+
+      {error && (
+        <div className="mb-6 rounded-xl border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-400">
+          {error}
+        </div>
+      )}
