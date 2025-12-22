@@ -141,3 +141,43 @@ export default function TwoFactorAuthPage() {
           {error}
         </div>
       )}
+
+      {success && (
+        <div className="mb-6 rounded-xl border border-green-500/40 bg-green-500/10 p-4 text-sm text-green-400">
+          {success}
+        </div>
+      )}
+
+      {backupCodes.length > 0 && (
+        <div className="mb-6 rounded-xl border border-yellow-500/40 bg-yellow-500/10 p-6">
+          <h2 className="text-xl font-semibold mb-4 text-yellow-400">
+            ⚠️ Сохраните резервные коды!
+          </h2>
+          <p className="text-white/70 mb-4">
+            Эти коды можно использовать для входа, если у вас нет доступа к приложению-аутентификатору.
+            Сохраните их в безопасном месте.
+          </p>
+          <div className="grid grid-cols-2 gap-2 font-mono text-sm">
+            {backupCodes.map((code, i) => (
+              <div key={i} className="p-2 bg-white/10 rounded text-center">
+                {code}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+        {!enabled ? (
+          <div>
+            <h2 className="text-xl font-semibold mb-4">Настройка 2FA</h2>
+            <p className="text-white/70 mb-6">
+              Двухфакторная аутентификация добавляет дополнительный уровень безопасности к вашему аккаунту.
+              Вам понадобится приложение-аутентификатор (Google Authenticator, Authy, Microsoft Authenticator).
+            </p>
+
+            {!qrCodeURL ? (
+              <button
+                onClick={handleSetup}
+                disabled={settingUp}
+                className="px-6 py-3 rounded-xl bg-oss-red hover:bg-oss-red/90 text-white font-semibold transition disabled:opacity-50"
