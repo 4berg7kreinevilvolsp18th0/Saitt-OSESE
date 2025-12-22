@@ -56,7 +56,7 @@ async function createAdminAccount() {
         console.log('ℹ️  Пользователь уже существует. Пропускаем создание...');
         // Попробуем получить существующего пользователя
         const { data: existingUsers } = await supabase.auth.admin.listUsers();
-        const existingUser = existingUsers?.users.find(u => u.email === email);
+        const existingUser = existingUsers?.users?.find((u: any) => u.email === email);
         if (existingUser) {
           console.log('✅ Найден существующий пользователь:', existingUser.id);
           await assignRoleAndSettings(existingUser.id);
