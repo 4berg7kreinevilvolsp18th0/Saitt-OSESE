@@ -84,7 +84,7 @@ export function gradientBorder(colorKey: ColorKey): string {
 export function getBlurColor1(colorKey: ColorKey): string {
   switch (colorKey) {
     case 'legal':
-      return 'bg-legal-blur-1';
+      return 'bg-blur-legal-1';
     case 'infrastructure':
       return 'bg-infrastructure-blur-1';
     case 'scholarship':
