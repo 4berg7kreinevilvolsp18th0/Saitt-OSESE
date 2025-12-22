@@ -41,3 +41,35 @@ export default function TwoFactorAuthPage() {
     setSettingUp(true);
     setError(null);
     setSuccess(null);
+
+    try {
+      const response = await fetch('/api/auth/2fa/setup', {
+        method: 'POST',
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to setup 2FA');
+      }
+
+      const data = await response.json();
+      setQrCodeURL(data.qrCodeURL);
+
+      // Генерация QR кода изображения
+      const qrDataURL = await QRCode.toDataURL(data.qrCodeURL);
+      setQrCodeDataURL(qrDataURL);
+    } catch (err: any) {
+      setError(err.message || 'Ошибка настройки 2FA');
+    } finally {
+      setSettingUp(false);
+    }
+  }
+
+  async function handleVerify() {
+    if (!verificationToken) {
+      setError('Введите код из приложения');
+      return;
+    }
+
+    setError(null);
+    setSuccess(null);
