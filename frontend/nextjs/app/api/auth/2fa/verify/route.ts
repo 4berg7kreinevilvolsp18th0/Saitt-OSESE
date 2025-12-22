@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getCurrentUser } from '../../../../lib/auth';
-import { verify2FAToken, getUser2FASecret } from '../../../../lib/2fa';
-import { supabase } from '../../../../lib/supabaseClient';
+import { getCurrentUser } from '../../../../../lib/auth';
+import { verify2FAToken, getUser2FASecret } from '../../../../../lib/2fa';
+import { supabase } from '../../../../../lib/supabaseClient';
 
 export const dynamic = 'force-dynamic';
 
