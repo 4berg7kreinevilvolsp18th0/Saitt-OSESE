@@ -264,3 +264,43 @@ export default function AdminAppealsKanban() {
       .eq('id', id);
     
     if (error) {
+      setError(error.message);
+      return;
+    }
+    
+    setAppeals((prev) => prev.map((a) => (a.id === id ? { ...a, deadline } : a)));
+  }
+
+  return (
+    <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <div className="space-y-4 sm:space-y-6">
+        <div className="flex items-end justify-between flex-wrap gap-4">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-semibold light:text-gray-900">{t('admin.appeals.title')}</h1>
+            <p className="mt-2 text-sm sm:text-base text-white/70 light:text-gray-600">
+              {t('admin.appeals.description')}
+            </p>
+          </div>
+          <div className="flex gap-2 sm:gap-3">
+            <a
+              href="/api/export/appeals?format=csv"
+              download
+              className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl border border-white/20 text-white/80 hover:text-white hover:border-white/40 transition text-sm sm:text-base light:border-gray-300 light:text-gray-700 light:hover:bg-gray-50"
+            >
+              📥 {t('admin.appeals.actions.export')}
+            </a>
+            <button
+              onClick={load}
+              className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl border border-white/20 text-white/80 hover:text-white hover:border-white/40 transition text-sm sm:text-base light:border-gray-300 light:text-gray-700 light:hover:bg-gray-50"
+            >
+              {t('common.refresh')}
+            </button>
+          </div>
+        </div>
+
+        {/* Поиск */}
+        <SearchBar
+          onSearch={setSearchQuery}
+          placeholder={t('common.search') + ' по обращениям...'}
+          className="max-w-md"
+        />
