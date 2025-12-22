@@ -73,3 +73,38 @@ export default function TwoFactorAuthPage() {
 
     setError(null);
     setSuccess(null);
+
+    try {
+      const response = await fetch('/api/auth/2fa/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          token: verificationToken,
+          enable: true,
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Invalid token');
+      }
+
+      const data = await response.json();
+      setBackupCodes(data.backupCodes || []);
+      setEnabled(true);
+      setSuccess('2FA успешно включена! Сохраните резервные коды.');
+      setQrCodeURL('');
+      setQrCodeDataURL('');
+      setVerificationToken('');
+    } catch (err: any) {
+      setError(err.message || 'Ошибка верификации');
+    }
+  }
+
+  async function handleDisable() {
+    if (!confirm('Вы уверены, что хотите отключить 2FA? Это снизит безопасность вашего аккаунта.')) {
+      return;
+    }
+
+    setError(null);
+    setSuccess(null);
