@@ -95,7 +95,7 @@ export function getBlurColor1(colorKey: ColorKey): string {
       return 'bg-blur-neutral-1';
     case 'oss':
     default:
-      return 'bg-oss-red';
+      return 'bg-blur-oss-1';
   }
 }
 
