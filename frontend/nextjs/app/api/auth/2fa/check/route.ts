@@ -35,3 +35,19 @@ export async function POST(request: NextRequest) {
         { error: '2FA not configured' },
         { status: 400 }
       );
+    }
+
+    const isValid = verify2FAToken(token, secret);
+    return NextResponse.json({
+      required: true,
+      verified: isValid,
+    });
+  } catch (error: any) {
+    console.error('2FA check error:', error);
+    return NextResponse.json(
+      { error: 'Failed to check 2FA' },
+      { status: 500 }
+    );
+  }
+}
+
