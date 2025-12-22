@@ -108,7 +108,7 @@ export function getBlurColor2(colorKey: ColorKey): string {
     case 'scholarship':
       return 'bg-blur-scholarship-2';
     case 'international':
-      return 'bg-international-blur-2';
+      return 'bg-blur-international-2';
     case 'neutral':
       return 'bg-neutral-blur-2';
     case 'oss':
