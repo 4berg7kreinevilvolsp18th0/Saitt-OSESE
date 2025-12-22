@@ -56,8 +56,13 @@ export default function TwoFactorAuthPage() {
       setQrCodeURL(data.qrCodeURL);
 
       // Генерация QR кода изображения
-      const qrDataURL = await QRCode.toDataURL(data.qrCodeURL);
-      setQrCodeDataURL(qrDataURL);
+      if (QRCode) {
+        const qrDataURL = await QRCode.toDataURL(data.qrCodeURL);
+        setQrCodeDataURL(qrDataURL);
+      } else {
+        // Fallback: показать URL для ручного ввода
+        setQrCodeDataURL('');
+      }
     } catch (err: any) {
       setError(err.message || 'Ошибка настройки 2FA');
     } finally {
