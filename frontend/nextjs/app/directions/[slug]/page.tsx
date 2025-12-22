@@ -176,19 +176,27 @@ export default function DirectionPage({ params }: { params: { slug: string } }) 
   return (
     <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 text-white light:text-gray-900">
       <div className={`relative rounded-2xl sm:rounded-3xl border-2 ${borderGradient} ${gradient} bg-opacity-90 dark:bg-opacity-90 p-6 sm:p-8 md:p-10 overflow-hidden light:bg-opacity-80`}>
-        {/* Декоративные размытые элементы - Group 1 */}
+        {/* Декоративные размытые элементы согласно дизайну */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {/* Большие размытые элементы */}
-          <div className={`absolute ${blurColor1} rounded-full opacity-20 blur-[600px] w-[1088px] h-[1088px] -left-[400px] -top-[200px]`}></div>
-          <div className={`absolute ${blurColor1} rounded-full opacity-70 blur-[400px] w-[1088px] h-[1088px] right-[200px] -top-[300px]`}></div>
-          <div className={`absolute ${blurColor1} rounded-full opacity-60 blur-[150px] w-[1088px] h-[1088px] right-[200px] -top-[300px]`}></div>
-          <div className={`absolute ${blurColor1} rounded-full blur-[100px] w-[660px] h-[660px] right-[100px] -top-[100px]`}></div>
+          {/* Group 1 - первый набор размытых элементов */}
+          {/* Ellipse 5 - большой размытый элемент слева внизу */}
+          <div className={`absolute ${blurColor1} rounded-full opacity-20 blur-[600px] w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] md:w-[800px] md:h-[800px] lg:w-[1088px] lg:h-[1088px] -left-[100px] sm:-left-[200px] md:-left-[250px] lg:-left-[316px] top-[50%] translate-y-[20%]`}></div>
+          {/* Ellipse 1 - большой размытый элемент справа вверху */}
+          <div className={`absolute ${blurColor1} rounded-full opacity-70 blur-[400px] w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] md:w-[800px] md:h-[800px] lg:w-[1088px] lg:h-[1088px] right-[0px] sm:right-[50px] md:right-[100px] lg:right-[200px] -top-[200px] sm:-top-[300px] md:-top-[400px] lg:-top-[511px]`}></div>
+          {/* Ellipse 3 - средний размытый элемент справа вверху */}
+          <div className={`absolute ${blurColor1} rounded-full opacity-60 blur-[150px] w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] md:w-[800px] md:h-[800px] lg:w-[1088px] lg:h-[1088px] right-[0px] sm:right-[50px] md:right-[100px] lg:right-[200px] -top-[200px] sm:-top-[300px] md:-top-[400px] lg:-top-[511px]`}></div>
+          {/* Ellipse 4 - маленький размытый элемент справа вверху */}
+          <div className={`absolute ${blurColor1} rounded-full blur-[100px] w-[250px] h-[250px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] lg:w-[660px] lg:h-[660px] right-[0px] sm:right-[50px] md:right-[75px] lg:right-[100px] -top-[100px] sm:-top-[150px] md:-top-[200px] lg:-top-[297px]`}></div>
           
-          {/* Group 2 - второй набор элементов */}
-          <div className={`absolute ${blurColor2} rounded-full opacity-20 blur-[600px] w-[1258px] h-[1258px] right-[200px] top-[100px]`}></div>
-          <div className={`absolute ${blurColor2} rounded-full opacity-70 blur-[400px] w-[1258px] h-[1258px] -left-[200px] top-[400px]`}></div>
-          <div className={`absolute ${blurColor2} rounded-full opacity-60 blur-[150px] w-[1258px] h-[1258px] -left-[200px] top-[400px]`}></div>
-          <div className={`absolute ${blurColor2} rounded-full blur-[100px] w-[763px] h-[763px] -left-[100px] bottom-[100px]`}></div>
+          {/* Group 2 - второй набор размытых элементов */}
+          {/* Ellipse 6 - большой размытый элемент справа вверху */}
+          <div className={`absolute ${blurColor2} rounded-full opacity-20 blur-[600px] w-[450px] h-[450px] sm:w-[700px] sm:h-[700px] md:w-[950px] md:h-[950px] lg:w-[1258px] lg:h-[1258px] right-[0px] sm:right-[50px] md:right-[100px] lg:right-[200px] -top-[250px] sm:-top-[400px] md:-top-[500px] lg:-top-[638px]`}></div>
+          {/* Ellipse 1 - большой размытый элемент слева внизу */}
+          <div className={`absolute ${blurColor2} rounded-full opacity-70 blur-[400px] w-[450px] h-[450px] sm:w-[700px] sm:h-[700px] md:w-[950px] md:h-[950px] lg:w-[1258px] lg:h-[1258px] -left-[150px] sm:-left-[250px] md:-left-[300px] lg:-left-[393px] top-[50%] translate-y-[20%]`}></div>
+          {/* Ellipse 3 - средний размытый элемент слева внизу */}
+          <div className={`absolute ${blurColor2} rounded-full opacity-60 blur-[150px] w-[450px] h-[450px] sm:w-[700px] sm:h-[700px] md:w-[950px] md:h-[950px] lg:w-[1258px] lg:h-[1258px] -left-[150px] sm:-left-[250px] md:-left-[300px] lg:-left-[393px] top-[50%] translate-y-[20%]`}></div>
+          {/* Ellipse 4 - маленький размытый элемент слева внизу */}
+          <div className={`absolute ${blurColor2} rounded-full blur-[100px] w-[280px] h-[280px] sm:w-[450px] sm:h-[450px] md:w-[550px] md:h-[550px] lg:w-[763px] lg:h-[763px] -left-[70px] sm:-left-[100px] md:-left-[120px] lg:-left-[145px] bottom-[50px] sm:bottom-[75px] md:bottom-[100px]`}></div>
         </div>
         
         <div className="relative z-10">
