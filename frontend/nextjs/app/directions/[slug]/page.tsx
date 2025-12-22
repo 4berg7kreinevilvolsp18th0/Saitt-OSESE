@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { DIRECTIONS } from '../../../lib/directions';
-import { accentBg, gradientBg, gradientBorder } from '../../../lib/theme';
+import { accentBg, gradientBg, gradientBorder, getBlurColor1, getBlurColor2 } from '../../../lib/theme';
 import { supabase } from '../../../lib/supabaseClient';
 import ContentCard from '../../../components/ContentCard';
 
@@ -170,13 +170,26 @@ export default function DirectionPage({ params }: { params: { slug: string } }) 
 
   const gradient = gradientBg(direction.colorKey);
   const borderGradient = gradientBorder(direction.colorKey);
+  const blurColor1 = getBlurColor1(direction.colorKey);
+  const blurColor2 = getBlurColor2(direction.colorKey);
 
   return (
     <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 text-white light:text-gray-900">
       <div className={`relative rounded-2xl sm:rounded-3xl border-2 ${borderGradient} ${gradient} bg-opacity-90 dark:bg-opacity-90 p-6 sm:p-8 md:p-10 overflow-hidden light:bg-opacity-80`}>
-        {/* Декоративный градиентный элемент */}
-        <div className={`absolute top-0 right-0 w-64 h-64 ${gradient} rounded-full opacity-20 blur-3xl -translate-y-1/2 translate-x-1/2`}></div>
-        <div className={`absolute bottom-0 left-0 w-48 h-48 ${gradient} rounded-full opacity-15 blur-2xl translate-y-1/2 -translate-x-1/2`}></div>
+        {/* Декоративные размытые элементы - Group 1 */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* Большие размытые элементы */}
+          <div className={`absolute ${blurColor1} rounded-full opacity-20 blur-[600px] w-[1088px] h-[1088px] -left-[400px] -top-[200px]`}></div>
+          <div className={`absolute ${blurColor1} rounded-full opacity-70 blur-[400px] w-[1088px] h-[1088px] right-[200px] -top-[300px]`}></div>
+          <div className={`absolute ${blurColor1} rounded-full opacity-60 blur-[150px] w-[1088px] h-[1088px] right-[200px] -top-[300px]`}></div>
+          <div className={`absolute ${blurColor1} rounded-full blur-[100px] w-[660px] h-[660px] right-[100px] -top-[100px]`}></div>
+          
+          {/* Group 2 - второй набор элементов */}
+          <div className={`absolute ${blurColor2} rounded-full opacity-20 blur-[600px] w-[1258px] h-[1258px] right-[200px] top-[100px]`}></div>
+          <div className={`absolute ${blurColor2} rounded-full opacity-70 blur-[400px] w-[1258px] h-[1258px] -left-[200px] top-[400px]`}></div>
+          <div className={`absolute ${blurColor2} rounded-full opacity-60 blur-[150px] w-[1258px] h-[1258px] -left-[200px] top-[400px]`}></div>
+          <div className={`absolute ${blurColor2} rounded-full blur-[100px] w-[763px] h-[763px] -left-[100px] bottom-[100px]`}></div>
+        </div>
         
         <div className="relative z-10">
         <div className="text-xs uppercase tracking-wide text-white/90 light:text-gray-600">

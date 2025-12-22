@@ -80,6 +80,43 @@ export function gradientBorder(colorKey: ColorKey): string {
   }
 }
 
+// Функции для получения цветов размытых декоративных элементов
+export function getBlurColor1(colorKey: ColorKey): string {
+  switch (colorKey) {
+    case 'legal':
+      return 'bg-legal-blur-1';
+    case 'infrastructure':
+      return 'bg-infrastructure-blur-1';
+    case 'scholarship':
+      return 'bg-scholarship-blur-1';
+    case 'international':
+      return 'bg-international-blur-1';
+    case 'neutral':
+      return 'bg-neutral-blur-1';
+    case 'oss':
+    default:
+      return 'bg-oss-red';
+  }
+}
+
+export function getBlurColor2(colorKey: ColorKey): string {
+  switch (colorKey) {
+    case 'legal':
+      return 'bg-legal-blur-2';
+    case 'infrastructure':
+      return 'bg-infrastructure-blur-2';
+    case 'scholarship':
+      return 'bg-scholarship-blur-2';
+    case 'international':
+      return 'bg-international-blur-2';
+    case 'neutral':
+      return 'bg-neutral-blur-2';
+    case 'oss':
+    default:
+      return 'bg-red-600';
+  }
+}
+
 // Функции для работы с темой
 export function getTheme(): Theme {
   if (typeof window === 'undefined') return 'dark';

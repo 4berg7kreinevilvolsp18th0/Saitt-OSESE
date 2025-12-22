@@ -665,19 +665,19 @@ a {
 }
 
 .light .text-infrastructure {
-  color: #2563EB;
+  color: #1E6BAA;
 }
 
 .light .text-scholarship {
-  color: #059669;
+  color: #1C9C56;
 }
 
 .light .text-international {
-  color: #D97706;
+  color: #EB9D2F;
 }
 
 .light .text-neutral {
-  color: #6B7280;
+  color: #C240FF;
 }
 
 /* Градиенты для направлений - поддержка светлой темы */
@@ -711,19 +711,19 @@ a {
 }
 
 .light .border-infrastructure {
-  border-color: #2563EB;
+  border-color: #1E6BAA;
 }
 
 .light .border-scholarship {
-  border-color: #059669;
+  border-color: #1C9C56;
 }
 
 .light .border-international {
-  border-color: #D97706;
+  border-color: #EB9D2F;
 }
 
 .light .border-neutral {
-  border-color: #6B7280;
+  border-color: #C240FF;
 }
 
 .light .bg-legal {
@@ -731,19 +731,19 @@ a {
 }
 
 .light .bg-infrastructure {
-  background-color: #DBEAFE;
+  background-color: #EFF6FF;
 }
 
 .light .bg-scholarship {
-  background-color: #D1FAE5;
+  background-color: #ECFDF5;
 }
 
 .light .bg-international {
-  background-color: #FEF3C7;
+  background-color: #FFFBEB;
 }
 
 .light .bg-neutral {
-  background-color: #F3F4F6;
+  background-color: #FEF2F2;
 }
 
 /* Цвет ссылок в светлой теме */
