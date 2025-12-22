@@ -158,3 +158,31 @@ export default function AdminAppealsKanban() {
     }
 
     setAppeals((prev) => prev.map((a) => (a.id === id ? { ...a, ...updateData } : a)));
+    
+    // Отправляем уведомления заинтересованным пользователям
+    if (updatedAppeal) {
+      notifyAppealChange(id, {
+        status: to,
+        assigned_to: appeal.assigned_to,
+        title: appeal.title,
+      }).catch((err) => {
+        console.error('Notification error:', err);
+      });
+    }
+    
+    if (updatedAppeal && appeal.contact_value) {
+      // Telegram уведомление
+      if (appeal.contact_type === 'telegram') {
+        try {
+          await fetch('/api/notifications/telegram', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              appealId: id,
+              status: to,
+              title: appeal.title,
+              contactValue: appeal.contact_value,
+              contactType: appeal.contact_type,
+              publicToken: updatedAppeal.public_token,
+            }),
+          });
