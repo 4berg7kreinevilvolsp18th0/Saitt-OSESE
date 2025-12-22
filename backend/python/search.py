@@ -19,6 +19,15 @@ def search_appeals(
     """
     Full-text search in appeals by title, description, and tags
     """
+    # Защита от SQL injection: ограничение длины и экранирование
+    # SQLAlchemy автоматически экранирует, но на всякий случай
+    if len(query) > 200:
+        query = query[:200]  # Ограничение длины запроса
+    
+    # Экранирование специальных символов для LIKE (SQLAlchemy делает это автоматически)
+    # Но для дополнительной безопасности
+    query = query.replace('%', '\\%').replace('_', '\\_')
+    
     search_filter = or_(
         Appeal.title.ilike(f"%{query}%"),
         Appeal.description.ilike(f"%{query}%"),
