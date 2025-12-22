@@ -175,11 +175,15 @@ export async function isIPBlocked(ip: string): Promise<boolean> {
 if (typeof setInterval !== 'undefined') {
   setInterval(() => {
     const now = Date.now();
-    for (const [key, record] of memoryStore.entries()) {
+    const keysToDelete: string[] = [];
+    
+    memoryStore.forEach((record, key) => {
       if (now > record.resetTime) {
-        memoryStore.delete(key);
+        keysToDelete.push(key);
       }
-    }
+    });
+    
+    keysToDelete.forEach(key => memoryStore.delete(key));
   }, 5 * 60 * 1000);
 }
 
