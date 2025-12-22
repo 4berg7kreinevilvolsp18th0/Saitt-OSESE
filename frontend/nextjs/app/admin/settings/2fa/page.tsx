@@ -181,3 +181,45 @@ export default function TwoFactorAuthPage() {
                 onClick={handleSetup}
                 disabled={settingUp}
                 className="px-6 py-3 rounded-xl bg-oss-red hover:bg-oss-red/90 text-white font-semibold transition disabled:opacity-50"
+              >
+                {settingUp ? 'Настройка...' : 'Начать настройку'}
+              </button>
+            ) : (
+              <div>
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold mb-2">Шаг 1: Отсканируйте QR код</h3>
+                  <p className="text-white/70 mb-4">
+                    Откройте приложение-аутентификатор и отсканируйте этот QR код:
+                  </p>
+                  {qrCodeDataURL && (
+                    <div className="inline-block p-4 bg-white rounded-lg">
+                      <img src={qrCodeDataURL} alt="QR Code" className="w-64 h-64" />
+                    </div>
+                  )}
+                </div>
+
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold mb-2">Шаг 2: Введите код подтверждения</h3>
+                  <p className="text-white/70 mb-4">
+                    Введите 6-значный код из приложения для подтверждения:
+                  </p>
+                  <div className="flex gap-4">
+                    <input
+                      type="text"
+                      maxLength={6}
+                      placeholder="000000"
+                      className="flex-1 rounded-xl bg-white/10 p-3 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-oss-red transition"
+                      value={verificationToken}
+                      onChange={(e) => setVerificationToken(e.target.value.replace(/\D/g, ''))}
+                    />
+                    <button
+                      onClick={handleVerify}
+                      className="px-6 py-3 rounded-xl bg-oss-red hover:bg-oss-red/90 text-white font-semibold transition"
+                    >
+                      Подтвердить
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
