@@ -38,3 +38,71 @@ export default function AdminLoginPage() {
         setLoading(false);
         return;
       }
+
+      // Успешный вход
+      router.push('/admin');
+      router.refresh();
+    } catch (err: any) {
+      setError(err.message || 'Неожиданная ошибка при входе');
+      setLoading(false);
+    }
+  }
+
+  return (
+    <main className="min-h-screen flex items-center justify-center bg-oss-dark px-6">
+      <div className="max-w-md w-full">
+        <div className="rounded-3xl border border-white/10 bg-white/5 p-8">
+          <h1 className="text-3xl font-semibold mb-2">Вход в админ-панель</h1>
+          <p className="text-white/70 mb-8">
+            Доступ только для членов ОСС с соответствующими правами.
+          </p>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-2">Email</label>
+              <input
+                type="email"
+                required
+                className="w-full rounded-xl bg-white/10 p-3 border border-white/20"
+                placeholder="your@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">Пароль</label>
+              <input
+                type="password"
+                required
+                className="w-full rounded-xl bg-white/10 p-3 border border-white/20"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+
+            {error && (
+              <div className="rounded-xl border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-400">
+                {error}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full rounded-xl bg-oss-red py-3 font-semibold hover:bg-oss-red/90 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? 'Вход...' : 'Войти'}
+            </button>
+          </form>
+
+          <div className="mt-6 pt-6 border-t border-white/10 text-xs text-white/50">
+            <p>Для получения доступа обратитесь к руководству ОСС.</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
+

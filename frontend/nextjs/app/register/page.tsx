@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '../../lib/supabaseClient';
 import { validatePassword } from '../../lib/passwordValidation';
+import { getRecaptchaToken, verifyRecaptchaToken } from '../../lib/captcha';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -67,6 +68,26 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
+      // Проверка reCAPTCHA
+      if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
+        try {
+          const captchaToken = await getRecaptchaToken('register');
+          const captchaValid = await verifyRecaptchaToken(captchaToken);
+          if (!captchaValid) {
+            setError('Проверка безопасности не пройдена. Попробуйте еще раз.');
+            setLoading(false);
+            return;
+          }
+        } catch (captchaError) {
+          console.error('reCAPTCHA error:', captchaError);
+          if (process.env.NODE_ENV === 'production') {
+            setError('Ошибка проверки безопасности. Обновите страницу.');
+            setLoading(false);
+            return;
+          }
+        }
+      }
+
       // Регистрация через Supabase Auth
       const { data: authData, error: signUpError } = await supabase.auth.signUp({
         email: formData.email,

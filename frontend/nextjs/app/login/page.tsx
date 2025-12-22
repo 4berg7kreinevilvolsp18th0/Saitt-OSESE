@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { signIn } from '../../lib/auth';
 import { supabase } from '../../lib/supabaseClient';
+import { getRecaptchaToken, verifyRecaptchaToken } from '../../lib/captcha';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -49,6 +50,28 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
+      // Проверка reCAPTCHA
+      let captchaToken = '';
+      if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
+        try {
+          captchaToken = await getRecaptchaToken('login');
+          const captchaValid = await verifyRecaptchaToken(captchaToken);
+          if (!captchaValid) {
+            setError('Проверка безопасности не пройдена. Попробуйте еще раз.');
+            setLoading(false);
+            return;
+          }
+        } catch (captchaError) {
+          console.error('reCAPTCHA error:', captchaError);
+          // В development можно пропустить
+          if (process.env.NODE_ENV === 'production') {
+            setError('Ошибка проверки безопасности. Обновите страницу.');
+            setLoading(false);
+            return;
+          }
+        }
+      }
+
       // Проверка rate limit на сервере
       const rateLimitCheck = await fetch('/api/auth/rate-limit', {
         method: 'POST',
@@ -109,6 +132,39 @@ export default function LoginPage() {
         setError(errorMessage);
         setLoading(false);
         return;
+      }
+
+      // Проверка 2FA (если включена)
+      if (signInError === null && data?.user) {
+        const { data: user2FA } = await supabase
+          .from('user_2fa')
+          .select('enabled')
+          .eq('user_id', data.user.id)
+          .single();
+
+        if (user2FA?.enabled) {
+          // Требуется 2FA - сохранить сессию и запросить код
+          // В production здесь нужно сохранить временную сессию
+          // и показать форму ввода 2FA кода
+          const twoFactorToken = await fetch('/api/auth/2fa/check', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              userId: data.user.id,
+              token: '', // Пока пустой, пользователь введет позже
+            }),
+          });
+
+          const twoFactorData = await twoFactorToken.json();
+          if (twoFactorData.required) {
+            // Сохранить user ID для проверки 2FA
+            sessionStorage.setItem('2fa_user_id', data.user.id);
+            // Перенаправить на страницу ввода 2FA
+            router.push('/login/2fa');
+            setLoading(false);
+            return;
+          }
+        }
       }
 
       // Успешный вход - очистить счетчики

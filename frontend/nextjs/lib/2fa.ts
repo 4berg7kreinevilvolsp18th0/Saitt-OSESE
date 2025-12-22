@@ -5,6 +5,19 @@
 
 import { authenticator } from 'otplib';
 
+// Настройка для работы в браузере и Node.js
+if (typeof window === 'undefined') {
+  // Серверная часть
+  const crypto = require('crypto');
+  authenticator.options = {
+    crypto: {
+      randomBytes: crypto.randomBytes,
+      createHmac: crypto.createHmac,
+      timingSafeEqual: crypto.timingSafeEqual,
+    },
+  };
+}
+
 // Настройка TOTP
 authenticator.options = {
   step: 30, // 30 секунд на код
@@ -62,3 +75,35 @@ export async function is2FAEnabled(userId: string): Promise<boolean> {
 
     if (error || !data) {
       return false;
+    }
+
+    return data.enabled === true;
+  } catch (error) {
+    console.error('Error checking 2FA status:', error);
+    return false;
+  }
+}
+
+/**
+ * Получить 2FA секрет пользователя (только если не настроен)
+ */
+export async function getUser2FASecret(userId: string): Promise<string | null> {
+  try {
+    const { supabase } = await import('./supabaseClient');
+    const { data, error } = await supabase
+      .from('user_2fa')
+      .select('secret')
+      .eq('user_id', userId)
+      .single();
+
+    if (error || !data || !data.secret) {
+      return null;
+    }
+
+    return data.secret;
+  } catch (error) {
+    console.error('Error getting 2FA secret:', error);
+    return null;
+  }
+}
+

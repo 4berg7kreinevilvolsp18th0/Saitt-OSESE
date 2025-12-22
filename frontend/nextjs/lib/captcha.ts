@@ -52,3 +52,23 @@ export async function getRecaptchaToken(action: string = 'submit'): Promise<stri
     });
   });
 }
+
+/**
+ * Верифицировать reCAPTCHA токен на сервере
+ */
+export async function verifyRecaptchaToken(token: string): Promise<boolean> {
+  try {
+    const response = await fetch('/api/auth/verify-captcha', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token }),
+    });
+
+    const data = await response.json();
+    return data.success === true && data.score >= 0.5; // Порог 0.5 для reCAPTCHA v3
+  } catch (error) {
+    console.error('reCAPTCHA verification error:', error);
+    return false;
+  }
+}
+

@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-
-// Rate limiting в памяти (в production использовать Redis)
-const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+import { checkRateLimitRedis, isIPBlocked } from './lib/redis';
 
 // IP-адреса для блокировки (можно добавить через API)
 const blockedIPs = new Set<string>();
@@ -19,15 +17,16 @@ const suspiciousPatterns = [
   /script.*alert/i,
 ];
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const ip = request.ip || 
     request.headers.get('x-forwarded-for')?.split(',')[0] ||
     request.headers.get('x-real-ip') ||
     'unknown';
 
-  // Блокировка по IP
-  if (blockedIPs.has(ip)) {
+  // Блокировка по IP (проверка в Redis)
+  const isBlocked = await isIPBlocked(ip);
+  if (isBlocked || blockedIPs.has(ip)) {
     return new NextResponse('Access Denied', { status: 403 });
   }
 
@@ -53,17 +52,31 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL(newPath, request.url));
   }
 
-  // Rate limiting для API endpoints
+  // Rate limiting для API endpoints (с Redis)
   if (path.startsWith('/api/')) {
-    const limit = checkRateLimit(ip, path);
+    let maxRequests = 100;
+    let windowSeconds = 60;
+
+    if (path.includes('/api/auth') || path.includes('/login')) {
+      maxRequests = 5; // 5 попыток входа в минуту
+      windowSeconds = 60;
+    } else if (path.includes('/api/security')) {
+      maxRequests = 50;
+      windowSeconds = 60;
+    }
+
+    const rateLimitKey = `${ip}:${path}`;
+    const limit = await checkRateLimitRedis(rateLimitKey, maxRequests, windowSeconds);
+    
     if (!limit.allowed) {
+      const retryAfter = Math.ceil((limit.resetTime - Date.now()) / 1000);
       return new NextResponse(
-        JSON.stringify({ error: 'Too many requests', retryAfter: limit.retryAfter }),
+        JSON.stringify({ error: 'Too many requests', retryAfter }),
         { 
           status: 429,
           headers: {
             'Content-Type': 'application/json',
-            'Retry-After': limit.retryAfter.toString(),
+            'Retry-After': retryAfter.toString(),
           },
         }
       );
@@ -80,6 +93,24 @@ export function middleware(request: NextRequest) {
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   
+  // Content Security Policy (CSP)
+  const csp = [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com", // Google reCAPTCHA
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com data:",
+    "img-src 'self' data: https: blob:",
+    "connect-src 'self' https://*.supabase.co https://api.ipify.org https://www.google.com",
+    "frame-src 'self' https://www.google.com", // reCAPTCHA iframe
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "frame-ancestors 'none'",
+    "upgrade-insecure-requests",
+  ].join('; ');
+  
+  response.headers.set('Content-Security-Policy', csp);
+  
   // Скрыть информацию о сервере
   response.headers.set('Server', 'OSS-DVFU');
   response.headers.set('X-Powered-By', ''); // Убрать X-Powered-By
@@ -87,48 +118,7 @@ export function middleware(request: NextRequest) {
   return response;
 }
 
-function checkRateLimit(ip: string, path: string): { allowed: boolean; retryAfter: number } {
-  const now = Date.now();
-  const key = `${ip}:${path}`;
-  const record = rateLimitMap.get(key);
-
-  // Разные лимиты для разных endpoints
-  let maxRequests = 100;
-  let windowMs = 60000; // 1 минута
-
-  if (path.includes('/api/auth') || path.includes('/login')) {
-    maxRequests = 5; // 5 попыток входа в минуту
-    windowMs = 60000;
-  } else if (path.includes('/api/security')) {
-    maxRequests = 50;
-    windowMs = 60000;
-  }
-
-  if (!record || now > record.resetTime) {
-    rateLimitMap.set(key, { count: 1, resetTime: now + windowMs });
-    return { allowed: true, retryAfter: 0 };
-  }
-
-  if (record.count >= maxRequests) {
-    const retryAfter = Math.ceil((record.resetTime - now) / 1000);
-    return { allowed: false, retryAfter };
-  }
-
-  record.count++;
-  return { allowed: true, retryAfter: 0 };
-}
-
-// Очистка старых записей rate limit каждые 5 минут
-if (typeof setInterval !== 'undefined') {
-  setInterval(() => {
-    const now = Date.now();
-    for (const [key, record] of rateLimitMap.entries()) {
-      if (now > record.resetTime) {
-        rateLimitMap.delete(key);
-      }
-    }
-  }, 5 * 60 * 1000);
-}
+// Rate limiting теперь использует Redis (см. lib/redis.ts)
 
 export const config = {
   matcher: [
