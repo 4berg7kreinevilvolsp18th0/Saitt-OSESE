@@ -223,3 +223,8 @@ export default function TwoFactorAuthPage() {
               </div>
             )}
           </div>
+        ) : (
+                </p>
+        )}
+}
+
