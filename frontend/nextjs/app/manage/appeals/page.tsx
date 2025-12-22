@@ -304,3 +304,41 @@ export default function AdminAppealsKanban() {
           placeholder={t('common.search') + ' по обращениям...'}
           className="max-w-md"
         />
+      </div>
+
+      {error && (
+        <div className="mt-6 rounded-xl sm:rounded-2xl border border-red-500/40 bg-red-500/10 p-4 text-xs sm:text-sm text-red-400 light:bg-red-50 light:border-red-200 light:text-red-700">
+          {error}
+          <div className="mt-1 text-white/60 light:text-gray-500">
+            Если вы видите ошибку доступа — значит, политики RLS корректно ограничивают роль.
+          </div>
+        </div>
+      )}
+
+      <div className="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        {columns.map((c) => (
+          <section key={c.key} className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4 light:bg-white light:border-gray-200 light:shadow-sm">
+            <div className="text-xs sm:text-sm font-semibold mb-2 sm:mb-3 light:text-gray-900">{c.title}</div>
+            <div className="space-y-2 sm:space-y-3">
+              {loading ? (
+                <div className="text-xs sm:text-sm text-white/50 light:text-gray-500">Загрузка…</div>
+              ) : grouped[c.key].length === 0 ? (
+                <div className="text-xs sm:text-sm text-white/50 light:text-gray-500">Пусто</div>
+              ) : (
+                grouped[c.key].map((a) => (
+                  <AppealCard
+                    key={a.id}
+                    appeal={a}
+                    onMove={move}
+                    onAssign={assign}
+                    onSetPriority={setPriority}
+                    onSetDeadline={setDeadline}
+                    availableUsers={users}
+                    columns={columns}
+                  />
+                ))
+              )}
+            </div>
+          </section>
+        ))}
+      </div>
