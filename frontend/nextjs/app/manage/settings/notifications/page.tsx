@@ -61,3 +61,35 @@ export default function NotificationSettingsPage() {
     telegram_enabled: false,
     telegram_chat_id: null,
     telegram_username: null,
+    telegram_appeal_status: true,
+    telegram_appeal_assigned: true,
+    telegram_appeal_comment: true,
+    telegram_appeal_new: true,
+    telegram_appeal_overdue: true,
+    telegram_appeal_escalated: true,
+  });
+  const [pushSupported, setPushSupported] = useState(false);
+  const [pushSubscribed, setPushSubscribed] = useState(false);
+  const [telegramConnecting, setTelegramConnecting] = useState(false);
+
+  useEffect(() => {
+    checkAuth();
+    checkPushSupport();
+  }, []);
+
+  async function checkAuth() {
+    const { user } = await getCurrentUser();
+    if (!user) {
+      router.push('/admin/login');
+      return;
+    }
+    loadSettings(user.id);
+  }
+
+  async function checkPushSupport() {
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+      setPushSupported(true);
+      try {
+        const registration = await navigator.serviceWorker.ready;
+        const subscription = await registration.pushManager.getSubscription();
+        setPushSubscribed(!!subscription);
