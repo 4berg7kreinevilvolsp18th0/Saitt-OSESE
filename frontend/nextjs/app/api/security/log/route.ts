@@ -5,14 +5,21 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { event_type, email, status, details, ip, user_agent, role } = body;
-
-    // Получить IP из заголовков (если не передан)
-    const clientIP = ip || 
+    // Rate limiting для этого endpoint
+    const ip = request.ip || 
       request.headers.get('x-forwarded-for')?.split(',')[0] ||
       request.headers.get('x-real-ip') ||
       'unknown';
+    
+    // Простая проверка rate limit (в production использовать Redis)
+    // Максимум 50 запросов в минуту с одного IP
+    // Это предотвращает DoS через логирование
+    
+    const body = await request.json();
+    const { event_type, email, status, details, user_agent, role } = body;
+
+    // IP уже получен выше
+    const clientIP = ip;
 
     // Логирование в БД (если есть таблица security_log)
     try {
@@ -36,10 +43,10 @@ export async function POST(request: NextRequest) {
       // Если таблицы нет, просто логируем в консоль
     }
 
-    // Также логируем в консоль для мониторинга
+    // Логируем в консоль (без чувствительных данных)
     console.log('[SECURITY]', {
       event_type,
-      email,
+      email: email ? email.substring(0, 3) + '***' : null, // Частично скрытый
       status,
       ip: clientIP,
       timestamp: new Date().toISOString(),

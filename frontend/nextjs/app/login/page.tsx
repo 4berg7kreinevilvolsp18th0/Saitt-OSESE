@@ -49,6 +49,23 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
+      // Проверка rate limit на сервере
+      const rateLimitCheck = await fetch('/api/auth/rate-limit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      
+      if (!rateLimitCheck.ok) {
+        const rateLimitData = await rateLimitCheck.json();
+        if (rateLimitData.retryAfter) {
+          const minutes = Math.ceil(rateLimitData.retryAfter / 60);
+          setError(`Слишком много попыток. Попробуйте через ${minutes} минут.`);
+          setLoading(false);
+          return;
+        }
+      }
+
       // Логирование попытки входа
       await logLoginAttempt(email, 'attempt');
 
@@ -61,6 +78,8 @@ export default function LoginPage() {
         setLoginAttempts(attempts);
 
         // Блокировка после 5 неудачных попыток
+        // ВАЖНО: Это клиентская блокировка, легко обходится
+        // Реальная блокировка должна быть на сервере (через rate limit API)
         if (attempts >= 5) {
           const blockTime = new Date(Date.now() + 15 * 60 * 1000); // 15 минут
           localStorage.setItem('login_blocked', blockTime.toISOString());
@@ -78,17 +97,13 @@ export default function LoginPage() {
         // Логирование неудачной попытки
         await logLoginAttempt(email, 'failed', signInError.message);
 
-        // Более понятные сообщения об ошибках
-        let errorMessage = 'Ошибка входа';
+        // Унифицированное сообщение об ошибке (не раскрывать информацию)
+        // Всегда одинаковое сообщение, независимо от причины
+        let errorMessage = 'Неверный email или пароль';
         
-        if (signInError.message?.includes('Invalid login credentials')) {
-          errorMessage = `Неверный email или пароль. Осталось попыток: ${5 - attempts}`;
-        } else if (signInError.message?.includes('Email not confirmed')) {
-          errorMessage = 'Email не подтвержден. Проверьте почту.';
-        } else if (signInError.message?.includes('Too many requests')) {
+        // Только для внутренних ошибок показываем детали
+        if (signInError.message?.includes('Too many requests')) {
           errorMessage = 'Слишком много запросов. Попробуйте позже.';
-        } else if (signInError.message) {
-          errorMessage = signInError.message;
         }
         
         setError(errorMessage);
@@ -124,7 +139,7 @@ export default function LoginPage() {
           email: email.substring(0, 3) + '***', // Частично скрытый email
           status,
           details,
-          ip: await getClientIP(),
+          ip: 'client', // IP будет получен на сервере из заголовков
           user_agent: navigator.userAgent,
         }),
       });
@@ -134,15 +149,8 @@ export default function LoginPage() {
     }
   }
 
-  async function getClientIP(): Promise<string> {
-    try {
-      const response = await fetch('https://api.ipify.org?format=json');
-      const data = await response.json();
-      return data.ip;
-    } catch {
-      return 'unknown';
-    }
-  }
+  // IP будет получен на сервере из заголовков
+  // Не нужно делать внешний запрос - это медленно и ненадежно
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-oss-dark px-6 py-12">
@@ -194,11 +202,7 @@ export default function LoginPage() {
               </div>
             )}
 
-            {loginAttempts > 0 && loginAttempts < 5 && (
-              <div className="text-sm text-yellow-400">
-                Неудачных попыток: {loginAttempts} из 5
-              </div>
-            )}
+            {/* Не показывать количество попыток - это помогает атакующим */}
 
             <button
               type="submit"

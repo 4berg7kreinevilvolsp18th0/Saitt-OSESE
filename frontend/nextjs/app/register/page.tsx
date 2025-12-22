@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '../../lib/supabaseClient';
+import { validatePassword } from '../../lib/passwordValidation';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -44,9 +45,10 @@ export default function RegisterPage() {
     e.preventDefault();
     setError(null);
 
-    // Валидация
-    if (formData.password.length < 8) {
-      setError('Пароль должен быть не менее 8 символов');
+    // Валидация пароля с проверкой сложности
+    const passwordValidation = validatePassword(formData.password);
+    if (!passwordValidation.valid) {
+      setError(passwordValidation.errors[0] || 'Пароль не соответствует требованиям');
       return;
     }
 
@@ -55,7 +57,9 @@ export default function RegisterPage() {
       return;
     }
 
-    if (!formData.email.includes('@')) {
+    // Валидация email
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(formData.email)) {
       setError('Неверный формат email');
       return;
     }
@@ -76,7 +80,22 @@ export default function RegisterPage() {
       });
 
       if (signUpError) {
-        setError(signUpError.message || 'Ошибка регистрации');
+        // Унифицированное сообщение (не раскрывать, существует ли email)
+        // Всегда показывать успех, даже если email уже существует
+        // Это защищает от email enumeration
+        if (signUpError.message?.includes('already registered') || 
+            signUpError.message?.includes('User already registered')) {
+          // Не показывать ошибку, показать успех (защита от enumeration)
+          setSuccess(true);
+          setLoading(false);
+          setTimeout(() => {
+            router.push('/login');
+          }, 3000);
+          return;
+        }
+        
+        // Для других ошибок показывать унифицированное сообщение
+        setError('Ошибка регистрации. Попробуйте позже.');
         setLoading(false);
         return;
       }
