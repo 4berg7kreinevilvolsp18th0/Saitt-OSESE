@@ -225,3 +225,42 @@ export default function AdminAppealsKanban() {
     
     if (error) {
       setError(error.message);
+      return;
+    }
+    
+    // Отправляем уведомление назначенному пользователю
+    if (userId) {
+      notifyAppealChange(id, {
+        assigned_to: userId,
+        title: appeal.title,
+      }).catch((err) => {
+        console.error('Notification error:', err);
+      });
+    }
+    
+    await load(); // Перезагружаем для обновления имен
+  }
+
+  async function setPriority(id: string, priority: string) {
+    setError(null);
+    const { error } = await supabase
+      .from('appeals')
+      .update({ priority })
+      .eq('id', id);
+    
+    if (error) {
+      setError(error.message);
+      return;
+    }
+    
+    setAppeals((prev) => prev.map((a) => (a.id === id ? { ...a, priority } : a)));
+  }
+
+  async function setDeadline(id: string, deadline: string | null) {
+    setError(null);
+    const { error } = await supabase
+      .from('appeals')
+      .update({ deadline })
+      .eq('id', id);
+    
+    if (error) {
