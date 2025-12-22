@@ -93,3 +93,35 @@ export default function NotificationSettingsPage() {
         const registration = await navigator.serviceWorker.ready;
         const subscription = await registration.pushManager.getSubscription();
         setPushSubscribed(!!subscription);
+      } catch (err) {
+        console.error('Push check error:', err);
+      }
+    }
+  }
+
+  async function loadSettings(userId: string) {
+    try {
+      const { data, error } = await supabase
+        .from('notification_settings')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error loading settings:', error);
+        return;
+      }
+
+      if (data) {
+        setSettings({
+          email_enabled: data.email_enabled ?? true,
+          email_appeal_status: data.email_appeal_status ?? true,
+          email_appeal_assigned: data.email_appeal_assigned ?? true,
+          email_appeal_comment: data.email_appeal_comment ?? true,
+          email_appeal_new: data.email_appeal_new ?? true,
+          email_appeal_overdue: data.email_appeal_overdue ?? true,
+          email_appeal_escalated: data.email_appeal_escalated ?? true,
+          email_daily_summary: data.email_daily_summary ?? false,
+          push_enabled: data.push_enabled ?? false,
+          push_appeal_status: data.push_appeal_status ?? true,
+          push_appeal_assigned: data.push_appeal_assigned ?? true,
