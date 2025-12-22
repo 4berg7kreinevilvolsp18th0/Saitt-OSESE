@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { verify2FAToken, getUser2FASecret } from '../../../lib/2fa';
 
 export default function TwoFactorAuthLoginPage() {
   const router = useRouter();
