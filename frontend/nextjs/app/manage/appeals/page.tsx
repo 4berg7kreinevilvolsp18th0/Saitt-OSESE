@@ -186,3 +186,42 @@ export default function AdminAppealsKanban() {
               publicToken: updatedAppeal.public_token,
             }),
           });
+        } catch (notifError) {
+          console.warn('Не удалось отправить Telegram уведомление:', notifError);
+        }
+      }
+      
+      // Email уведомление
+      if (appeal.contact_type === 'email') {
+        try {
+          await fetch('/api/notifications/email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              appealId: id,
+              status: to,
+              title: appeal.title,
+              contactValue: appeal.contact_value,
+              contactType: appeal.contact_type,
+              publicToken: updatedAppeal.public_token,
+            }),
+          });
+        } catch (notifError) {
+          console.warn('Не удалось отправить Email уведомление:', notifError);
+        }
+      }
+    }
+  }
+
+  async function assign(id: string, userId: string | null) {
+    setError(null);
+    const appeal = appeals.find((a) => a.id === id);
+    if (!appeal) return;
+
+    const { error } = await supabase
+      .from('appeals')
+      .update({ assigned_to: userId })
+      .eq('id', id);
+    
+    if (error) {
+      setError(error.message);
