@@ -342,3 +342,6 @@ export default function AdminAppealsKanban() {
           </section>
         ))}
       </div>
+    </main>
+  );
+}
