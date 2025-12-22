@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getCurrentUser } from '../../../../lib/auth';
-import { verify2FAToken, getUser2FASecret, is2FAEnabled } from '../../../../lib/2fa';
+import { getCurrentUser } from '../../../../../lib/auth';
+import { verify2FAToken, getUser2FASecret, is2FAEnabled } from '../../../../../lib/2fa';
 
 export const dynamic = 'force-dynamic';
 
