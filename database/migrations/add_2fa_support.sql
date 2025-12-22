@@ -43,3 +43,4 @@ CREATE POLICY "user_2fa_select_admin" ON user_2fa
 COMMENT ON TABLE user_2fa IS 'Настройки двухфакторной аутентификации для пользователей';
 COMMENT ON COLUMN user_2fa.secret IS 'TOTP секретный ключ (хранится в зашифрованном виде)';
 COMMENT ON COLUMN user_2fa.backup_codes IS 'Резервные коды для восстановления доступа';
+
