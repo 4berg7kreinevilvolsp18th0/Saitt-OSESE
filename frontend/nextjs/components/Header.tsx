@@ -22,10 +22,20 @@ export default function Header() {
   const { t } = useLocale();
 
   return (
-    <header className="sticky top-0 z-50 bg-oss-dark/90 backdrop-blur-md border-b border-white/10 
-      light:bg-white/98 light:backdrop-blur-lg light:border-gray-200/60
-      light:shadow-[0_1px_3px_rgba(0,0,0,0.05)] 
-      animate-fade-in-down">
+    <header className="sticky top-0 z-50 
+      bg-gradient-to-r from-oss-dark via-[#0F1115] to-oss-dark
+      backdrop-blur-xl border-b border-white/10 
+      shadow-[0_4px_20px_rgba(0,0,0,0.3)]
+      light:bg-gradient-to-r light:from-[#F8F9FA] light:via-[#F5F7FA] light:to-[#F8F9FA]
+      light:backdrop-blur-xl light:border-gray-200/80
+      light:shadow-[0_2px_12px_rgba(0,0,0,0.08),0_1px_3px_rgba(0,0,0,0.05)]
+      light:bg-opacity-95
+      animate-fade-in-down
+      relative overflow-hidden">
+      {/* Декоративный градиентный акцент */}
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-oss-red/5 to-transparent 
+        light:from-transparent light:via-oss-red/3 light:to-transparent pointer-events-none"></div>
+      <div className="relative z-10">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition">
           <Logo size={32} showText={false} useImage={true} />
@@ -48,6 +58,7 @@ export default function Header() {
           <ThemeToggle />
           <MobileMenu />
         </div>
+      </div>
       </div>
     </header>
   );
