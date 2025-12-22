@@ -224,7 +224,24 @@ export default function TwoFactorAuthPage() {
             )}
           </div>
         ) : (
+          <div>
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-xl font-semibold mb-2">2FA включена</h2>
+                <p className="text-white/70">
+                  Ваш аккаунт защищен двухфакторной аутентификацией.
                 </p>
+              </div>
+              <div className="text-2xl">✅</div>
+            </div>
+
+            <button
+              onClick={handleDisable}
+              className="px-6 py-3 rounded-xl border border-red-500/40 text-red-400 hover:bg-red-500/10 transition"
+            >
+              Отключить 2FA
+            </button>
+          </div>
         )}
 }
 
