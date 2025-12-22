@@ -102,9 +102,8 @@ export function getBlurColor1(colorKey: ColorKey): string {
 export function getBlurColor2(colorKey: ColorKey): string {
   switch (colorKey) {
     case 'legal':
-      return 'bg-legal-blur-2';
+      return 'bg-blur-legal-2';
     case 'infrastructure':
-      return 'bg-infrastructure-blur-2';
     case 'scholarship':
       return 'bg-scholarship-blur-2';
     case 'international':
