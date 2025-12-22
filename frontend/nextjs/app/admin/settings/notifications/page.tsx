@@ -187,7 +187,7 @@ export default function NotificationSettingsPage() {
       
       toast.info(
         `Откройте бота ${botUsername} в Telegram и отправьте команду /start для подключения уведомлений`,
-        { duration: 5000 }
+        5000
       );
       
       // Открываем бота в новой вкладке
