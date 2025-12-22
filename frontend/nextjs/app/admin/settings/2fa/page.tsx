@@ -243,5 +243,8 @@ export default function TwoFactorAuthPage() {
             </button>
           </div>
         )}
+      </div>
+    </main>
+  );
 }
 
