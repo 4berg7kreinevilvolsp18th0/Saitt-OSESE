@@ -761,6 +761,39 @@ a {
 
 /* Инфраструктурный блок - голубые размытые элементы */
 .bg-blur-infrastructure-1 {
+  background-color: #1E6BAA;
+}
+
+.bg-blur-infrastructure-2 {
+  background-color: #1C809C;
+}
+
+/* Стипендиальный комитет - зелёные размытые элементы */
+.bg-blur-scholarship-1 {
+  background-color: #1C9C56;
+}
+
+.bg-blur-scholarship-2 {
+  background-color: #1C9C65;
+}
+
+/* Иностранный блок - оранжевые размытые элементы */
+.bg-blur-international-1 {
+  background-color: #EDAE26;
+}
+
+.bg-blur-international-2 {
+  background-color: #EB9D2F;
+}
+
+/* Объединение - маджентовые размытые элементы */
+.bg-blur-neutral-1 {
+  background-color: #C240FF;
+}
+
+.bg-blur-neutral-2 {
+  background-color: #D026D9;
+}
 /* Цвет ссылок в светлой теме */
 .light .text-oss-red {
   color: #D11F2A;
