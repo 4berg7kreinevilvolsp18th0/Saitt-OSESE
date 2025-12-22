@@ -110,7 +110,7 @@ export function getBlurColor2(colorKey: ColorKey): string {
     case 'international':
       return 'bg-blur-international-2';
     case 'neutral':
-      return 'bg-neutral-blur-2';
+      return 'bg-blur-neutral-2';
     case 'oss':
     default:
       return 'bg-red-600';
