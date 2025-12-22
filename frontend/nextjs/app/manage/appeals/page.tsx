@@ -120,3 +120,41 @@ export default function AdminAppealsKanban() {
 
   useEffect(() => {
     load();
+  }, []);
+
+  const grouped = useMemo(() => {
+    const g: Record<string, any[]> = { new: [], in_progress: [], waiting: [], closed: [] };
+    for (const a of filteredAppeals) g[a.status]?.push(a);
+    return g;
+  }, [filteredAppeals]);
+
+  async function move(id: string, to: AppealStatus) {
+    setError(null);
+    const appeal = appeals.find((a) => a.id === id);
+    if (!appeal) return;
+
+    const updateData: any = { status: to };
+    
+    // Автоматически устанавливаем first_response_at при переходе из new в in_progress
+    if (to === 'in_progress' && appeal.status === 'new') {
+      updateData.first_response_at = new Date().toISOString();
+    }
+    
+    // Автоматически устанавливаем closed_at при закрытии
+    if (to === 'closed') {
+      updateData.closed_at = new Date().toISOString();
+    }
+
+    const { data: updatedAppeal, error } = await supabase
+      .from('appeals')
+      .update(updateData)
+      .eq('id', id)
+      .select('public_token, contact_type, contact_value')
+      .single();
+
+    if (error) {
+      setError(error.message);
+      return;
+    }
+
+    setAppeals((prev) => prev.map((a) => (a.id === id ? { ...a, ...updateData } : a)));
