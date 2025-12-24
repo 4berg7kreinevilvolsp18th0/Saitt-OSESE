@@ -96,8 +96,17 @@ export default function StudentOrganizations() {
           return (
           <div
             key={org.id}
-            className={`professional-card rounded-xl sm:rounded-2xl p-5 sm:p-6 hover-lift focus-ring animate-fade-in-up ${delayClass}`}
+            className={`professional-card rounded-xl sm:rounded-2xl p-5 sm:p-6 hover-lift focus-ring animate-fade-in-up ${delayClass}
+              border-2 border-neutral/50 light:border-neutral/30
+              bg-gradient-neutral bg-opacity-20 hover:bg-opacity-30
+              light:bg-opacity-0 light:bg-gradient-to-br light:from-white light:via-white light:to-gray-50
+              light:border-opacity-40 relative overflow-hidden`}
           >
+            {/* Фиолетовые декоративные элементы */}
+            <div className="absolute -top-4 -left-4 w-20 h-20 bg-gradient-neutral rounded-full opacity-20 blur-xl group-hover:opacity-30 transition-opacity duration-300 
+              light:opacity-10 light:blur-2xl"></div>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-neutral rounded-full opacity-0 light:opacity-5 light:blur-3xl transition-opacity duration-500 -translate-y-1/2 translate-x-1/2"></div>
+            <div className="relative z-10">
             {org.logo_url && (
               <div className="mb-5 flex justify-center">
                 <div className="p-3 rounded-lg bg-white/5 light:bg-gray-50 light:border light:border-gray-200">
@@ -172,6 +181,7 @@ export default function StudentOrganizations() {
                 Контакт: <span className="text-white/80 light:text-gray-700">{org.contact_person}</span>
               </p>
             )}
+            </div>
           </div>
           );
         })}
