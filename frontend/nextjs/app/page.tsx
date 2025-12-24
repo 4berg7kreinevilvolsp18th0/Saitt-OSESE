@@ -8,6 +8,7 @@ import ContentCard from '../components/ContentCard';
 import Logo from '../components/Logo';
 import TelegramPosts from '../components/TelegramPosts';
 import StudentOrganizations from '../components/StudentOrganizations';
+import StudentOrganizationsCard from '../components/StudentOrganizationsCard';
 import { supabase, isSupabaseConfigured, safeSupabaseQuery } from '../lib/supabaseClient';
 
 export default function Home() {
@@ -195,6 +196,10 @@ export default function Home() {
               </div>
             );
           })}
+          {/* Карточка студенческих организаций */}
+          <div className="animate-fade-in-up animate-delay-500">
+            <StudentOrganizationsCard />
+          </div>
         </div>
       </section>
 
@@ -254,7 +259,9 @@ export default function Home() {
         </div>
       </section>
 
-      <StudentOrganizations />
+      <div id="student-organizations">
+        <StudentOrganizations />
+      </div>
     </main>
   );
 }
