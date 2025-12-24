@@ -2,6 +2,20 @@
 -- Миграция: Защита контента от удаления
 -- ===============================
 
+-- Убеждаемся, что таблица content существует
+CREATE TABLE IF NOT EXISTS content (
+    id uuid primary key default gen_random_uuid(),
+    type text not null check (type in ('news','guide','faq')),
+    title text not null,
+    slug text unique not null,
+    body text not null,
+    direction_id uuid references directions(id),
+    status text not null default 'draft'
+        check (status in ('draft','published','archived')),
+    published_at timestamptz,
+    updated_at timestamptz default now()
+);
+
 -- Добавляем soft delete для контента
 ALTER TABLE content 
 ADD COLUMN IF NOT EXISTS deleted_at timestamptz,
