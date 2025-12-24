@@ -31,9 +31,9 @@ jobs:
           cache: 'npm'
       
       - name: Install Supabase CLI
-        run: |
-          npm install -g supabase@latest
-          supabase --version
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
       
       - name: Login to Supabase
         env:
