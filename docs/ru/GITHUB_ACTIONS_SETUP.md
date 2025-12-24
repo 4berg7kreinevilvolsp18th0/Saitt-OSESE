@@ -16,16 +16,78 @@ GitHub Actions позволяет автоматически применять 
 
 ## Шаг 1: Установка Supabase CLI локально (опционально)
 
-Для тестирования миграций локально:
+**⚠️ ВАЖНО:** 
+- Supabase CLI нельзя устанавливать через `npm install -g`!
+- Если Scoop выдает ошибку распаковки, используйте npx (Вариант C)
 
-```bash
-npm install -g supabase
+### Вариант A: Через Scoop (может иметь проблемы)
+
+1. Установите Scoop (если еще не установлен):
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
 ```
 
-Проверка:
-```bash
+2. Установите Supabase CLI:
+```powershell
+scoop bucket add supabase https://github.com/supabase/scoop-bucket.git
+scoop install supabase
+```
+
+3. Проверка:
+```powershell
 supabase --version
 ```
+
+### Вариант B: Через Chocolatey
+
+1. Установите Chocolatey (если еще не установлен):
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+```
+
+2. Установите Supabase CLI:
+```powershell
+choco install supabase
+```
+
+3. Проверка:
+```powershell
+
+
+```
+
+### Вариант C: Использование npx (РЕКОМЕНДУЕТСЯ) ⭐
+
+**Самый простой способ!** Не требует установки менеджеров пакетов.
+
+```powershell
+# Использование без установки
+npx supabase@latest login
+npx supabase@latest link --project-ref your-project-id
+npx supabase@latest db push
+```
+
+**Для удобства создайте алиас:**
+```powershell
+# Добавьте в PowerShell профиль ($PROFILE)
+function supabase { npx supabase@latest $args }
+```
+
+Теперь можно использовать просто: `supabase --version`
+
+### Вариант D: Ручная установка
+
+1. Скачайте **ZIP** (не tar.gz!) с https://github.com/supabase/cli/releases
+2. Распакуйте `supabase.exe` в папку (например, `C:\Tools\supabase`)
+3. Добавьте в PATH:
+   ```powershell
+   [Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\Tools\supabase", "User")
+   ```
+
+**Примечание:** Для GitHub Actions установка не требуется - CLI устанавливается автоматически в workflow.
 
 ---
 
