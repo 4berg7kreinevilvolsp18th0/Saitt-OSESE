@@ -2,6 +2,17 @@
 -- Миграция: Система хранения файлов с автоматическим удалением
 -- ===============================
 
+-- Проверяем, что таблица существует (если нет - создаем базовую структуру)
+CREATE TABLE IF NOT EXISTS appeal_attachments (
+    id uuid primary key default gen_random_uuid(),
+    appeal_id uuid references appeals(id) on delete cascade,
+    file_name text not null,
+    file_url text not null,
+    file_size integer,
+    mime_type text,
+    uploaded_at timestamptz default now()
+);
+
 -- Добавляем поля для управления хранением файлов
 ALTER TABLE appeal_attachments 
 ADD COLUMN IF NOT EXISTS keep_file boolean DEFAULT false,
