@@ -203,7 +203,7 @@ export default function DirectionPage({ params }: { params: { slug: string } }) 
         <div className="text-xs uppercase tracking-wide text-white/90 light:text-gray-600">
           Направление
         </div>
-        <h1 className="mt-2 text-2xl sm:text-3xl md:text-4xl font-bold text-white light:text-gray-900">{direction.title}</h1>
+        <h1 className="mt-2 text-2xl sm:text-3xl md:text-4xl font-bold text-white">{direction.title}</h1>
         <p className="mt-4 text-base sm:text-lg text-white/90 max-w-3xl light:text-gray-700">{direction.description}</p>
         <div className="mt-6 sm:mt-8 flex flex-wrap gap-3">
           <Link href={`/appeal?direction=${direction.slug}`} className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white text-oss-dark font-semibold hover:bg-white/90 hover:scale-105 transition-all duration-200 text-sm sm:text-base shadow-lg">
