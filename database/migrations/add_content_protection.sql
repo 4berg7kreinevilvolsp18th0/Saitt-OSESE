@@ -95,7 +95,7 @@ BEGIN
   ) VALUES (
     COALESCE(NEW.id, OLD.id),
     action_type,
-    COALESCE(NEW.deleted_by, OLD.deleted_by, auth.uid()),
+    COALESCE(NEW.deleted_by, OLD.deleted_by, (SELECT auth.uid())::uuid),
     old_json,
     new_json
   );
@@ -120,8 +120,8 @@ RETURNS boolean AS $$
 DECLARE
   current_user_id uuid;
 BEGIN
-  -- Получаем текущего пользователя
-  current_user_id := auth.uid();
+  -- Получаем текущего пользователя с явным приведением типа
+  current_user_id := (SELECT auth.uid())::uuid;
   
   IF current_user_id IS NULL THEN
     RAISE EXCEPTION 'Пользователь не авторизован';
