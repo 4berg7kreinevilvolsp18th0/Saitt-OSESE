@@ -195,7 +195,7 @@ begin
     -- Check if user has role without direction (board/staff)
     return exists (
       select 1 from user_roles
-      where user_id = auth.uid()
+      where user_id = (SELECT auth.uid())::uuid
         and role = p_role
         and direction_id is null
     );
@@ -203,7 +203,7 @@ begin
     -- Check if user has role for specific direction
     return exists (
       select 1 from user_roles
-      where user_id = auth.uid()
+      where user_id = (SELECT auth.uid())::uuid
         and role = p_role
         and (direction_id = p_direction_id or direction_id is null)
     );
@@ -334,7 +334,7 @@ create policy "appeal_attachments_read" on appeal_attachments
 -- User Roles: users can read their own roles
 drop policy if exists "user_roles_read_own" on user_roles;
 create policy "user_roles_read_own" on user_roles
-  for select using (user_id = auth.uid());
+  for select using (user_id = (SELECT auth.uid())::uuid);
 
 -- User Roles: board/staff can manage all roles
 drop policy if exists "user_roles_manage" on user_roles;
