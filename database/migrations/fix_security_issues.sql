@@ -32,7 +32,7 @@ CREATE POLICY content_audit_log_admin_read ON content_audit_log
   USING (
     EXISTS (
       SELECT 1 FROM user_roles ur
-      WHERE ur.user_id = (SELECT auth.uid())
+      WHERE ur.user_id = (SELECT auth.uid())::uuid
         AND ur.role IN ('board', 'staff')
     )
   );
@@ -198,13 +198,13 @@ WHERE direction_id IS NOT NULL;
 DROP POLICY IF EXISTS user_roles_read_own ON user_roles;
 CREATE POLICY user_roles_read_own ON user_roles
   FOR SELECT
-  USING (user_id = (SELECT auth.uid()));
+  USING (user_id = (SELECT auth.uid())::uuid);
 
 -- Обновляем политику notification_settings_own
 DROP POLICY IF EXISTS notification_settings_own ON notification_settings;
 CREATE POLICY notification_settings_own ON notification_settings
   FOR ALL
-  USING (user_id = (SELECT auth.uid()));
+  USING (user_id = (SELECT auth.uid())::uuid);
 
 -- Обновляем политики notification_log
 DROP POLICY IF EXISTS notification_log_own ON notification_log;
@@ -212,11 +212,11 @@ DROP POLICY IF EXISTS notification_log_insert ON notification_log;
 
 CREATE POLICY notification_log_own ON notification_log
   FOR SELECT
-  USING (user_id = (SELECT auth.uid()));
+  USING (user_id = (SELECT auth.uid())::uuid);
 
 CREATE POLICY notification_log_insert ON notification_log
   FOR INSERT
-  WITH CHECK (user_id = (SELECT auth.uid()));
+  WITH CHECK (user_id = (SELECT auth.uid())::uuid);
 
 -- ============================================
 -- 6. ОПТИМИЗАЦИЯ: Объединение множественных политик
@@ -234,7 +234,7 @@ CREATE POLICY appeals_unified_read ON appeals
     (
       EXISTS (
         SELECT 1 FROM user_roles ur
-        WHERE ur.user_id = (SELECT auth.uid())
+        WHERE ur.user_id = (SELECT auth.uid())::uuid
           AND (
             ur.role = 'board'
             OR (ur.role IN ('lead', 'member', 'staff') AND ur.direction_id = appeals.direction_id)
@@ -263,7 +263,7 @@ CREATE POLICY content_unified_read ON content
     (
       EXISTS (
         SELECT 1 FROM user_roles ur
-        WHERE ur.user_id = (SELECT auth.uid())
+        WHERE ur.user_id = (SELECT auth.uid())::uuid
           AND ur.role IN ('board', 'lead', 'member', 'staff')
       )
     )
@@ -283,7 +283,7 @@ CREATE POLICY documents_unified_read ON documents
     (
       EXISTS (
         SELECT 1 FROM user_roles ur
-        WHERE ur.user_id = (SELECT auth.uid())
+        WHERE ur.user_id = (SELECT auth.uid())::uuid
           AND ur.role IN ('board', 'lead', 'member', 'staff')
       )
     )
@@ -298,13 +298,13 @@ CREATE POLICY user_roles_unified_read ON user_roles
   FOR SELECT
   USING (
     -- Пользователь видит свои роли
-    (user_id = (SELECT auth.uid()))
+    (user_id = (SELECT auth.uid())::uuid)
     OR
     -- Админы видят все роли
     (
       EXISTS (
         SELECT 1 FROM user_roles ur
-        WHERE ur.user_id = (SELECT auth.uid())
+        WHERE ur.user_id = (SELECT auth.uid())::uuid
           AND ur.role = 'board'
       )
     )
