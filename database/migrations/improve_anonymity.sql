@@ -2,8 +2,31 @@
 -- Миграция: Улучшение анонимности обращений
 -- ===============================
 
--- Добавляем поле для хранения зашифрованных контактов
+-- Убеждаемся, что таблица appeals существует
+CREATE TABLE IF NOT EXISTS appeals (
+    id uuid primary key default gen_random_uuid(),
+    direction_id uuid references directions(id),
+    category text,
+    title text not null,
+    description text not null,
+    institute text,
+    is_anonymous boolean default false,
+    contact_type text check (contact_type in ('email','telegram')),
+    contact_value text,
+    status text not null default 'new'
+        check (status in ('new','in_progress','waiting','closed')),
+    public_token uuid default gen_random_uuid(),
+    deadline date,
+    priority text default 'normal' check (priority in ('low','normal','high','urgent')),
+    tags text[],
+    created_at timestamptz default now(),
+    first_response_at timestamptz,
+    closed_at timestamptz
+);
+
+-- Добавляем необходимые колонки, если их нет
 ALTER TABLE appeals 
+ADD COLUMN IF NOT EXISTS assigned_to uuid REFERENCES auth.users(id),
 ADD COLUMN IF NOT EXISTS encrypted_contact_value text,
 ADD COLUMN IF NOT EXISTS contact_hash text; -- Хеш для поиска дубликатов без раскрытия контакта
 
