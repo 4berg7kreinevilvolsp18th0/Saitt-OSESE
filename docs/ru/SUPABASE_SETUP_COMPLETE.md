@@ -115,6 +115,13 @@ ORDER BY table_name;
 2. Откройте файл `database/migrations/fix_security_issues.sql`
 3. Скопируйте и выполните код
 
+#### 2.2.7: Исправление ошибок типов UUID
+
+1. Создайте новый запрос
+2. Откройте файл `database/migrations/fix_uuid_type_errors.sql`
+3. Скопируйте и выполните код
+4. **Это исправляет ошибки "operator does not exist: uuid = text"**
+
 #### 2.2.6: (Опционально) Тестовые данные
 
 1. Создайте новый запрос
@@ -379,23 +386,50 @@ jobs:
 
 Если не хотите использовать GitHub Actions, можно настроить локальный скрипт:
 
-1. Установите Supabase CLI:
-```bash
-npm install -g supabase
+**⚠️ ВАЖНО:** Supabase CLI нельзя устанавливать через `npm install -g`!
+
+#### Установка Supabase CLI на Windows:
+
+**Вариант A: Через Scoop (рекомендуется)**
+```powershell
+# Установите Scoop (если еще не установлен)
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+
+# Установите Supabase CLI
+scoop bucket add supabase https://github.com/supabase/scoop-bucket.git
+scoop install supabase
 ```
 
-2. Войдите в Supabase:
-```bash
+**Вариант B: Через Chocolatey**
+```powershell
+# Установите Chocolatey (если еще не установлен)
+Set-ExecutionPolicy Bypass -Scope Process -Force
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+
+# Установите Supabase CLI
+choco install supabase
+```
+
+**Вариант C: Ручная установка**
+1. Скачайте с https://github.com/supabase/cli/releases
+2. Распакуйте и добавьте в PATH
+
+#### Использование:
+
+1. Войдите в Supabase:
+```powershell
 supabase login
 ```
 
-3. Свяжите проект:
-```bash
+2. Свяжите проект:
+```powershell
 supabase link --project-ref your-project-id
 ```
 
-4. Примените миграции:
-```bash
+3. Примените миграции:
+```powershell
 supabase db push
 ```
 
