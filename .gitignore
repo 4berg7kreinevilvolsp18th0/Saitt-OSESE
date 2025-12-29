@@ -63,3 +63,4 @@ ENV/
 # GitHub Actions (keep workflows)
 !.github/workflows/
 
+docs/ru/GITHUB_ACTIONS_TROUBLESHOOTING.md
