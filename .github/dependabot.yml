@@ -1,0 +1,72 @@
+version: 2
+
+updates:
+  # 1) Node/Next.js зависимости (package.json + lock-файл)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Asia/Vladivostok"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "security"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+
+    # Группируем апдейты, чтобы не было 30 PR в неделю
+    groups:
+      nextjs-and-react:
+        patterns:
+          - "next"
+          - "react"
+          - "react-dom"
+          - "@types/react*"
+          - "@types/node"
+      tooling:
+        patterns:
+          - "eslint*"
+          - "prettier*"
+          - "typescript"
+          - "@typescript-eslint/*"
+          - "postcss"
+          - "tailwindcss"
+          - "autoprefixer"
+      security-and-runtime:
+        patterns:
+          - "@supabase/supabase-js"
+          - "recharts"
+          - "zod"
+          - "jsonwebtoken"
+          - "helmet"
+          - "next-safe-middleware"
+      all-minor-patch:
+        update-types:
+          - "minor"
+          - "patch"
+
+    # Чтобы не ломать прод неожиданными мажорами — оставляем мажоры отдельно (ручная проверка)
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  # 2) GitHub Actions (workflow-экосистема)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:30"
+      timezone: "Asia/Vladivostok"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "ci"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+
+
