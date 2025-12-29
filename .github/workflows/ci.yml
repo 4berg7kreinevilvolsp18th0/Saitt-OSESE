@@ -1,55 +1,30 @@
-name: CI - Build and Test
+name: "CI"
 
 on:
-  push:
-    branches:
-      - main
-      - master
-      - develop
   pull_request:
-    branches:
-      - main
-      - master
-      - develop
+    branches: ["master"]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
 
-      - name: Setup Node.js
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: frontend/nextjs/package-lock.json
+          node-version: 20
+          cache: "npm"
 
       - name: Install dependencies
-        working-directory: ./frontend/nextjs
         run: npm ci
 
-      - name: Run linter
-        working-directory: ./frontend/nextjs
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Lint
         run: npm run lint
-        continue-on-error: true
 
-      - name: Build project
-        working-directory: ./frontend/nextjs
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co' }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key' }}
-          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL || 'https://placeholder.vercel.app' }}
+      - name: Build
         run: npm run build
-
-      - name: Check build artifacts
-        working-directory: ./frontend/nextjs
-        run: |
-          if [ ! -d ".next" ]; then
-            echo "Build failed: .next directory not found"
-            exit 1
-          fi
-          echo "Build successful!"
-
