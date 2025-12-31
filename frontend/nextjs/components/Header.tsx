@@ -12,7 +12,8 @@ const NavLink = ({ href, children }: { href: string; children: React.ReactNode }
     href={href}
     className="elegant-link text-sm text-white/80 hover:text-white font-medium
       light:text-gray-700 light:hover:text-oss-red
-      focus-ring px-2 py-1 rounded-md"
+      focus-ring px-2 py-1 rounded-md
+      winter-nav-link"
   >
     {children}
   </Link>
@@ -31,10 +32,12 @@ export default function Header() {
       light:shadow-[0_2px_12px_rgba(0,0,0,0.08),0_1px_3px_rgba(0,0,0,0.05)]
       light:bg-opacity-95
       animate-fade-in-down
-      relative overflow-hidden">
+      relative overflow-hidden
+      winter-header">
       {/* Декоративный градиентный акцент */}
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-oss-red/5 to-transparent 
-        light:from-transparent light:via-oss-red/3 light:to-transparent pointer-events-none"></div>
+        light:from-transparent light:via-oss-red/3 light:to-transparent 
+        pointer-events-none winter-header-accent"></div>
       <div className="relative z-10">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition">

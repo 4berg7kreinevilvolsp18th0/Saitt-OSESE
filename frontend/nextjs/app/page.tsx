@@ -97,11 +97,12 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-oss-dark light:bg-gray-50 text-white light:text-gray-900 animate-page-enter">
+    <main className="min-h-screen bg-oss-dark light:bg-gray-50 text-white light:text-gray-900 animate-page-enter winter-main">
       <section className="bg-oss-red py-12 sm:py-16 md:py-20 
         light:bg-gradient-to-b light:from-white light:via-gray-50/50 light:to-white
         light:relative light:overflow-hidden
-        light:border-b light:border-gray-200/60">
+        light:border-b light:border-gray-200/60
+        winter-hero">
         {/* Декоративные элементы для светлой темы - строгие геометрические формы */}
         <div className="hidden light:block absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
           {/* Тонкие линии для структуры */}
@@ -128,7 +129,8 @@ export default function Home() {
             </div>
           </div>
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 px-2 text-white 
-            light:text-gray-900 light:font-extrabold light:tracking-tight animate-fade-in-down">
+            light:text-gray-900 light:font-extrabold light:tracking-tight
+            animate-fade-in-down winter-hero-title">
             ОБЪЕДИНЕННЫЙ СОВЕТ СТУДЕНТОВ
           </h1>
           <div className="flex items-center justify-center gap-2 mb-3 sm:mb-4 animate-fade-in-up animate-delay-100">
