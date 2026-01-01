@@ -1329,7 +1329,7 @@ a {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-shadow: 0 2px 4px rgba(30, 58, 95, 0.2);
+  text-shadow: 0 2px 8px rgba(26, 58, 90, 0.3), 0 4px 16px rgba(91, 155, 213, 0.2);
 }
 
 .winter-theme .light h1,
