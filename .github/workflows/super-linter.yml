@@ -46,3 +46,15 @@ jobs:
           FILTER_REGEX_INCLUDE: (frontend/|backend/|database/|\.github/)
           FILTER_REGEX_EXCLUDE: (node_modules/|\.next/|dist/|build/)
         continue-on-error: true
+
+      - name: Upload linter results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: super-linter-results
+          path: |
+            .github/linters/*.log
+            .github/linters/*.txt
+          if-no-files-found: ignore
+          retention-days: 30
+
