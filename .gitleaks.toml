@@ -1,0 +1,23 @@
+# Gitleaks конфигурация для сканирования секретов
+title = "OSS DVFU Secret Scanning"
+
+[extend]
+# Используем базовую конфигурацию
+useDefault = true
+
+[allowlist]
+description = "Allowlist для известных безопасных паттернов"
+paths = [
+  '''\.gitignore''',
+  '''\.github/.*\.md''',
+  '''docs/.*\.md''',
+  '''package\.json''',
+  '''package-lock\.json''',
+  '''\.example''',
+  '''\.sample''',
+  '''test/''',
+  '''tests/''',
+  '''__tests__/''',
+  '''\.test\.''',
+  '''\.spec\.''',
+]
