@@ -136,6 +136,8 @@ async function getWorkflowErrors(owner, repo) {
         }
       }
     } catch (e) {
+      console.error(`⚠️  Не удалось получить данные для ${workflowName}:`, e.message);
+    }
   }
   
   return errors;
@@ -216,3 +218,10 @@ function exportTXT(data, file) {
   const byType = {};
   data.forEach(item => {
     const type = item.type || 'Unknown';
+    if (!byType[type]) byType[type] = [];
+    byType[type].push(item);
+  });
+  
+  Object.keys(byType).sort().forEach(type => {
+    lines.push('');
+    lines.push('─'.repeat(80));
