@@ -299,5 +299,7 @@ async function main() {
 }
 
 main().catch(err => {
+  console.error('❌ Ошибка:', err);
   process.exit(1);
 });
+
