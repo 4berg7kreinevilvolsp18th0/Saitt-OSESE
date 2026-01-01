@@ -488,9 +488,10 @@ a {
 }
 
 .winter-theme.light .professional-button-secondary {
-  background: rgba(255, 255, 255, 0.9);
-  border-color: rgba(74, 144, 226, 0.3);
-  color: #1E3A5F;
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-color: rgba(91, 155, 213, 0.35) !important;
+  color: #1A3A5A !important;
+  transition: all 0.3s ease-in-out !important;
 }
 
 .winter-theme.light .professional-button-secondary:hover {
@@ -1067,21 +1068,23 @@ a {
    ЗИМНЯЯ/НОВОГОДНЯЯ ТЕМА
    ============================================ */
 
-/* Зимние цвета */
+/* Зимние цвета - улучшенная палитра */
 .winter-theme {
-  --winter-primary: #4A90E2;
-  --winter-secondary: #87CEEB;
-  --winter-accent: #E0F2FE;
+  --winter-primary: #5B9BD5;      /* Более насыщенный синий */
+  --winter-secondary: #7EC8E3;   /* Яркий голубой */
+  --winter-accent: #B8E6F0;      /* Светлый акцент */
   --winter-snow: #FFFFFF;
-  --winter-ice: #B0E0E6;
-  --winter-dark: #1E3A5F;
+  --winter-ice: #A8D5E2;        /* Ледяной голубой */
+  --winter-dark: #1A3A5A;       /* Более глубокий темно-синий */
+  --winter-purple: #8B7EC8;     /* Фиолетовый акцент для новогоднего настроения */
+  --winter-light-blue: #D4F1F4; /* Очень светлый голубой */
 }
 
-/* Зимний фон с градиентом */
+/* Зимний фон с градиентом - улучшенные цвета */
 .winter-theme body {
-  background: linear-gradient(135deg, #1E3A5F 0%, #2C5282 50%, #1E3A5F 100%);
-  background-attachment: fixed;
-  position: relative;
+  background: linear-gradient(135deg, #1A3A5A 0%, #2D5A7E 30%, #3D7BA8 50%, #2D5A7E 70%, #1A3A5A 100%) !important;
+  background-attachment: fixed !important;
+  transition: background 0.5s ease-in-out !important;
 }
 
 .winter-theme body::before {
@@ -1092,40 +1095,59 @@ a {
   right: 0;
   bottom: 0;
   background: 
-    radial-gradient(circle at 20% 50%, rgba(135, 206, 235, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(224, 242, 254, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 40% 20%, rgba(176, 224, 230, 0.05) 0%, transparent 50%);
+    radial-gradient(circle at 20% 50%, rgba(126, 200, 227, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(184, 230, 240, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(139, 126, 200, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 60% 40%, rgba(168, 213, 226, 0.1) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;
+  transition: opacity 0.5s ease-in-out;
 }
 
-.winter-theme .dark {
-  background: linear-gradient(135deg, #0F1B2E 0%, #1E3A5F 50%, #0F1B2E 100%);
+.winter-theme .dark,
+.winter-theme.dark {
+  background: linear-gradient(135deg, #0F1F2E 0%, #1A3A5A 30%, #2D5A7E 50%, #1A3A5A 70%, #0F1F2E 100%) !important;
+  transition: background 0.5s ease-in-out !important;
 }
 
-.winter-theme .light {
-  background: linear-gradient(135deg, #E0F2FE 0%, #B0E0E6 50%, #87CEEB 100%);
+.winter-theme .light,
+.winter-theme.light {
+  background: linear-gradient(135deg, #D4F1F4 0%, #B8E6F0 30%, #7EC8E3 50%, #B8E6F0 70%, #D4F1F4 100%) !important;
+  transition: background 0.5s ease-in-out !important;
 }
 
-/* Зимние карточки */
+/* Зимние карточки - улучшенные цвета */
 .winter-theme .premium-card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(135, 206, 235, 0.2);
+  background: rgba(255, 255, 255, 0.06) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(126, 200, 227, 0.25) !important;
   box-shadow: 
-    0 8px 32px rgba(30, 58, 95, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 8px 32px rgba(26, 58, 90, 0.35),
+    0 2px 8px rgba(91, 155, 213, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+.winter-theme .premium-card:hover {
+  border-color: rgba(126, 200, 227, 0.4) !important;
+  box-shadow: 
+    0 12px 48px rgba(26, 58, 90, 0.4),
+    0 4px 16px rgba(91, 155, 213, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
 }
 
 .winter-theme .light .premium-card {
-  background: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(135, 206, 235, 0.3);
+  background: rgba(255, 255, 255, 0.85) !important;
+  border: 1px solid rgba(126, 200, 227, 0.35) !important;
   box-shadow: 
-    0 8px 32px rgba(135, 206, 235, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    0 8px 32px rgba(126, 200, 227, 0.25),
+    0 2px 8px rgba(91, 155, 213, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+  transition: all 0.3s ease-in-out !important;
 }
 
-/* Зимние кнопки */
+.winter-theme .light .premium-card:hover {
+  border-color: rgba(91, 155, 213, 0.5) !important;
 .winter-theme .premium-button {
   background: linear-gradient(135deg, #4A90E2 0%, #2C5282 100%);
   box-shadow: 
