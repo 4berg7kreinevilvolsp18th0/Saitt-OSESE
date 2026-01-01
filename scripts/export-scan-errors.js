@@ -225,3 +225,76 @@ function exportTXT(data, file) {
   Object.keys(byType).sort().forEach(type => {
     lines.push('');
     lines.push('─'.repeat(80));
+    lines.push(`ТИП: ${type} (${byType[type].length} ошибок)`);
+    lines.push('─'.repeat(80));
+    
+    byType[type].forEach((item, idx) => {
+      lines.push('');
+      lines.push(`${idx + 1}. ${item.rule || item.vulnerability || item.message || 'Ошибка'}`);
+      if (item.file) lines.push(`   Файл: ${item.file}:${item.line || 0}`);
+      if (item.severity) lines.push(`   Серьезность: ${item.severity}`);
+      if (item.state) lines.push(`   Статус: ${item.state}`);
+      if (item.url) lines.push(`   URL: ${item.url}`);
+      if (item.created) lines.push(`   Создано: ${item.created}`);
+    });
+  });
+  
+  fs.writeFileSync(file, lines.join('\n'), 'utf-8');
+  console.log(`✅ Экспортировано ${data.length} ошибок в ${file}`);
+}
+
+// Главная функция
+async function main() {
+  console.log('🚀 Начало экспорта ошибок сканирования...\n');
+  
+  if (!checkGitHubCLI()) {
+    process.exit(1);
+  }
+  
+  const repoInfo = getRepoInfo();
+  if (!repoInfo) {
+    console.error('❌ Не удалось определить репозиторий');
+    process.exit(1);
+  }
+  
+  console.log(`📦 Репозиторий: ${repoInfo.owner}/${repoInfo.repo}\n`);
+  
+  // Собираем все ошибки
+  const allErrors = [];
+  
+  const codeqlAlerts = await getCodeQLAlerts(repoInfo.owner, repoInfo.repo);
+  allErrors.push(...codeqlAlerts);
+  console.log(`   CodeQL: ${codeqlAlerts.length} alerts\n`);
+  
+  const workflowErrors = await getWorkflowErrors(repoInfo.owner, repoInfo.repo);
+  allErrors.push(...workflowErrors);
+  console.log(`   Workflows: ${workflowErrors.length} ошибок\n`);
+  
+  const securityAdvisories = await getSecurityAdvisories(repoInfo.owner, repoInfo.repo);
+  allErrors.push(...securityAdvisories);
+  console.log(`   Dependabot: ${securityAdvisories.length} alerts\n`);
+  
+  // Экспортируем
+  console.log(`\n📊 Всего найдено ошибок: ${allErrors.length}`);
+  
+  if (allErrors.length > 0) {
+    const outputPath = path.join(process.cwd(), outputFile);
+    
+    switch (format) {
+      case 'csv':
+        exportCSV(allErrors, outputPath);
+        break;
+      case 'txt':
+        exportTXT(allErrors, outputPath);
+        break;
+      case 'json':
+      default:
+        exportJSON(allErrors, outputPath);
+    }
+    
+    console.log(`\n✅ Отчет сохранен: ${outputPath}`);
+  } else {
+    console.log('\n✅ Ошибок не найдено!');
+  }
+}
+
