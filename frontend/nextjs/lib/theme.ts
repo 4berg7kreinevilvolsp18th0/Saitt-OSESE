@@ -65,18 +65,18 @@ export function gradientBg(colorKey: ColorKey): string {
 export function gradientBorder(colorKey: ColorKey): string {
   switch (colorKey) {
     case 'legal':
-      return 'border-legal/50 light:border-legal/30';
+      return 'border-legal/70 light:border-legal/40';
     case 'infrastructure':
-      return 'border-infrastructure/50 light:border-infrastructure/30';
+      return 'border-infrastructure/70 light:border-infrastructure/40';
     case 'scholarship':
-      return 'border-scholarship/50 light:border-scholarship/30';
+      return 'border-scholarship/70 light:border-scholarship/40';
     case 'international':
-      return 'border-international/50 light:border-international/30';
+      return 'border-international/70 light:border-international/40';
     case 'neutral':
-      return 'border-neutral/50 light:border-neutral/30';
+      return 'border-neutral/70 light:border-neutral/40';
     case 'oss':
     default:
-      return 'border-oss-red/50';
+      return 'border-oss-red/70';
   }
 }
 
