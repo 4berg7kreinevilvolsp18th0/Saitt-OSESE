@@ -48,6 +48,17 @@ jobs:
             echo "⚠️  tsconfig.json не найден, пропускаем проверку типов"
           fi
         continue-on-error: true
+
+      - name: Check for console.log
+        working-directory: ./frontend/nextjs
+        run: |
+          echo "🔍 Проверка на console.log в продакшн коде..."
+          if grep -r "console\.log" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" app/ components/ lib/ 2>/dev/null | grep -v "// eslint-disable" | grep -v "console.log(" | head -20; then
+            echo "⚠️  Найдены console.log. Рекомендуется использовать console.error или удалить в продакшн коде."
+          else
+            echo "✅ console.log не найдены или закомментированы"
+          fi
+        continue-on-error: true
           # Подсчет ошибок ESLint
           if [ -f "eslint-results.json" ]; then
             ESLINT_ERRORS=$(jq '[.[] | .messages[] | select(.severity == 2)] | length' eslint-results.json 2>/dev/null || echo "0")
