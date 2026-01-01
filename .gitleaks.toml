@@ -21,3 +21,18 @@ paths = [
   '''\.test\.''',
   '''\.spec\.''',
 ]
+
+commits = [
+  "example",
+  "test",
+  "placeholder",
+  "TODO",
+]
+
+regexes = [
+  '''process\.env\.[A-Z_]+''',
+  '''NEXT_PUBLIC_[A-Z_]+''',
+  '''\${{.*secrets\.[A-Z_]+}}''',
+]
+
+[[rules]]
