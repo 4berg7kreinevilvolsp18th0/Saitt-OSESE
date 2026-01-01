@@ -1441,27 +1441,33 @@ a {
 }
 
 .winter-theme .winter-main {
-  background: linear-gradient(to bottom, #1E3A5F, #2C5282, #1E3A5F) !important;
+  background: linear-gradient(to bottom, #1A3A5A, #2D5A7E, #3D7BA8, #2D5A7E, #1A3A5A) !important;
+  transition: background 0.5s ease-in-out !important;
 }
 
 .winter-theme.light .winter-main {
-  background: linear-gradient(to bottom, #E0F2FE, #B0E0E6, #87CEEB) !important;
+  background: linear-gradient(to bottom, #D4F1F4, #B8E6F0, #7EC8E3, #B8E6F0, #D4F1F4) !important;
+  transition: background 0.5s ease-in-out !important;
 }
 
 .winter-theme .winter-hero {
-  background: linear-gradient(to bottom, #2C5282, #4A90E2, #2C5282) !important;
+  background: linear-gradient(to bottom, #2D5A7E, #5B9BD5, #7EC8E3, #5B9BD5, #2D5A7E) !important;
+  transition: background 0.5s ease-in-out !important;
 }
 
 .winter-theme.light .winter-hero {
-  background: linear-gradient(to bottom, #B0E0E6, #E0F2FE, #B0E0E6) !important;
+  background: linear-gradient(to bottom, #B8E6F0, #D4F1F4, #FFFFFF, #D4F1F4, #B8E6F0) !important;
+  transition: background 0.5s ease-in-out !important;
 }
 
 .winter-theme .winter-hero-title {
   color: #FFFFFF !important;
-  text-shadow: 0 2px 4px rgba(30, 58, 95, 0.3) !important;
+  text-shadow: 0 2px 8px rgba(26, 58, 90, 0.4), 0 4px 16px rgba(91, 155, 213, 0.2) !important;
+  transition: color 0.5s ease-in-out, text-shadow 0.5s ease-in-out !important;
 }
 
 .winter-theme.light .winter-hero-title {
-  color: #1E3A5F !important;
-  text-shadow: none !important;
+  color: #1A3A5A !important;
+  text-shadow: 0 1px 3px rgba(91, 155, 213, 0.15) !important;
+  transition: color 0.5s ease-in-out, text-shadow 0.5s ease-in-out !important;
 }
