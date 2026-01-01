@@ -1354,9 +1354,13 @@ a {
   border: 1px solid rgba(126, 200, 227, 0.45);
 }
 
-/* Зимние переходы */
-.winter-theme * {
+/* Зимние переходы - применяем только к определенным элементам */
+.winter-theme .premium-button,
+.winter-theme .premium-card,
+.winter-theme .elegant-link,
+.winter-theme .hover-lift {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 0.3s;
 }
 
 /* Отключение зимней темы для определенных элементов */
@@ -1368,9 +1372,10 @@ a {
 
 /* Зимние стили для компонентов */
 .winter-theme .winter-header {
-  background: linear-gradient(to right, #1E3A5F, #2C5282, #1E3A5F) !important;
-  border-bottom-color: rgba(135, 206, 235, 0.3) !important;
-  box-shadow: 0 4px 20px rgba(30, 58, 95, 0.4) !important;
+  background: linear-gradient(to right, #1A3A5A, #2D5A7E, #3D7BA8, #2D5A7E, #1A3A5A) !important;
+  border-bottom-color: rgba(126, 200, 227, 0.35) !important;
+  box-shadow: 0 4px 20px rgba(26, 58, 90, 0.45), 0 2px 8px rgba(91, 155, 213, 0.2) !important;
+  transition: background 0.5s ease-in-out, border-color 0.5s ease-in-out !important;
 }
 
 .winter-theme.light .winter-header {
