@@ -1319,13 +1319,16 @@ a {
 /* Зимние hover эффекты - улучшенные */
 .winter-theme .hover-lift:hover {
   box-shadow: 
+    0 8px 24px rgba(91, 155, 213, 0.35),
+    0 16px 48px rgba(91, 155, 213, 0.25),
+    0 4px 8px rgba(126, 200, 227, 0.2);
 }
 
-/* Зимние заголовки */
+/* Зимние заголовки - улучшенные градиенты */
 .winter-theme h1,
 .winter-theme h2,
 .winter-theme h3 {
-  background: linear-gradient(135deg, #FFFFFF 0%, #E0F2FE 100%);
+  background: linear-gradient(135deg, #FFFFFF 0%, #B8E6F0 50%, #7EC8E3 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -1335,19 +1338,20 @@ a {
 .winter-theme .light h1,
 .winter-theme .light h2,
 .winter-theme .light h3 {
-  background: linear-gradient(135deg, #1E3A5F 0%, #2C5282 100%);
+  background: linear-gradient(135deg, #1A3A5A 0%, #5B9BD5 50%, #3D7BA8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  text-shadow: 0 1px 3px rgba(91, 155, 213, 0.15);
 }
 
-/* Зимние границы */
+/* Зимние границы - улучшенные */
 .winter-theme .sharp-border {
-  border: 1px solid rgba(135, 206, 235, 0.3);
+  border: 1px solid rgba(126, 200, 227, 0.35);
 }
 
 .winter-theme .light .sharp-border {
-  border: 1px solid rgba(135, 206, 235, 0.4);
+  border: 1px solid rgba(126, 200, 227, 0.45);
 }
 
 /* Зимние переходы */
