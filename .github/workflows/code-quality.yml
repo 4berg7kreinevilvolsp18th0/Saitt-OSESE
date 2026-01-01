@@ -59,6 +59,29 @@ jobs:
             echo "✅ console.log не найдены или закомментированы"
           fi
         continue-on-error: true
+
+  code-analysis:
+    name: Code Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        working-directory: ./frontend/nextjs
+        run: npm ci
+
+      - name: Check for security issues in code
+        working-directory: ./frontend/nextjs
+        run: |
+          echo "🔍 Проверка кода на проблемы безопасности..."
           # Подсчет ошибок ESLint
           if [ -f "eslint-results.json" ]; then
             ESLINT_ERRORS=$(jq '[.[] | .messages[] | select(.severity == 2)] | length' eslint-results.json 2>/dev/null || echo "0")
