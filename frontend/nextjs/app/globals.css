@@ -1384,11 +1384,13 @@ a {
 }
 
 .winter-theme .winter-header-accent {
-  background: linear-gradient(to right, transparent, rgba(135, 206, 235, 0.1), transparent) !important;
+  background: linear-gradient(to right, transparent, rgba(126, 200, 227, 0.12), rgba(139, 126, 200, 0.08), rgba(126, 200, 227, 0.12), transparent) !important;
+  transition: background 0.5s ease-in-out !important;
 }
 
 .winter-theme.light .winter-header-accent {
-  background: linear-gradient(to right, transparent, rgba(74, 144, 226, 0.05), transparent) !important;
+  background: linear-gradient(to right, transparent, rgba(91, 155, 213, 0.08), rgba(126, 200, 227, 0.06), rgba(91, 155, 213, 0.08), transparent) !important;
+  transition: background 0.5s ease-in-out !important;
 }
 
 .winter-theme .winter-nav-link {
@@ -1408,13 +1410,17 @@ a {
 }
 
 .winter-theme .winter-footer {
-  background: linear-gradient(to right, #1E3A5F, #2C5282, #1E3A5F) !important;
-  border-top-color: rgba(135, 206, 235, 0.3) !important;
+  background: linear-gradient(to right, #1A3A5A, #2D5A7E, #3D7BA8, #2D5A7E, #1A3A5A) !important;
+  border-top-color: rgba(126, 200, 227, 0.35) !important;
+  box-shadow: 0 -2px 8px rgba(26, 58, 90, 0.3) !important;
+  transition: background 0.5s ease-in-out, border-color 0.5s ease-in-out !important;
 }
 
 .winter-theme.light .winter-footer {
-  background: linear-gradient(to right, #E0F2FE, #B0E0E6, #87CEEB) !important;
-  border-top-color: rgba(135, 206, 235, 0.4) !important;
+  background: linear-gradient(to right, #D4F1F4, #B8E6F0, #7EC8E3, #B8E6F0, #D4F1F4) !important;
+  border-top-color: rgba(126, 200, 227, 0.45) !important;
+  box-shadow: 0 -2px 8px rgba(126, 200, 227, 0.2) !important;
+  transition: background 0.5s ease-in-out, border-color 0.5s ease-in-out !important;
 }
 
 .winter-theme .winter-footer-content {
