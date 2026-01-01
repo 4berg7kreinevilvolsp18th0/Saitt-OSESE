@@ -29,3 +29,22 @@ jobs:
           node-version: '18'
           cache: 'npm'
           cache-dependency-path: frontend/nextjs/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ./frontend/nextjs
+        run: npm ci
+
+      - name: Run ESLint
+        working-directory: ./frontend/nextjs
+        run: npm run lint || true
+        continue-on-error: true
+
+      - name: TypeScript type check
+        working-directory: ./frontend/nextjs
+        run: |
+          if [ -f "tsconfig.json" ]; then
+            npx tsc --noEmit --pretty || true
+          else
+            echo "⚠️  tsconfig.json не найден, пропускаем проверку типов"
+          fi
+        continue-on-error: true
