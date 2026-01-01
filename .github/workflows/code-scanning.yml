@@ -1,0 +1,22 @@
+name: Code Scanning
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+  schedule:
+    # Каждый понедельник в 8:00 UTC (17:00 по Владивостоку)
+    - cron: "0 8 * * 1"
+  workflow_dispatch:
+
+jobs:
+  code-scanning:
+    name: Comprehensive Code Scanning
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
