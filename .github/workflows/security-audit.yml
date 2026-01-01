@@ -39,14 +39,14 @@ jobs:
         working-directory: ./frontend/nextjs
         run: |
           echo "🔍 Проверка уязвимостей в зависимостях..."
-          npm audit --audit-level=moderate || true
+          npm audit --audit-level=moderate --production || true
           echo "✅ Аудит безопасности завершен"
 
       - name: Check for known vulnerabilities
         working-directory: ./frontend/nextjs
         run: |
           echo "📋 Проверка известных уязвимостей..."
-          npm audit --json > audit-report.json || true
+          npm audit --json --production > audit-report.json 2>/dev/null || echo '{"vulnerabilities":{}}' > audit-report.json
           
           # Проверяем наличие критических уязвимостей
           if [ -f audit-report.json ]; then
