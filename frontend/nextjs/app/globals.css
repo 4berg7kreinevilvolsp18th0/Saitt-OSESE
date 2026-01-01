@@ -4,120 +4,120 @@
 
 /* Шрифты брендбука ОСС - SF UI Text и SF UI Display */
 @font-face {
-  font-family: 'SF UI Text';
-  src: url('/fonts/SFUITEXT-LIGHT (3).TTF') format('truetype');
+  font-family: "SF UI Text";
+  src: url("/fonts/SFUITEXT-LIGHT (3).TTF") format("truetype");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Text';
-  src: url('/fonts/SFUITEXT-MEDIUM (3).TTF') format('truetype');
+  font-family: "SF UI Text";
+  src: url("/fonts/SFUITEXT-MEDIUM (3).TTF") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Text';
-  src: url('/fonts/SFUITEXT-MEDIUM (3).TTF') format('truetype');
+  font-family: "SF UI Text";
+  src: url("/fonts/SFUITEXT-MEDIUM (3).TTF") format("truetype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Text';
-  src: url('/fonts/SFUITEXT-SEMIBOLD (3).TTF') format('truetype');
+  font-family: "SF UI Text";
+  src: url("/fonts/SFUITEXT-SEMIBOLD (3).TTF") format("truetype");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Text';
-  src: url('/fonts/SFUITEXT-BOLD (3).TTF') format('truetype');
+  font-family: "SF UI Text";
+  src: url("/fonts/SFUITEXT-BOLD (3).TTF") format("truetype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Text';
-  src: url('/fonts/SFUITEXT-HEAVY (3).TTF') format('truetype');
+  font-family: "SF UI Text";
+  src: url("/fonts/SFUITEXT-HEAVY (3).TTF") format("truetype");
   font-weight: 800;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Display';
-  src: url('/fonts/SFUIDISPLAY-ULTRALIGHT (3).TTF') format('truetype');
+  font-family: "SF UI Display";
+  src: url("/fonts/SFUIDISPLAY-ULTRALIGHT (3).TTF") format("truetype");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Display';
-  src: url('/fonts/SFUIDISPLAY-THIN (3).TTF') format('truetype');
+  font-family: "SF UI Display";
+  src: url("/fonts/SFUIDISPLAY-THIN (3).TTF") format("truetype");
   font-weight: 200;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Display';
-  src: url('/fonts/SFUIDISPLAY-LIGHT (3).TTF') format('truetype');
+  font-family: "SF UI Display";
+  src: url("/fonts/SFUIDISPLAY-LIGHT (3).TTF") format("truetype");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Display';
-  src: url('/fonts/SFUIDISPLAY-REGULAR (3).TTF') format('truetype');
+  font-family: "SF UI Display";
+  src: url("/fonts/SFUIDISPLAY-REGULAR (3).TTF") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Display';
-  src: url('/fonts/SFUIDISPLAY-MEDIUM (3).TTF') format('truetype');
+  font-family: "SF UI Display";
+  src: url("/fonts/SFUIDISPLAY-MEDIUM (3).TTF") format("truetype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Display';
-  src: url('/fonts/SFUIDISPLAY-SEMIBOLD (3).TTF') format('truetype');
+  font-family: "SF UI Display";
+  src: url("/fonts/SFUIDISPLAY-SEMIBOLD (3).TTF") format("truetype");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Display';
-  src: url('/fonts/SFUIDISPLAY-BOLD (3).TTF') format('truetype');
+  font-family: "SF UI Display";
+  src: url("/fonts/SFUIDISPLAY-BOLD (3).TTF") format("truetype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Display';
-  src: url('/fonts/SFUIDISPLAY-HEAVY (3).TTF') format('truetype');
+  font-family: "SF UI Display";
+  src: url("/fonts/SFUIDISPLAY-HEAVY (3).TTF") format("truetype");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Display';
-  src: url('/fonts/SFUIDISPLAY-BLACK (3).TTF') format('truetype');
+  font-family: "SF UI Display";
+  src: url("/fonts/SFUIDISPLAY-BLACK (3).TTF") format("truetype");
   font-weight: 950;
   font-style: normal;
   font-display: swap;
@@ -125,8 +125,8 @@
 
 :root {
   color-scheme: dark;
-  --font-sf-text: 'SF UI Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-sf-display: 'SF UI Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sf-text: "SF UI Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sf-display: "SF UI Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   
   /* Профессиональные easing функции */
   --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
@@ -363,7 +363,7 @@ a {
 }
 
 .professional-button::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
@@ -990,7 +990,7 @@ a {
 }
 
 .elegant-link::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -2px;
   left: 0;
@@ -1088,7 +1088,7 @@ a {
 }
 
 .winter-theme body::before {
-  content: '';
+  content: "";
   position: fixed;
   top: 0;
   left: 0;
@@ -1263,7 +1263,7 @@ a {
 
 /* Зимние декоративные элементы */
 .winter-theme body::after {
-  content: '';
+  content: "";
   position: fixed;
   top: 0;
   left: 0;
