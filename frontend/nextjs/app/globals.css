@@ -466,12 +466,15 @@ a {
 }
 
 .winter-theme.light .professional-button-primary {
-  background: linear-gradient(135deg, #4A90E2 0%, #2C5282 100%);
+  background: linear-gradient(135deg, #5B9BD5 0%, #3D7BA8 50%, #2D5A7E 100%) !important;
   box-shadow: 
-    0 4px 16px rgba(74, 144, 226, 0.3),
-    0 8px 32px rgba(74, 144, 226, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  color: #FFFFFF;
+    0 4px 16px rgba(91, 155, 213, 0.35),
+    0 8px 32px rgba(91, 155, 213, 0.2),
+    0 0 0 1px rgba(126, 200, 227, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+  color: #FFFFFF !important;
+  border-color: rgba(126, 200, 227, 0.35) !important;
+  transition: all 0.3s ease-in-out !important;
 }
 
 .winter-theme.light .professional-button-primary:hover {
