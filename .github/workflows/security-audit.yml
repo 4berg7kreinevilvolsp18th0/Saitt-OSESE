@@ -52,12 +52,17 @@ jobs:
           if [ -f audit-report.json ]; then
             CRITICAL=$(cat audit-report.json | grep -o '"severity":"critical"' | wc -l || echo "0")
             HIGH=$(cat audit-report.json | grep -o '"severity":"high"' | wc -l || echo "0")
+            MODERATE=$(cat audit-report.json | grep -o '"severity":"moderate"' | wc -l || echo "0")
+            
+            echo "📊 Статистика уязвимостей:"
+            echo "  Критические: $CRITICAL"
+            echo "  Высокие: $HIGH"
+            echo "  Средние: $MODERATE"
             
             if [ "$CRITICAL" -gt 0 ] || [ "$HIGH" -gt 0 ]; then
               echo "⚠️  Обнаружены критические или высокие уязвимости!"
-              echo "Критические: $CRITICAL"
-              echo "Высокие: $HIGH"
               echo "Пожалуйста, обновите зависимости или исправьте уязвимости."
+              echo "Используйте: npm audit fix"
               # Не прерываем выполнение, но предупреждаем
             else
               echo "✅ Критических уязвимостей не обнаружено"
