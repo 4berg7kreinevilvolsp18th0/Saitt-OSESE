@@ -71,17 +71,18 @@ export default function Snowflakes() {
   if (!isWinter) return null;
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
+    <div className="fixed inset-0 pointer-events-none z-10 overflow-hidden">
       {snowflakes.map((flake) => (
         <div
           key={flake.id}
-          className="absolute text-white select-none"
+          className="absolute text-white select-none will-change-transform"
           style={{
             left: `${flake.left}%`,
             fontSize: `${flake.size}px`,
             opacity: flake.opacity,
             animation: `snowfall ${flake.animationDuration}s linear infinite`,
             animationDelay: `${flake.animationDelay}s`,
+            top: '-10px',
           }}
         >
           ❄
