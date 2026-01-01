@@ -173,6 +173,20 @@ export default function Home() {
               Статистика
             </Link>
           </div>
+          <div className="mt-4 sm:mt-6 flex justify-center">
+            <Link 
+              href="/about" 
+              className="text-xs sm:text-sm text-white/60 hover:text-white/90 transition-colors duration-200 
+                light:text-gray-500 light:hover:text-oss-red light:font-medium
+                flex items-center gap-1.5 animate-fade-in-up animate-delay-500
+                px-3 py-1.5 rounded-md hover:bg-white/5 light:hover:bg-gray-100/50"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              О проекте и технологиях
+            </Link>
+          </div>
         </div>
       </section>
 
