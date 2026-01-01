@@ -6,18 +6,31 @@ export const dynamic = 'force-dynamic';
 
 /**
  * Проверка 2FA токена при входе
+ * БЕЗОПАСНОСТЬ: Использует userId из сессии, а не из тела запроса
  */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { userId, token } = body;
-
-    if (!userId || !token) {
+    // Получить пользователя из сессии (серверные данные, не контролируются пользователем)
+    const { user } = await getCurrentUser();
+    if (!user) {
       return NextResponse.json(
-        { error: 'User ID and token are required' },
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    const body = await request.json();
+    const { token } = body;
+
+    if (!token) {
+      return NextResponse.json(
+        { error: 'Token is required' },
         { status: 400 }
       );
     }
+
+    // Использовать userId из сессии, а не из запроса
+    const userId = user.id;
 
     // Проверить, включена ли 2FA
     const enabled = await is2FAEnabled(userId);
