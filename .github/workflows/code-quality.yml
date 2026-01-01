@@ -48,3 +48,22 @@ jobs:
             echo "⚠️  tsconfig.json не найден, пропускаем проверку типов"
           fi
         continue-on-error: true
+          # Подсчет ошибок TypeScript
+          if [ -f "tsc-results.txt" ]; then
+            TS_ERRORS=$(grep -c "error TS" tsc-results.txt 2>/dev/null || echo "0")
+            echo "### TypeScript:" >> $GITHUB_STEP_SUMMARY
+            echo "- ❌ Ошибок типов: $TS_ERRORS" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "### ✅ Проверки выполнены:" >> $GITHUB_STEP_SUMMARY
+          echo "- ESLint проверка" >> $GITHUB_STEP_SUMMARY
+          echo "- TypeScript проверка типов" >> $GITHUB_STEP_SUMMARY
+          echo "- Проверка на console.log" >> $GITHUB_STEP_SUMMARY
+          echo "- Проверка безопасности кода" >> $GITHUB_STEP_SUMMARY
+          echo "- Проверка размера файлов" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📥 **Скачайте артефакт 'code-quality-results' для детального отчета**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Проверьте результаты выше для деталей." >> $GITHUB_STEP_SUMMARY
+
