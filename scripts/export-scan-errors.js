@@ -136,6 +136,16 @@ async function getWorkflowErrors(owner, repo) {
         }
       }
     } catch (e) {
+  }
+  
+  return errors;
+}
+
+// Получение security advisories
+async function getSecurityAdvisories(owner, repo) {
+  console.log('🔍 Получение security advisories...');
+  try {
+    const result = execSync(
       `gh api repos/${owner}/${repo}/dependabot/alerts --paginate`,
       { encoding: 'utf-8' }
     );
@@ -162,3 +172,47 @@ function exportJSON(data, file) {
   console.log(`✅ Экспортировано ${data.length} ошибок в ${file}`);
 }
 
+// Экспорт в CSV
+function exportCSV(data, file) {
+  if (data.length === 0) {
+    fs.writeFileSync(file, 'Нет ошибок\n', 'utf-8');
+    return;
+  }
+  
+  // Получаем все уникальные ключи
+  const keys = new Set();
+  data.forEach(item => {
+    Object.keys(item).forEach(key => keys.add(key));
+  });
+  
+  const headers = Array.from(keys);
+  const rows = [headers.join(',')];
+  
+  data.forEach(item => {
+    const values = headers.map(header => {
+      const value = item[header];
+      if (value === null || value === undefined) return '';
+      if (typeof value === 'object') return JSON.stringify(value).replace(/"/g, '""');
+      return String(value).replace(/"/g, '""').replace(/\n/g, ' ');
+    });
+    rows.push(values.map(v => `"${v}"`).join(','));
+  });
+  
+  fs.writeFileSync(file, rows.join('\n'), 'utf-8');
+  console.log(`✅ Экспортировано ${data.length} ошибок в ${file}`);
+}
+
+// Экспорт в TXT
+function exportTXT(data, file) {
+  const lines = [];
+  lines.push('='.repeat(80));
+  lines.push('ОТЧЕТ ОБ ОШИБКАХ СКАНИРОВАНИЯ КОДА');
+  lines.push('='.repeat(80));
+  lines.push(`Дата: ${new Date().toLocaleString('ru-RU')}`);
+  lines.push(`Всего ошибок: ${data.length}`);
+  lines.push('');
+  
+  // Группируем по типу
+  const byType = {};
+  data.forEach(item => {
+    const type = item.type || 'Unknown';
