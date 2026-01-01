@@ -48,6 +48,16 @@ jobs:
             echo "⚠️  tsconfig.json не найден, пропускаем проверку типов"
           fi
         continue-on-error: true
+          # Подсчет ошибок ESLint
+          if [ -f "eslint-results.json" ]; then
+            ESLINT_ERRORS=$(jq '[.[] | .messages[] | select(.severity == 2)] | length' eslint-results.json 2>/dev/null || echo "0")
+            ESLINT_WARNINGS=$(jq '[.[] | .messages[] | select(.severity == 1)] | length' eslint-results.json 2>/dev/null || echo "0")
+            echo "### ESLint:" >> $GITHUB_STEP_SUMMARY
+            echo "- ❌ Ошибок: $ESLINT_ERRORS" >> $GITHUB_STEP_SUMMARY
+            echo "- ⚠️  Предупреждений: $ESLINT_WARNINGS" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+          
           # Подсчет ошибок TypeScript
           if [ -f "tsc-results.txt" ]; then
             TS_ERRORS=$(grep -c "error TS" tsc-results.txt 2>/dev/null || echo "0")
