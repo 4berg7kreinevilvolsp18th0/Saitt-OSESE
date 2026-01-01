@@ -203,17 +203,17 @@ export default function Home() {
             Все направления <span className="light:transition-transform light:group-hover:translate-x-1">→</span>
           </Link>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 items-stretch">
           {DIRECTIONS.map((d, index) => {
             const delayClass = index === 0 ? 'animate-delay-100' : index === 1 ? 'animate-delay-200' : index === 2 ? 'animate-delay-300' : index === 3 ? 'animate-delay-400' : 'animate-delay-500';
             return (
-              <div key={d.slug} className={`animate-fade-in-up ${delayClass}`}>
+              <div key={d.slug} className={`animate-fade-in-up ${delayClass} flex`}>
                 <DirectionCard d={d} />
               </div>
             );
           })}
           {/* Карточка студенческих организаций */}
-          <div className="animate-fade-in-up animate-delay-500">
+          <div className="animate-fade-in-up animate-delay-500 flex">
             <StudentOrganizationsCard />
           </div>
         </div>
