@@ -125,8 +125,8 @@
 
 :root {
   color-scheme: dark;
-  --font-sf-text: "SF UI Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-sf-display: "SF UI Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sf-text: 'SF UI Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sf-display: 'SF UI Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   
   /* Professional easing functions */
   --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
