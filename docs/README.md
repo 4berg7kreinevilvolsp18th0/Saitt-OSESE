@@ -74,7 +74,7 @@ Quick start:
 3. Create or edit content
 4. Save and publish
 
-## 📁 Структура проекта
+## Структура проекта
 
 ```
 ├── frontend/nextjs/     # Next.js приложение
@@ -88,7 +88,7 @@ Quick start:
 └── cms/                # Конфигурация CMS
 ```
 
-## 🛠 Разработка
+## Разработка
 
 ### Frontend
 
@@ -121,49 +121,6 @@ pip install -r requirements.txt
 uvicorn main:app --reload
 ```
 
-## 📚 Documentation
-
-Main guides (in English, simple language):
-
-- **[Getting Started](docs/getting-started.md)** - Set up and run locally
-- **[Deployment](docs/deployment.md)** - Deploy to Vercel
-- **[Database Setup](docs/database.md)** - Configure Supabase
-- **[Content Editing](docs/content-editing.md)** - How to add/edit content
-- **[Troubleshooting](docs/troubleshooting.md)** - Fix common problems
-- **[Features](docs/features.md)** - Theme, Telegram, and other features
-
-Technical docs (for developers):
-
-- `TECH_SPEC.md` - Technical specification
-- `BRAND.md` - Design system and branding
-- `OPERATIONS.md` - Operations procedures
-
-## 🎨 Дизайн-система
-
-- **Главная:** OSS-red (#D11F2A)
-- **Правовой:** тёмно-синий (#1F2A44)
-- **Инфраструктура:** сине-голубой (#2A7FFF)
-- **Стипендии:** холодно-зелёный (#2E8B57)
-- **Иностранные студенты:** ярко-жёлтый (#F5B301)
-- **Нейтральное:** серый (#6B7280)
-
-Подробнее в `docs/BRAND.md`
-
-### Для дизайнеров
-
-Если вы веб-дизайнер, работающий в Figma или Tilda:
-
-- **[Интеграция дизайнера в проект](docs/ru/designer-integration.md)** - Полное руководство по работе с проектом
-- **[Экспорт дизайна из Figma](docs/ru/figma-export-guide.md)** - Как экспортировать дизайн в код
-- **[Профессиональная система дизайна](docs/ru/professional-design-system.md)** - Текущая система дизайна
-- **[Градиенты из брендбука](docs/ru/gradients-brandbook.md)** - Цветовые градиенты для направлений
-
-### Для администраторов ОСС
-
-- **[Бесплатные сервисы](docs/ru/free-services-guide.md)** - Руководство по использованию бесплатных альтернатив для всех сервисов
-- **[Настройка уведомлений](docs/ru/notifications.md)** - Как настроить Email, Push и Telegram уведомления
-- **[Функции защиты прав студентов](docs/ru/student-rights-protection-features.md)** - Предложения по улучшению защиты прав
-
 ## 🔐 Роли и доступ
 
 - `student` — внешний пользователь (без аккаунта)
@@ -186,20 +143,6 @@ Technical docs (for developers):
 
 ## 📝 Лицензия
 
-Проект создан для ОСС ДВФУ.
+Проект создан для ОСС ДВФУ
 
-## 🤝 Support
-
-Having issues? Check these guides:
-
-1. **[Troubleshooting](docs/troubleshooting.md)** - Common problems and fixes
-2. **[Getting Started](docs/getting-started.md)** - Initial setup
-3. **[Deployment](docs/deployment.md)** - Deployment issues
-4. **[Database Setup](docs/database.md)** - Supabase configuration
-
-Still stuck? Check:
-- Vercel build logs
-- Supabase logs  
-- Browser console (F12)
-- Environment variables
 
