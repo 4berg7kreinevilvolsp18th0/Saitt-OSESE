@@ -1148,101 +1148,121 @@ a {
 
 .winter-theme .light .premium-card:hover {
   border-color: rgba(91, 155, 213, 0.5) !important;
-.winter-theme .premium-button {
-  background: linear-gradient(135deg, #4A90E2 0%, #2C5282 100%);
   box-shadow: 
-    0 4px 16px rgba(74, 144, 226, 0.4),
-    0 8px 32px rgba(74, 144, 226, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    0 12px 48px rgba(126, 200, 227, 0.3),
+    0 4px 16px rgba(91, 155, 213, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+}
+
+/* Зимние кнопки - улучшенные градиенты */
+.winter-theme .premium-button {
+  background: linear-gradient(135deg, #5B9BD5 0%, #3D7BA8 50%, #2D5A7E 100%) !important;
+  box-shadow: 
+    0 4px 16px rgba(91, 155, 213, 0.45),
+    0 8px 32px rgba(91, 155, 213, 0.25),
+    0 0 0 1px rgba(126, 200, 227, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+  transition: all 0.3s ease-in-out !important;
+  border: 1px solid rgba(126, 200, 227, 0.3) !important;
 }
 
 .winter-theme .premium-button:hover {
-  background: linear-gradient(135deg, #5BA0F2 0%, #3C6292 100%);
+  background: linear-gradient(135deg, #6BAFE5 0%, #4D8BB8 50%, #3D6A8E 100%) !important;
   box-shadow: 
-    0 6px 24px rgba(74, 144, 226, 0.5),
-    0 12px 48px rgba(74, 144, 226, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    0 6px 24px rgba(91, 155, 213, 0.55),
+    0 12px 48px rgba(91, 155, 213, 0.35),
+    0 0 0 1px rgba(126, 200, 227, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+  transform: translateY(-2px) !important;
+  border-color: rgba(126, 200, 227, 0.5) !important;
 }
 
-/* Зимние акценты */
+/* Зимние акценты - улучшенные цвета */
 .winter-theme .text-oss-red {
-  color: #87CEEB;
+  color: #7EC8E3 !important;
+  transition: color 0.3s ease-in-out !important;
+}
+
+.winter-theme .text-oss-red:hover {
+  color: #B8E6F0 !important;
 }
 
 .winter-theme .bg-oss-red {
-  background-color: #4A90E2;
+  background: linear-gradient(135deg, #5B9BD5 0%, #3D7BA8 100%) !important;
+  transition: background 0.3s ease-in-out !important;
 }
 
 .winter-theme .border-oss-red {
-  border-color: #87CEEB;
+  border-color: #7EC8E3 !important;
+  transition: border-color 0.3s ease-in-out !important;
 }
 
-/* Зимние классы для использования в компонентах */
+/* Зимние классы для использования в компонентах - улучшенные */
 .winter-theme .winter-text-primary {
-  color: #E0F2FE;
+  color: #B8E6F0;
 }
 
 .winter-theme .winter-text-secondary {
-  color: #87CEEB;
+  color: #7EC8E3;
 }
 
 .winter-theme .winter-bg-primary {
-  background-color: #4A90E2;
+  background: linear-gradient(135deg, #5B9BD5 0%, #3D7BA8 100%);
 }
 
 .winter-theme .winter-bg-secondary {
-  background-color: #2C5282;
+  background: linear-gradient(135deg, #2D5A7E 0%, #1A3A5A 100%);
 }
 
 .winter-theme .winter-border {
-  border-color: #87CEEB;
+  border-color: #7EC8E3;
 }
 
 .winter-theme.light .winter-text-primary {
-  color: #1E3A5F;
+  color: #1A3A5A;
 }
 
 .winter-theme.light .winter-text-secondary {
-  color: #4A90E2;
+  color: #5B9BD5;
 }
 
 .winter-theme.light .winter-bg-primary {
-  background-color: #E0F2FE;
+  background: linear-gradient(135deg, #D4F1F4 0%, #B8E6F0 100%);
 }
 
 .winter-theme.light .winter-bg-secondary {
-  background-color: #B0E0E6;
+  background: linear-gradient(135deg, #B8E6F0 0%, #7EC8E3 100%);
 }
 
 .winter-theme.light .winter-border {
-  border-color: #4A90E2;
+  border-color: #5B9BD5;
 }
 
-/* Зимние градиенты */
+/* Зимние градиенты - улучшенные */
 .winter-theme .gradient-accent {
-  background: linear-gradient(135deg, rgba(135, 206, 235, 0.2) 0%, rgba(74, 144, 226, 0.1) 100%);
+  background: linear-gradient(135deg, rgba(126, 200, 227, 0.25) 0%, rgba(91, 155, 213, 0.15) 50%, rgba(139, 126, 200, 0.1) 100%);
 }
 
 /* Анимация снежинок */
 @keyframes snowfall {
   0% {
-    transform: translateY(-100vh) translateX(0) rotate(0deg);
+    transform: translateY(-10px) translateX(0) rotate(0deg);
     opacity: 0;
   }
-  10% {
+  5% {
     opacity: 1;
   }
-  90% {
+  95% {
     opacity: 1;
   }
   100% {
-    transform: translateY(100vh) translateX(20px) rotate(360deg);
+    transform: translateY(calc(100vh + 10px)) translateX(20px) rotate(360deg);
     opacity: 0;
   }
 }
 
 /* Зимние декоративные элементы */
-.winter-theme::after {
+.winter-theme body::after {
   content: '';
   position: fixed;
   top: 0;
@@ -1250,18 +1270,19 @@ a {
   right: 0;
   bottom: 0;
   background-image: 
-    radial-gradient(2px 2px at 20% 30%, rgba(255, 255, 255, 0.3), transparent),
-    radial-gradient(2px 2px at 60% 70%, rgba(255, 255, 255, 0.2), transparent),
-    radial-gradient(1px 1px at 50% 50%, rgba(255, 255, 255, 0.4), transparent),
-    radial-gradient(1px 1px at 80% 10%, rgba(255, 255, 255, 0.3), transparent),
-    radial-gradient(2px 2px at 90% 40%, rgba(255, 255, 255, 0.2), transparent),
-    radial-gradient(1px 1px at 33% 60%, rgba(255, 255, 255, 0.3), transparent),
-    radial-gradient(1px 1px at 66% 20%, rgba(255, 255, 255, 0.2), transparent);
+    radial-gradient(2px 2px at 20% 30%, rgba(255, 255, 255, 0.2), transparent),
+    radial-gradient(2px 2px at 60% 70%, rgba(255, 255, 255, 0.15), transparent),
+    radial-gradient(1px 1px at 50% 50%, rgba(255, 255, 255, 0.25), transparent),
+    radial-gradient(1px 1px at 80% 10%, rgba(255, 255, 255, 0.2), transparent),
+    radial-gradient(2px 2px at 90% 40%, rgba(255, 255, 255, 0.15), transparent),
+    radial-gradient(1px 1px at 33% 60%, rgba(255, 255, 255, 0.2), transparent),
+    radial-gradient(1px 1px at 66% 20%, rgba(255, 255, 255, 0.15), transparent);
   background-size: 200% 200%;
   animation: snowdrift 20s linear infinite;
   pointer-events: none;
   z-index: 1;
-  opacity: 0.6;
+  opacity: 0.4;
+  transition: opacity 0.5s ease-in-out;
 }
 
 @keyframes snowdrift {
@@ -1273,31 +1294,31 @@ a {
   }
 }
 
-/* Зимние тени */
+/* Зимние тени - улучшенные */
 .winter-theme .elegant-shadow {
   box-shadow: 
-    0 4px 12px rgba(30, 58, 95, 0.3),
-    0 8px 24px rgba(30, 58, 95, 0.2),
-    0 0 0 1px rgba(135, 206, 235, 0.1);
+    0 4px 12px rgba(26, 58, 90, 0.35),
+    0 8px 24px rgba(26, 58, 90, 0.25),
+    0 2px 4px rgba(91, 155, 213, 0.15),
+    0 0 0 1px rgba(126, 200, 227, 0.15);
 }
 
 .winter-theme .light .elegant-shadow {
   box-shadow: 
-    0 4px 12px rgba(135, 206, 235, 0.2),
-    0 8px 24px rgba(135, 206, 235, 0.1),
-    0 0 0 1px rgba(135, 206, 235, 0.2);
+    0 4px 12px rgba(126, 200, 227, 0.25),
+    0 8px 24px rgba(126, 200, 227, 0.15),
+    0 2px 4px rgba(91, 155, 213, 0.1),
+    0 0 0 1px rgba(126, 200, 227, 0.25);
 }
 
-/* Зимние ссылки */
+/* Зимние ссылки - улучшенные */
 .winter-theme .elegant-link::after {
-  background: #87CEEB;
+  background: linear-gradient(to right, #7EC8E3, #B8E6F0);
 }
 
-/* Зимние hover эффекты */
+/* Зимние hover эффекты - улучшенные */
 .winter-theme .hover-lift:hover {
   box-shadow: 
-    0 8px 24px rgba(74, 144, 226, 0.3),
-    0 16px 48px rgba(74, 144, 226, 0.2);
 }
 
 /* Зимние заголовки */
