@@ -36,3 +36,9 @@ regexes = [
 ]
 
 [[rules]]
+id = "oss-dvfu-custom"
+description = "Custom rules for OSS DVFU"
+regex = '''(password|secret|key|token|api[_-]?key|private[_-]?key|access[_-]?token)\s*[:=]\s*['"][^'"]{8,}['"]'''
+entropy = 3.5
+tags = ["secret", "oss-dvfu"]
+
