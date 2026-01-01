@@ -478,7 +478,7 @@ a {
 }
 
 .winter-theme.light .professional-button-primary:hover {
-  background: linear-gradient(135deg, #5BA0F2 0%, #3C6292 100%);
+  background: linear-gradient(135deg, #6BAFE5 0%, #4D8BB8 50%, #3D6A8E 100%) !important;
   box-shadow: 
     0 6px 24px rgba(74, 144, 226, 0.4),
     0 12px 48px rgba(74, 144, 226, 0.25),
