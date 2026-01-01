@@ -69,3 +69,96 @@ async function getCodeQLAlerts(owner, repo) {
       line: alert.most_recent_instance?.location?.start_line || 0,
       created: alert.created_at,
       updated: alert.updated_at,
+      url: alert.html_url
+    }));
+  } catch (e) {
+    console.error('⚠️  Не удалось получить CodeQL alerts:', e.message);
+    return [];
+  }
+}
+
+// Получение результатов workflow runs
+async function getWorkflowErrors(owner, repo) {
+  console.log('🔍 Получение результатов workflow...');
+  const workflows = [
+    'Code Quality Check',
+    'Security Audit',
+    'Code Scanning',
+    'Secret Scanning',
+    'Super Linter'
+  ];
+  
+  const errors = [];
+  
+  for (const workflowName of workflows) {
+    try {
+      const result = execSync(
+        `gh api repos/${owner}/${repo}/actions/workflows --paginate`,
+        { encoding: 'utf-8' }
+      );
+      const workflows = JSON.parse(result).workflows;
+      const workflow = workflows.find(w => w.name === workflowName);
+      
+      if (workflow) {
+        const runs = execSync(
+          `gh api repos/${owner}/${repo}/actions/workflows/${workflow.id}/runs --paginate -f per_page=5`,
+          { encoding: 'utf-8' }
+        );
+        const runsData = JSON.parse(runs);
+        
+        for (const run of runsData.workflow_runs || []) {
+          if (run.conclusion === 'failure' || run.conclusion === 'cancelled') {
+            // Получаем логи
+            const jobs = execSync(
+              `gh api repos/${owner}/${repo}/actions/runs/${run.id}/jobs`,
+              { encoding: 'utf-8' }
+            );
+            const jobsData = JSON.parse(jobs);
+            
+            for (const job of jobsData.jobs || []) {
+              if (job.conclusion === 'failure') {
+                errors.push({
+                  type: workflowName,
+                  workflow: workflowName,
+                  run_id: run.id,
+                  status: run.conclusion,
+                  created: run.created_at,
+                  url: run.html_url,
+                  job: job.name,
+                  steps: job.steps?.filter(s => s.conclusion === 'failure').map(s => ({
+                    name: s.name,
+                    conclusion: s.conclusion
+                  })) || []
+                });
+              }
+            }
+          }
+        }
+      }
+    } catch (e) {
+      `gh api repos/${owner}/${repo}/dependabot/alerts --paginate`,
+      { encoding: 'utf-8' }
+    );
+    const alerts = JSON.parse(result);
+    return alerts.map(alert => ({
+      type: 'Dependabot',
+      severity: alert.security_vulnerability?.severity || 'unknown',
+      state: alert.state,
+      package: alert.security_vulnerability?.package?.name || '',
+      vulnerability: alert.security_vulnerability?.advisory?.summary || '',
+      created: alert.created_at,
+      updated: alert.updated_at,
+      url: alert.html_url
+    }));
+  } catch (e) {
+    console.error('⚠️  Не удалось получить security advisories:', e.message);
+    return [];
+  }
+}
+
+// Экспорт в JSON
+function exportJSON(data, file) {
+  fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf-8');
+  console.log(`✅ Экспортировано ${data.length} ошибок в ${file}`);
+}
+
