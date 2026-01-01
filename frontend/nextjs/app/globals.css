@@ -1379,8 +1379,10 @@ a {
 }
 
 .winter-theme.light .winter-header {
-  background: linear-gradient(to right, #E0F2FE, #B0E0E6, #87CEEB) !important;
-  border-bottom-color: rgba(135, 206, 235, 0.4) !important;
+  background: linear-gradient(to right, #D4F1F4, #B8E6F0, #7EC8E3, #B8E6F0, #D4F1F4) !important;
+  border-bottom-color: rgba(126, 200, 227, 0.45) !important;
+  box-shadow: 0 4px 20px rgba(126, 200, 227, 0.25), 0 2px 8px rgba(91, 155, 213, 0.15) !important;
+  transition: background 0.5s ease-in-out, border-color 0.5s ease-in-out !important;
 }
 
 .winter-theme .winter-header-accent {
