@@ -3,7 +3,7 @@ version: 2
 updates:
   # 1) Node/Next.js зависимости (package.json + lock-файл)
   - package-ecosystem: "npm"
-    directory: "/"
+    directory: "/frontend/nextjs"
     schedule:
       interval: "weekly"
       day: "monday"
