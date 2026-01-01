@@ -494,9 +494,9 @@ a {
 }
 
 .winter-theme.light .professional-button-secondary:hover {
-  background: rgba(255, 255, 255, 1);
-  border-color: rgba(74, 144, 226, 0.5);
-  color: #2C5282;
+  background: rgba(255, 255, 255, 1) !important;
+  border-color: rgba(91, 155, 213, 0.55) !important;
+  color: #2D5A7E !important;
 }
 
 /* Элегантные разделители */
