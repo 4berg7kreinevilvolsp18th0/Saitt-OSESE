@@ -7,3 +7,14 @@ on:
       - master
       - develop
   pull_request:
+    branches:
+      - main
+      - master
+      - develop
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: ESLint & TypeScript Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
