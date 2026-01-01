@@ -97,11 +97,12 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-oss-dark light:bg-gray-50 text-white light:text-gray-900 animate-page-enter">
+    <main className="min-h-screen bg-oss-dark light:bg-gray-50 text-white light:text-gray-900 animate-page-enter winter-main">
       <section className="bg-oss-red py-12 sm:py-16 md:py-20 
         light:bg-gradient-to-b light:from-white light:via-gray-50/50 light:to-white
         light:relative light:overflow-hidden
-        light:border-b light:border-gray-200/60">
+        light:border-b light:border-gray-200/60
+        winter-hero">
         {/* Декоративные элементы для светлой темы - строгие геометрические формы */}
         <div className="hidden light:block absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
           {/* Тонкие линии для структуры */}
@@ -128,7 +129,8 @@ export default function Home() {
             </div>
           </div>
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 px-2 text-white 
-            light:text-gray-900 light:font-extrabold light:tracking-tight animate-fade-in-down">
+            light:text-gray-900 light:font-extrabold light:tracking-tight
+            animate-fade-in-down winter-hero-title">
             ОБЪЕДИНЕННЫЙ СОВЕТ СТУДЕНТОВ
           </h1>
           <div className="flex items-center justify-center gap-2 mb-3 sm:mb-4 animate-fade-in-up animate-delay-100">
@@ -171,6 +173,20 @@ export default function Home() {
               Статистика
             </Link>
           </div>
+          <div className="mt-4 sm:mt-6 flex justify-center">
+            <Link 
+              href="/about" 
+              className="text-xs sm:text-sm text-white/60 hover:text-white/90 transition-colors duration-200 
+                light:text-gray-500 light:hover:text-oss-red light:font-medium
+                flex items-center gap-1.5 animate-fade-in-up animate-delay-500
+                px-3 py-1.5 rounded-md hover:bg-white/5 light:hover:bg-gray-100/50"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              О проекте и технологиях
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -187,17 +203,17 @@ export default function Home() {
             Все направления <span className="light:transition-transform light:group-hover:translate-x-1">→</span>
           </Link>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 items-stretch">
           {DIRECTIONS.map((d, index) => {
             const delayClass = index === 0 ? 'animate-delay-100' : index === 1 ? 'animate-delay-200' : index === 2 ? 'animate-delay-300' : index === 3 ? 'animate-delay-400' : 'animate-delay-500';
             return (
-              <div key={d.slug} className={`animate-fade-in-up ${delayClass}`}>
+              <div key={d.slug} className={`animate-fade-in-up ${delayClass} flex`}>
                 <DirectionCard d={d} />
               </div>
             );
           })}
           {/* Карточка студенческих организаций */}
-          <div className="animate-fade-in-up animate-delay-500">
+          <div className="animate-fade-in-up animate-delay-500 flex">
             <StudentOrganizationsCard />
           </div>
         </div>

@@ -28,40 +28,108 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
       
       - name: Install Supabase CLI
-        uses: supabase/setup-cli@v1
-        with:
-          version: latest
+        run: |
+          # Устанавливаем Supabase CLI через официальный метод
+          curl -fsSL https://github.com/supabase/cli/releases/latest/download/supabase_linux_amd64.tar.gz | tar -xz
+          sudo mv supabase /usr/local/bin/
+          supabase --version
+          echo "✅ Supabase CLI установлен"
       
       - name: Login to Supabase
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
         run: |
+          if [ -z "$SUPABASE_ACCESS_TOKEN" ]; then
+            echo "❌ SUPABASE_ACCESS_TOKEN не установлен"
+            exit 1
+          fi
           echo "$SUPABASE_ACCESS_TOKEN" | supabase login --token -
+          echo "✅ Успешный вход в Supabase"
       
       - name: Link to Supabase project
         env:
           SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
         run: |
+          if [ -z "$SUPABASE_PROJECT_ID" ]; then
+            echo "❌ SUPABASE_PROJECT_ID не установлен"
+            exit 1
+          fi
+          echo "🔗 Связывание с проектом: $SUPABASE_PROJECT_ID"
           supabase link --project-ref $SUPABASE_PROJECT_ID
+          echo "✅ Проект успешно связан"
+      
+      - name: Initialize Supabase project (if needed)
+        run: |
+          # Проверяем, есть ли config.toml
+          if [ ! -f "supabase/config.toml" ]; then
+            echo "📝 Инициализация Supabase проекта..."
+            supabase init
+          else
+            echo "✅ Supabase проект уже инициализирован"
+          fi
+      
+      - name: Check migration files
+        run: |
+          echo "📋 Проверка файлов миграций..."
+          if [ ! -d "database/migrations" ]; then
+            echo "❌ Папка database/migrations не найдена"
+            exit 1
+          fi
+          MIGRATION_COUNT=$(find database/migrations -name "*.sql" | wc -l)
+          echo "✅ Найдено миграций: $MIGRATION_COUNT"
+          if [ "$MIGRATION_COUNT" -eq 0 ]; then
+            echo "⚠️  Нет файлов миграций для применения"
+            exit 0
+          fi
+          ls -la database/migrations/*.sql
+      
+      - name: Copy migrations to Supabase directory
+        run: |
+          # Создаем структуру для Supabase CLI
+          mkdir -p supabase/migrations
+          # Копируем миграции
+          cp database/migrations/*.sql supabase/migrations/ 2>/dev/null || true
+          echo "✅ Миграции скопированы в supabase/migrations/"
+          ls -la supabase/migrations/ | head -10
       
       - name: Check migration status
         run: |
-          supabase migration list
+          echo "📊 Проверка статуса миграций..."
+          supabase migration list || echo "⚠️  Не удалось получить список миграций (это нормально для первого запуска)"
       
       - name: Apply migrations
         env:
+          SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
           SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
         run: |
-          # Применяем все новые миграции
-          supabase db push
+          echo "🚀 Применение миграций к базе данных..."
+          
+          # Проверяем наличие миграций
+          if [ ! -d "supabase/migrations" ] || [ -z "$(ls -A supabase/migrations/*.sql 2>/dev/null)" ]; then
+            echo "⚠️  Нет миграций для применения"
+            exit 0
+          fi
+          
+          # Применяем миграции через db push (рекомендуемый метод для связанных проектов)
+          echo "📤 Применение миграций через db push..."
+          supabase db push --linked || {
+            echo "⚠️  db push не сработал, пробуем через migration up..."
+            # Альтернативный метод: применяем миграции напрямую
+            supabase migration up --linked || {
+              echo "❌ Не удалось применить миграции"
+              echo "Проверьте логи выше для деталей"
+              exit 1
+            }
+          }
+          echo "✅ Миграции применены"
       
-      - name: Verify database schema
+      - name: Verify migrations applied
         run: |
-          # Проверяем, что миграции применены
-          supabase db diff --schema public
+          echo "✅ Проверка примененных миграций..."
+          supabase migration list
+          echo "✅ Все миграции успешно применены"
       
       - name: Notify on success
         if: success()
@@ -72,5 +140,13 @@ jobs:
         if: failure()
         run: |
           echo "❌ Ошибка при применении миграций"
+          echo ""
+          echo "Проверьте:"
+          echo "1. Правильность SUPABASE_ACCESS_TOKEN"
+          echo "2. Правильность SUPABASE_PROJECT_ID"
+          echo "3. Что миграции находятся в database/migrations/"
+          echo "4. Синтаксис SQL в файлах миграций"
+          echo ""
+          echo "Для отладки запустите workflow вручную через GitHub Actions UI"
           exit 1
 

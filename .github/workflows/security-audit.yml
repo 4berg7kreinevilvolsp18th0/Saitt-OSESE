@@ -1,0 +1,88 @@
+name: Security Audit
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+  schedule:
+    # Каждый понедельник в 6:00 UTC (15:00 по Владивостоку)
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+jobs:
+  security-audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: frontend/nextjs/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ./frontend/nextjs
+        run: npm ci
+
+      - name: Run npm audit
+        working-directory: ./frontend/nextjs
+        run: |
+          echo "🔍 Проверка уязвимостей в зависимостях..."
+          npm audit --audit-level=moderate --production || true
+          echo "✅ Аудит безопасности завершен"
+
+      - name: Check for known vulnerabilities
+        working-directory: ./frontend/nextjs
+        run: |
+          echo "📋 Проверка известных уязвимостей..."
+          npm audit --json --production > audit-report.json 2>/dev/null || echo '{"vulnerabilities":{}}' > audit-report.json
+          
+          # Проверяем наличие критических уязвимостей
+          if [ -f audit-report.json ]; then
+            CRITICAL=$(cat audit-report.json | grep -o '"severity":"critical"' | wc -l || echo "0")
+            HIGH=$(cat audit-report.json | grep -o '"severity":"high"' | wc -l || echo "0")
+            MODERATE=$(cat audit-report.json | grep -o '"severity":"moderate"' | wc -l || echo "0")
+            
+            echo "📊 Статистика уязвимостей:"
+            echo "  Критические: $CRITICAL"
+            echo "  Высокие: $HIGH"
+            echo "  Средние: $MODERATE"
+            
+            if [ "$CRITICAL" -gt 0 ] || [ "$HIGH" -gt 0 ]; then
+              echo "⚠️  Обнаружены критические или высокие уязвимости!"
+              echo "Пожалуйста, обновите зависимости или исправьте уязвимости."
+              echo "Используйте: npm audit fix"
+              # Не прерываем выполнение, но предупреждаем
+            else
+              echo "✅ Критических уязвимостей не обнаружено"
+            fi
+          fi
+
+      - name: Upload audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-audit-report
+          path: frontend/nextjs/audit-report.json
+          retention-days: 30
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## 🔒 Security Audit Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Security audit completed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Проверьте артефакты для детального отчета." >> $GITHUB_STEP_SUMMARY
+

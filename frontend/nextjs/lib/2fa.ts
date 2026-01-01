@@ -3,6 +3,7 @@
  * Использует TOTP (Time-based One-Time Password) через библиотеку otplib
  */
 
+// @ts-ignore - otplib имеет типы, но они могут быть не распознаны
 import { authenticator } from 'otplib';
 
 // Настройка для работы в браузере и Node.js

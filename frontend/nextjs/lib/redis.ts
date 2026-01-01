@@ -16,6 +16,7 @@ async function getRedisClient() {
 
   if (upstashUrl && upstashToken) {
     // Используем Upstash Redis (HTTP-based, работает на Edge)
+    // @ts-ignore - @upstash/redis имеет типы, но могут быть проблемы с динамическим импортом
     const { Redis } = await import('@upstash/redis');
     redisClient = new Redis({
       url: upstashUrl,

@@ -1,0 +1,21 @@
+# Эти параметры используются для поддержки проекта
+
+# Если вы хотите добавить спонсорство, раскомментируйте нужные строки:
+
+# github: [username] # Замените на ваш GitHub username для GitHub Sponsors
+# patreon: # Замените на ваш Patreon username
+# open_collective: # Замените на ваш Open Collective username
+# ko_fi: # Замените на ваш Ko-fi username
+# tidelift: # Замените на ваш Tidelift platform name
+# community_bridge: # Замените на ваш Community Bridge project name
+# liberapay: # Замените на ваш Liberapay username
+# issuehunt: # Замените на ваш IssueHunt username
+# otechie: # Замените на ваш Otechie username
+# lfx_crowdfunding: # Замените на ваш LFX Crowdfunding project name
+# custom: # Замените на массив URL-адресов для пользовательских спонсорских ссылок
+
+# Пример:
+# custom: ['https://oss-dvfu.ru/donate', 'https://paypal.me/ossdvfu']
+
+# В настоящее время проект не принимает спонсорство, но это может измениться в будущем.
+

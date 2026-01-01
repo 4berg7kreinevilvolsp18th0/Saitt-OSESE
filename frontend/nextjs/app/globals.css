@@ -2,122 +2,122 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Шрифты брендбука ОСС - SF UI Text и SF UI Display */
+/* OSS brandbook fonts - SF UI Text and SF UI Display */
 @font-face {
-  font-family: 'SF UI Text';
-  src: url('/fonts/SFUITEXT-LIGHT (3).TTF') format('truetype');
+  font-family: "SF UI Text";
+  src: url("/fonts/SFUITEXT-LIGHT (3).TTF") format("truetype");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Text';
-  src: url('/fonts/SFUITEXT-MEDIUM (3).TTF') format('truetype');
+  font-family: "SF UI Text";
+  src: url("/fonts/SFUITEXT-MEDIUM (3).TTF") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Text';
-  src: url('/fonts/SFUITEXT-MEDIUM (3).TTF') format('truetype');
+  font-family: "SF UI Text";
+  src: url("/fonts/SFUITEXT-MEDIUM (3).TTF") format("truetype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Text';
-  src: url('/fonts/SFUITEXT-SEMIBOLD (3).TTF') format('truetype');
+  font-family: "SF UI Text";
+  src: url("/fonts/SFUITEXT-SEMIBOLD (3).TTF") format("truetype");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Text';
-  src: url('/fonts/SFUITEXT-BOLD (3).TTF') format('truetype');
+  font-family: "SF UI Text";
+  src: url("/fonts/SFUITEXT-BOLD (3).TTF") format("truetype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Text';
-  src: url('/fonts/SFUITEXT-HEAVY (3).TTF') format('truetype');
+  font-family: "SF UI Text";
+  src: url("/fonts/SFUITEXT-HEAVY (3).TTF") format("truetype");
   font-weight: 800;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Display';
-  src: url('/fonts/SFUIDISPLAY-ULTRALIGHT (3).TTF') format('truetype');
+  font-family: "SF UI Display";
+  src: url("/fonts/SFUIDISPLAY-ULTRALIGHT (3).TTF") format("truetype");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Display';
-  src: url('/fonts/SFUIDISPLAY-THIN (3).TTF') format('truetype');
+  font-family: "SF UI Display";
+  src: url("/fonts/SFUIDISPLAY-THIN (3).TTF") format("truetype");
   font-weight: 200;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Display';
-  src: url('/fonts/SFUIDISPLAY-LIGHT (3).TTF') format('truetype');
+  font-family: "SF UI Display";
+  src: url("/fonts/SFUIDISPLAY-LIGHT (3).TTF") format("truetype");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Display';
-  src: url('/fonts/SFUIDISPLAY-REGULAR (3).TTF') format('truetype');
+  font-family: "SF UI Display";
+  src: url("/fonts/SFUIDISPLAY-REGULAR (3).TTF") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Display';
-  src: url('/fonts/SFUIDISPLAY-MEDIUM (3).TTF') format('truetype');
+  font-family: "SF UI Display";
+  src: url("/fonts/SFUIDISPLAY-MEDIUM (3).TTF") format("truetype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Display';
-  src: url('/fonts/SFUIDISPLAY-SEMIBOLD (3).TTF') format('truetype');
+  font-family: "SF UI Display";
+  src: url("/fonts/SFUIDISPLAY-SEMIBOLD (3).TTF") format("truetype");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Display';
-  src: url('/fonts/SFUIDISPLAY-BOLD (3).TTF') format('truetype');
+  font-family: "SF UI Display";
+  src: url("/fonts/SFUIDISPLAY-BOLD (3).TTF") format("truetype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Display';
-  src: url('/fonts/SFUIDISPLAY-HEAVY (3).TTF') format('truetype');
+  font-family: "SF UI Display";
+  src: url("/fonts/SFUIDISPLAY-HEAVY (3).TTF") format("truetype");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'SF UI Display';
-  src: url('/fonts/SFUIDISPLAY-BLACK (3).TTF') format('truetype');
+  font-family: "SF UI Display";
+  src: url("/fonts/SFUIDISPLAY-BLACK (3).TTF") format("truetype");
   font-weight: 950;
   font-style: normal;
   font-display: swap;
@@ -125,17 +125,17 @@
 
 :root {
   color-scheme: dark;
-  --font-sf-text: 'SF UI Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-sf-display: 'SF UI Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sf-text: "SF UI Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sf-display: "SF UI Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   
-  /* Профессиональные easing функции */
+  /* Professional easing functions */
   --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
   --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
   --ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-/* Светлая тема */
+/* Light theme */
 .light {
   color-scheme: light;
 }
@@ -161,7 +161,7 @@ body {
   font-kerning: normal;
 }
 
-/* Строгая типографика для заголовков */
+/* Strict typography for headings */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-sf-display);
   font-weight: 600;
@@ -208,7 +208,7 @@ a {
    ПРОФЕССИОНАЛЬНЫЕ АНИМАЦИИ И ПЕРЕХОДЫ
    ============================================ */
 
-/* Плавное появление страницы */
+/* Smooth page appearance */
 @keyframes pageFadeIn {
   from {
     opacity: 0;
@@ -363,7 +363,7 @@ a {
 }
 
 .professional-button::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
@@ -430,6 +430,76 @@ a {
   color: #D11F2A;
 }
 
+/* Зимние стили для кнопок - улучшенные цвета */
+.winter-theme .professional-button-primary {
+  background: linear-gradient(135deg, #5B9BD5 0%, #3D7BA8 50%, #2D5A7E 100%) !important;
+  box-shadow: 
+    0 4px 16px rgba(91, 155, 213, 0.45),
+    0 8px 32px rgba(91, 155, 213, 0.25),
+    0 0 0 1px rgba(126, 200, 227, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+  border-color: rgba(126, 200, 227, 0.3) !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+.winter-theme .professional-button-primary:hover {
+  background: linear-gradient(135deg, #6BAFE5 0%, #4D8BB8 50%, #3D6A8E 100%) !important;
+  box-shadow: 
+    0 6px 24px rgba(91, 155, 213, 0.55),
+    0 12px 48px rgba(91, 155, 213, 0.35),
+    0 0 0 1px rgba(126, 200, 227, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+  border-color: rgba(126, 200, 227, 0.5) !important;
+}
+
+.winter-theme .professional-button-secondary {
+  background: rgba(126, 200, 227, 0.12) !important;
+  border-color: rgba(126, 200, 227, 0.45) !important;
+  color: #B8E6F0 !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+.winter-theme .professional-button-secondary:hover {
+  background: rgba(126, 200, 227, 0.22) !important;
+  border-color: rgba(126, 200, 227, 0.65) !important;
+  color: #FFFFFF !important;
+}
+
+.winter-theme.light .professional-button-primary {
+  background: linear-gradient(135deg, #5B9BD5 0%, #3D7BA8 50%, #2D5A7E 100%) !important;
+  box-shadow: 
+    0 4px 16px rgba(91, 155, 213, 0.35),
+    0 8px 32px rgba(91, 155, 213, 0.2),
+    0 0 0 1px rgba(126, 200, 227, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+  color: #FFFFFF !important;
+  border-color: rgba(126, 200, 227, 0.35) !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+.winter-theme.light .professional-button-primary:hover {
+  background: linear-gradient(135deg, #6BAFE5 0%, #4D8BB8 50%, #3D6A8E 100%) !important;
+  box-shadow: 
+    0 6px 24px rgba(91, 155, 213, 0.45),
+    0 12px 48px rgba(91, 155, 213, 0.3),
+    0 0 0 1px rgba(126, 200, 227, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+  border-color: rgba(126, 200, 227, 0.5) !important;
+}
+
+.winter-theme.light .professional-button-secondary {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-color: rgba(91, 155, 213, 0.35) !important;
+  color: #1A3A5A !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+.winter-theme.light .professional-button-secondary:hover {
+  background: rgba(255, 255, 255, 1) !important;
+  border-color: rgba(91, 155, 213, 0.55) !important;
+  color: #2D5A7E !important;
+}
+
 /* Элегантные разделители */
 .professional-divider {
   height: 1px;
@@ -439,6 +509,14 @@ a {
 
 .light .professional-divider {
   background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1), transparent);
+}
+
+.winter-theme .professional-divider {
+  background: linear-gradient(90deg, transparent, rgba(135, 206, 235, 0.3), transparent);
+}
+
+.winter-theme.light .professional-divider {
+  background: linear-gradient(90deg, transparent, rgba(74, 144, 226, 0.2), transparent);
 }
 
 /* ============================================
@@ -912,7 +990,7 @@ a {
 }
 
 .elegant-link::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -2px;
   left: 0;
@@ -984,4 +1062,429 @@ a {
 
 .light .focus-ring:focus {
   box-shadow: 0 0 0 3px rgba(209, 31, 42, 0.2);
+}
+
+/* ============================================
+   ЗИМНЯЯ/НОВОГОДНЯЯ ТЕМА
+   ============================================ */
+
+/* Winter colors - improved palette */
+.winter-theme {
+  --winter-primary: #5B9BD5;      /* More saturated blue */
+  --winter-secondary: #7EC8E3;   /* Bright cyan */
+  --winter-accent: #B8E6F0;      /* Light accent */
+  --winter-snow: #FFFFFF;
+  --winter-ice: #A8D5E2;        /* Icy blue */
+  --winter-dark: #1A3A5A;       /* Deeper dark blue */
+  --winter-purple: #8B7EC8;     /* Purple accent for new year mood */
+  --winter-light-blue: #D4F1F4; /* Very light blue */
+}
+
+/* Зимний фон с градиентом - улучшенные цвета */
+.winter-theme body {
+  background: linear-gradient(135deg, #1A3A5A 0%, #2D5A7E 30%, #3D7BA8 50%, #2D5A7E 70%, #1A3A5A 100%) !important;
+  background-attachment: fixed !important;
+  transition: background 0.5s ease-in-out !important;
+}
+
+.winter-theme body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(126, 200, 227, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(184, 230, 240, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(139, 126, 200, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 60% 40%, rgba(168, 213, 226, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.winter-theme .dark,
+.winter-theme.dark {
+  background: linear-gradient(135deg, #0F1F2E 0%, #1A3A5A 30%, #2D5A7E 50%, #1A3A5A 70%, #0F1F2E 100%) !important;
+  transition: background 0.5s ease-in-out !important;
+}
+
+.winter-theme .light,
+.winter-theme.light {
+  background: linear-gradient(135deg, #D4F1F4 0%, #B8E6F0 30%, #7EC8E3 50%, #B8E6F0 70%, #D4F1F4 100%) !important;
+  transition: background 0.5s ease-in-out !important;
+}
+
+/* Зимние карточки - улучшенные цвета */
+.winter-theme .premium-card {
+  background: rgba(255, 255, 255, 0.06) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(126, 200, 227, 0.25) !important;
+  box-shadow: 
+    0 8px 32px rgba(26, 58, 90, 0.35),
+    0 2px 8px rgba(91, 155, 213, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+.winter-theme .premium-card:hover {
+  border-color: rgba(126, 200, 227, 0.4) !important;
+  box-shadow: 
+    0 12px 48px rgba(26, 58, 90, 0.4),
+    0 4px 16px rgba(91, 155, 213, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+}
+
+.winter-theme .light .premium-card {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border: 1px solid rgba(126, 200, 227, 0.35) !important;
+  box-shadow: 
+    0 8px 32px rgba(126, 200, 227, 0.25),
+    0 2px 8px rgba(91, 155, 213, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+.winter-theme .light .premium-card:hover {
+  border-color: rgba(91, 155, 213, 0.5) !important;
+  box-shadow: 
+    0 12px 48px rgba(126, 200, 227, 0.3),
+    0 4px 16px rgba(91, 155, 213, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+}
+
+/* Зимние кнопки - улучшенные градиенты */
+.winter-theme .premium-button {
+  background: linear-gradient(135deg, #5B9BD5 0%, #3D7BA8 50%, #2D5A7E 100%) !important;
+  box-shadow: 
+    0 4px 16px rgba(91, 155, 213, 0.45),
+    0 8px 32px rgba(91, 155, 213, 0.25),
+    0 0 0 1px rgba(126, 200, 227, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+  transition: all 0.3s ease-in-out !important;
+  border: 1px solid rgba(126, 200, 227, 0.3) !important;
+}
+
+.winter-theme .premium-button:hover {
+  background: linear-gradient(135deg, #6BAFE5 0%, #4D8BB8 50%, #3D6A8E 100%) !important;
+  box-shadow: 
+    0 6px 24px rgba(91, 155, 213, 0.55),
+    0 12px 48px rgba(91, 155, 213, 0.35),
+    0 0 0 1px rgba(126, 200, 227, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+  transform: translateY(-2px) !important;
+  border-color: rgba(126, 200, 227, 0.5) !important;
+}
+
+/* Зимние акценты - улучшенные цвета */
+.winter-theme .text-oss-red {
+  color: #7EC8E3 !important;
+  transition: color 0.3s ease-in-out !important;
+}
+
+.winter-theme .text-oss-red:hover {
+  color: #B8E6F0 !important;
+}
+
+.winter-theme .bg-oss-red {
+  background: linear-gradient(135deg, #5B9BD5 0%, #3D7BA8 100%) !important;
+  transition: background 0.3s ease-in-out !important;
+}
+
+.winter-theme .border-oss-red {
+  border-color: #7EC8E3 !important;
+  transition: border-color 0.3s ease-in-out !important;
+}
+
+/* Зимние классы для использования в компонентах - улучшенные */
+.winter-theme .winter-text-primary {
+  color: #B8E6F0;
+}
+
+.winter-theme .winter-text-secondary {
+  color: #7EC8E3;
+}
+
+.winter-theme .winter-bg-primary {
+  background: linear-gradient(135deg, #5B9BD5 0%, #3D7BA8 100%);
+}
+
+.winter-theme .winter-bg-secondary {
+  background: linear-gradient(135deg, #2D5A7E 0%, #1A3A5A 100%);
+}
+
+.winter-theme .winter-border {
+  border-color: #7EC8E3;
+}
+
+.winter-theme.light .winter-text-primary {
+  color: #1A3A5A;
+}
+
+.winter-theme.light .winter-text-secondary {
+  color: #5B9BD5;
+}
+
+.winter-theme.light .winter-bg-primary {
+  background: linear-gradient(135deg, #D4F1F4 0%, #B8E6F0 100%);
+}
+
+.winter-theme.light .winter-bg-secondary {
+  background: linear-gradient(135deg, #B8E6F0 0%, #7EC8E3 100%);
+}
+
+.winter-theme.light .winter-border {
+  border-color: #5B9BD5;
+}
+
+/* Зимние градиенты - улучшенные */
+.winter-theme .gradient-accent {
+  background: linear-gradient(135deg, rgba(126, 200, 227, 0.25) 0%, rgba(91, 155, 213, 0.15) 50%, rgba(139, 126, 200, 0.1) 100%);
+}
+
+/* Анимация снежинок */
+@keyframes snowfall {
+  0% {
+    transform: translateY(-10px) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(calc(100vh + 10px)) translateX(20px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Зимние декоративные элементы */
+.winter-theme body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(2px 2px at 20% 30%, rgba(255, 255, 255, 0.2), transparent),
+    radial-gradient(2px 2px at 60% 70%, rgba(255, 255, 255, 0.15), transparent),
+    radial-gradient(1px 1px at 50% 50%, rgba(255, 255, 255, 0.25), transparent),
+    radial-gradient(1px 1px at 80% 10%, rgba(255, 255, 255, 0.2), transparent),
+    radial-gradient(2px 2px at 90% 40%, rgba(255, 255, 255, 0.15), transparent),
+    radial-gradient(1px 1px at 33% 60%, rgba(255, 255, 255, 0.2), transparent),
+    radial-gradient(1px 1px at 66% 20%, rgba(255, 255, 255, 0.15), transparent);
+  background-size: 200% 200%;
+  animation: snowdrift 20s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.4;
+  transition: opacity 0.5s ease-in-out;
+}
+
+@keyframes snowdrift {
+  0% {
+    background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+  }
+}
+
+/* Зимние тени - улучшенные */
+.winter-theme .elegant-shadow {
+  box-shadow: 
+    0 4px 12px rgba(26, 58, 90, 0.35),
+    0 8px 24px rgba(26, 58, 90, 0.25),
+    0 2px 4px rgba(91, 155, 213, 0.15),
+    0 0 0 1px rgba(126, 200, 227, 0.15);
+}
+
+.winter-theme .light .elegant-shadow {
+  box-shadow: 
+    0 4px 12px rgba(126, 200, 227, 0.25),
+    0 8px 24px rgba(126, 200, 227, 0.15),
+    0 2px 4px rgba(91, 155, 213, 0.1),
+    0 0 0 1px rgba(126, 200, 227, 0.25);
+}
+
+/* Зимние ссылки - улучшенные */
+.winter-theme .elegant-link::after {
+  background: linear-gradient(to right, #7EC8E3, #B8E6F0);
+}
+
+/* Зимние hover эффекты - улучшенные */
+.winter-theme .hover-lift:hover {
+  box-shadow: 
+    0 8px 24px rgba(91, 155, 213, 0.35),
+    0 16px 48px rgba(91, 155, 213, 0.25),
+    0 4px 8px rgba(126, 200, 227, 0.2);
+}
+
+/* Зимние заголовки - улучшенные градиенты */
+.winter-theme h1,
+.winter-theme h2,
+.winter-theme h3 {
+  background: linear-gradient(135deg, #FFFFFF 0%, #B8E6F0 50%, #7EC8E3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 8px rgba(26, 58, 90, 0.3), 0 4px 16px rgba(91, 155, 213, 0.2);
+}
+
+.winter-theme .light h1,
+.winter-theme .light h2,
+.winter-theme .light h3 {
+  background: linear-gradient(135deg, #1A3A5A 0%, #5B9BD5 50%, #3D7BA8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 1px 3px rgba(91, 155, 213, 0.15);
+}
+
+/* Зимние границы - улучшенные */
+.winter-theme .sharp-border {
+  border: 1px solid rgba(126, 200, 227, 0.35);
+}
+
+.winter-theme .light .sharp-border {
+  border: 1px solid rgba(126, 200, 227, 0.45);
+}
+
+/* Зимние переходы - применяем только к определенным элементам */
+.winter-theme .premium-button,
+.winter-theme .premium-card,
+.winter-theme .elegant-link,
+.winter-theme .hover-lift {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 0.3s;
+}
+
+/* Отключение зимней темы для определенных элементов */
+.winter-theme .no-winter-theme {
+  background: inherit !important;
+  border: inherit !important;
+  color: inherit !important;
+}
+
+/* Зимние стили для компонентов */
+.winter-theme .winter-header {
+  background: linear-gradient(to right, #1A3A5A, #2D5A7E, #3D7BA8, #2D5A7E, #1A3A5A) !important;
+  border-bottom-color: rgba(126, 200, 227, 0.35) !important;
+  box-shadow: 0 4px 20px rgba(26, 58, 90, 0.45), 0 2px 8px rgba(91, 155, 213, 0.2) !important;
+  transition: background 0.5s ease-in-out, border-color 0.5s ease-in-out !important;
+}
+
+.winter-theme.light .winter-header {
+  background: linear-gradient(to right, #D4F1F4, #B8E6F0, #7EC8E3, #B8E6F0, #D4F1F4) !important;
+  border-bottom-color: rgba(126, 200, 227, 0.45) !important;
+  box-shadow: 0 4px 20px rgba(126, 200, 227, 0.25), 0 2px 8px rgba(91, 155, 213, 0.15) !important;
+  transition: background 0.5s ease-in-out, border-color 0.5s ease-in-out !important;
+}
+
+.winter-theme .winter-header-accent {
+  background: linear-gradient(to right, transparent, rgba(126, 200, 227, 0.12), rgba(139, 126, 200, 0.08), rgba(126, 200, 227, 0.12), transparent) !important;
+  transition: background 0.5s ease-in-out !important;
+}
+
+.winter-theme.light .winter-header-accent {
+  background: linear-gradient(to right, transparent, rgba(91, 155, 213, 0.08), rgba(126, 200, 227, 0.06), rgba(91, 155, 213, 0.08), transparent) !important;
+  transition: background 0.5s ease-in-out !important;
+}
+
+.winter-theme .winter-nav-link {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.winter-theme .winter-nav-link:hover {
+  color: #E0F2FE !important;
+}
+
+.winter-theme.light .winter-nav-link {
+  color: #374151 !important;
+}
+
+.winter-theme.light .winter-nav-link:hover {
+  color: #4A90E2 !important;
+}
+
+.winter-theme .winter-footer {
+  background: linear-gradient(to right, #1A3A5A, #2D5A7E, #3D7BA8, #2D5A7E, #1A3A5A) !important;
+  border-top-color: rgba(126, 200, 227, 0.35) !important;
+  box-shadow: 0 -2px 8px rgba(26, 58, 90, 0.3) !important;
+  transition: background 0.5s ease-in-out, border-color 0.5s ease-in-out !important;
+}
+
+.winter-theme.light .winter-footer {
+  background: linear-gradient(to right, #D4F1F4, #B8E6F0, #7EC8E3, #B8E6F0, #D4F1F4) !important;
+  border-top-color: rgba(126, 200, 227, 0.45) !important;
+  box-shadow: 0 -2px 8px rgba(126, 200, 227, 0.2) !important;
+  transition: background 0.5s ease-in-out, border-color 0.5s ease-in-out !important;
+}
+
+.winter-theme .winter-footer-content {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.winter-theme.light .winter-footer-content {
+  color: #4B5563 !important;
+}
+
+.winter-theme .winter-footer-title {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.winter-theme.light .winter-footer-title {
+  color: #1F2937 !important;
+}
+
+.winter-theme .winter-footer-text {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.winter-theme.light .winter-footer-text {
+  color: #4B5563 !important;
+}
+
+.winter-theme .winter-footer-copyright {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.winter-theme.light .winter-footer-copyright {
+  color: #6B7280 !important;
+}
+
+.winter-theme .winter-main {
+  background: linear-gradient(to bottom, #1A3A5A, #2D5A7E, #3D7BA8, #2D5A7E, #1A3A5A) !important;
+  transition: background 0.5s ease-in-out !important;
+}
+
+.winter-theme.light .winter-main {
+  background: linear-gradient(to bottom, #D4F1F4, #B8E6F0, #7EC8E3, #B8E6F0, #D4F1F4) !important;
+  transition: background 0.5s ease-in-out !important;
+}
+
+.winter-theme .winter-hero {
+  background: linear-gradient(to bottom, #2D5A7E, #5B9BD5, #7EC8E3, #5B9BD5, #2D5A7E) !important;
+  transition: background 0.5s ease-in-out !important;
+}
+
+.winter-theme.light .winter-hero {
+  background: linear-gradient(to bottom, #B8E6F0, #D4F1F4, #FFFFFF, #D4F1F4, #B8E6F0) !important;
+  transition: background 0.5s ease-in-out !important;
+}
+
+.winter-theme .winter-hero-title {
+  color: #FFFFFF !important;
+  text-shadow: 0 2px 8px rgba(26, 58, 90, 0.4), 0 4px 16px rgba(91, 155, 213, 0.2) !important;
+  transition: color 0.5s ease-in-out, text-shadow 0.5s ease-in-out !important;
+}
+
+.winter-theme.light .winter-hero-title {
+  color: #1A3A5A !important;
+  text-shadow: 0 1px 3px rgba(91, 155, 213, 0.15) !important;
+  transition: color 0.5s ease-in-out, text-shadow 0.5s ease-in-out !important;
 }

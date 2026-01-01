@@ -11,11 +11,14 @@ on:
       - main
       - master
       - develop
+  workflow_dispatch:
 
 jobs:
   build:
+    name: Build and Test
     runs-on: ubuntu-latest
-    
+    timeout-minutes: 20
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -36,6 +39,16 @@ jobs:
         run: npm run lint
         continue-on-error: true
 
+      - name: TypeScript type check
+        working-directory: ./frontend/nextjs
+        run: |
+          if [ -f "tsconfig.json" ]; then
+            npx tsc --noEmit --pretty
+          else
+            echo "⚠️  tsconfig.json не найден, пропускаем проверку типов"
+          fi
+        continue-on-error: true
+
       - name: Build project
         working-directory: ./frontend/nextjs
         env:
@@ -48,8 +61,15 @@ jobs:
         working-directory: ./frontend/nextjs
         run: |
           if [ ! -d ".next" ]; then
-            echo "Build failed: .next directory not found"
+            echo "❌ Build failed: .next directory not found"
             exit 1
           fi
-          echo "Build successful!"
-
+          echo "✅ Build successful!"
+          
+      - name: Upload build artifacts
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: frontend/nextjs/.next
+          retention-days: 1

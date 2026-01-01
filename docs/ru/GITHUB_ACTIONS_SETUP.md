@@ -252,32 +252,17 @@ database/
 
 ## Решение проблем
 
-### Проблема: "Authentication failed"
+Подробное руководство по решению проблем находится в [GITHUB_ACTIONS_TROUBLESHOOTING.md](./GITHUB_ACTIONS_TROUBLESHOOTING.md)
 
-**Решение:**
-1. Проверьте, что `SUPABASE_ACCESS_TOKEN` правильный
-2. Убедитесь, что токен не истек
-3. Создайте новый токен, если нужно
+### Основные проблемы:
 
-### Проблема: "Project not found"
+1. **"SUPABASE_ACCESS_TOKEN не установлен"** - проверьте GitHub Secrets
+2. **"Authentication failed"** - проверьте правильность токена
+3. **"Project not found"** - проверьте SUPABASE_PROJECT_ID
+4. **"db push не сработал"** - проверьте синтаксис миграций
+5. **"Workflow не запускается"** - проверьте триггеры и ветки
 
-**Решение:**
-1. Проверьте, что `SUPABASE_PROJECT_ID` правильный
-2. Убедитесь, что проект существует и активен
-
-### Проблема: "Migration failed"
-
-**Решение:**
-1. Проверьте логи в GitHub Actions
-2. Проверьте SQL синтаксис миграции
-3. Убедитесь, что миграция не конфликтует с существующими данными
-
-### Проблема: "Workflow не запускается"
-
-**Решение:**
-1. Проверьте, что файл `.github/workflows/supabase-sync.yml` существует
-2. Убедитесь, что файлы в `database/` изменены
-3. Проверьте, что коммит запушен в ветку `main` или `master`
+См. [GITHUB_ACTIONS_TROUBLESHOOTING.md](./GITHUB_ACTIONS_TROUBLESHOOTING.md) для детальных решений.
 
 ---
 

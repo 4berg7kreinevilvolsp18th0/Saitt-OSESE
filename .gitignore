@@ -1,35 +1,27 @@
-# Dependencies
+# dependencies
 node_modules/
-.pnp
-.pnp.js
 
-# Testing
-coverage/
-.nyc_output
-
-# Next.js
+# build
 .next/
 out/
-build/
 dist/
 
-# Production
-*.log
+# env
+.env
+.env.*
+!.env.example
+
+# logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
 
-# Environment variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-.env*.local
+# OS
+.DS_Store
+Thumbs.db
 
 # Vercel
-.vercel
+.vercel/
 
 # TypeScript
 *.tsbuildinfo
@@ -63,3 +55,7 @@ ENV/
 # GitHub Actions (keep workflows)
 !.github/workflows/
 
+docs/ru/GITHUB_ACTIONS_TROUBLESHOOTING.md
+docs/ru/CODE_SCANNING.md
+/docs
+ERRORS_REPORT.md

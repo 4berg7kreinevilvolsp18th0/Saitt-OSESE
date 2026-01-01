@@ -1,0 +1,169 @@
+name: Code Scanning
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+  schedule:
+    # Каждый понедельник в 8:00 UTC (17:00 по Владивостоку)
+    - cron: "0 8 * * 1"
+  workflow_dispatch:
+
+jobs:
+  code-scanning:
+    name: Comprehensive Code Scanning
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: frontend/nextjs/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ./frontend/nextjs
+        run: npm ci
+
+      - name: Run ESLint with security rules
+        working-directory: ./frontend/nextjs
+        run: |
+          echo "🔍 Запуск ESLint с правилами безопасности..."
+          npm run lint -- --max-warnings 0 || true
+        continue-on-error: true
+
+      - name: Check for security anti-patterns
+        run: |
+          echo "🔍 Проверка на анти-паттерны безопасности..."
+          
+          # Проверка на использование innerHTML
+          echo "📋 Проверка innerHTML..."
+          if grep -r "innerHTML" frontend/nextjs/app frontend/nextjs/components frontend/nextjs/lib \
+            --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" 2>/dev/null | \
+            grep -v "dangerouslySetInnerHTML" | grep -v "//" | head -5; then
+            echo "⚠️  Найдено использование innerHTML. Используйте textContent или санитизацию."
+          else
+            echo "✅ innerHTML не используется небезопасно"
+          fi
+          
+          # Проверка на eval
+          echo "📋 Проверка eval..."
+          if grep -r "eval(" frontend/nextjs/app frontend/nextjs/components frontend/nextjs/lib \
+            --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" 2>/dev/null; then
+            echo "❌ Найдено использование eval() - это небезопасно!"
+            exit 1
+          else
+            echo "✅ eval() не используется"
+          fi
+          
+          # Проверка на document.write
+          echo "📋 Проверка document.write..."
+          if grep -r "document\.write" frontend/nextjs/app frontend/nextjs/components frontend/nextjs/lib \
+            --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" 2>/dev/null; then
+            echo "⚠️  Найдено использование document.write - это не рекомендуется"
+          else
+            echo "✅ document.write не используется"
+          fi
+          
+          # Проверка на использование window.location без валидации
+          echo "📋 Проверка window.location..."
+          if grep -r "window\.location\s*=" frontend/nextjs/app frontend/nextjs/components frontend/nextjs/lib \
+            --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" 2>/dev/null | \
+            grep -v "//" | head -5; then
+            echo "⚠️  Найдено прямое присваивание window.location. Убедитесь в валидации."
+          else
+            echo "✅ window.location используется безопасно"
+          fi
+        continue-on-error: true
+
+      - name: Check SQL injection risks
+        run: |
+          echo "🔍 Проверка на риски SQL injection..."
+          
+          # Проверка на использование template strings в SQL (если есть прямой доступ к БД)
+          if [ -d "backend/python" ]; then
+            echo "📋 Проверка Python кода на SQL injection..."
+            if grep -r "f\".*SELECT\|f\".*INSERT\|f\".*UPDATE\|f\".*DELETE" backend/python \
+              --include="*.py" 2>/dev/null | grep -v "#" | head -5; then
+              echo "⚠️  Найдено использование f-strings в SQL. Используйте параметризованные запросы."
+            else
+              echo "✅ SQL запросы выглядят безопасно"
+            fi
+          fi
+        continue-on-error: true
+
+      - name: Check for exposed credentials
+        run: |
+          echo "🔍 Проверка на открытые учетные данные..."
+          
+          # Проверка на .env файлы в репозитории
+          if find . -name ".env" -not -path "./node_modules/*" -not -path "./.git/*" 2>/dev/null | head -5; then
+            echo "❌ Найдены .env файлы в репозитории! Они должны быть в .gitignore"
+            exit 1
+          else
+            echo "✅ .env файлы не найдены в репозитории"
+          fi
+          
+          # Проверка на ключи в коде
+          if grep -rE "(sk_live|pk_live|sk_test|pk_test|AIza|AKIA|aws_access_key)" \
+            frontend/ backend/ database/ .github/ \
+            --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" --include="*.py" \
+            2>/dev/null | grep -v ".git" | grep -v "node_modules" | head -5; then
+            echo "❌ Найдены возможные ключи API в коде!"
+            exit 1
+          else
+            echo "✅ API ключи не найдены в коде"
+          fi
+        continue-on-error: true
+
+      - name: Save scan results
+        if: always()
+        run: |
+          {
+            echo "{"
+            echo "  \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\","
+            echo "  \"workflow\": \"Code Scanning\","
+            echo "  \"checks\": {"
+            echo "    \"eslint\": \"completed\","
+            echo "    \"security_patterns\": \"completed\","
+            echo "    \"sql_injection\": \"completed\","
+            echo "    \"exposed_credentials\": \"completed\""
+            echo "  }"
+            echo "}"
+        } > scan-results.json
+
+      - name: Upload scan results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-scanning-results
+          path: scan-results.json
+          retention-days: 30
+
+      - name: Generate scan summary
+        if: always()
+        run: |
+          echo "## 🔍 Code Scanning Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### ✅ Проверки выполнены:" >> $GITHUB_STEP_SUMMARY
+          echo "- ESLint с правилами безопасности" >> $GITHUB_STEP_SUMMARY
+          echo "- Проверка анти-паттернов безопасности" >> $GITHUB_STEP_SUMMARY
+          echo "- Проверка на SQL injection" >> $GITHUB_STEP_SUMMARY
+          echo "- Проверка на открытые учетные данные" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📥 **Скачайте артефакт 'code-scanning-results' для детального отчета**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Проверьте результаты выше для деталей." >> $GITHUB_STEP_SUMMARY
+

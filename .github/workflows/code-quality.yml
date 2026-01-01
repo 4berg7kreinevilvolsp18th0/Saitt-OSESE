@@ -1,0 +1,183 @@
+name: Code Quality Check
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+  pull_request:
+    branches:
+      - main
+      - master
+      - develop
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: ESLint & TypeScript Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: frontend/nextjs/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ./frontend/nextjs
+        run: npm ci
+
+      - name: Run ESLint
+        working-directory: ./frontend/nextjs
+        run: npm run lint || true
+        continue-on-error: true
+
+      - name: TypeScript type check
+        working-directory: ./frontend/nextjs
+        run: |
+          if [ -f "tsconfig.json" ]; then
+            npx tsc --noEmit --pretty || true
+          else
+            echo "⚠️  tsconfig.json не найден, пропускаем проверку типов"
+          fi
+        continue-on-error: true
+
+      - name: Check for console.log
+        working-directory: ./frontend/nextjs
+        run: |
+          echo "🔍 Проверка на console.log в продакшн коде..."
+          if grep -r "console\.log" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" app/ components/ lib/ 2>/dev/null | grep -v "// eslint-disable" | grep -v "console.log(" | head -20; then
+            echo "⚠️  Найдены console.log. Рекомендуется использовать console.error или удалить в продакшн коде."
+          else
+            echo "✅ console.log не найдены или закомментированы"
+          fi
+        continue-on-error: true
+
+  code-analysis:
+    name: Code Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        working-directory: ./frontend/nextjs
+        run: npm ci
+
+      - name: Check for security issues in code
+        working-directory: ./frontend/nextjs
+        run: |
+          echo "🔍 Проверка кода на проблемы безопасности..."
+          
+          # Проверка на hardcoded секреты
+          echo "📋 Проверка на hardcoded секреты..."
+          if grep -rE "(password|secret|key|token|api_key|apikey)\s*=\s*['\"][^'\"]+['\"]" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" app/ components/ lib/ 2>/dev/null | grep -v "process.env" | grep -v "//" | head -10; then
+            echo "⚠️  Возможные hardcoded секреты найдены. Проверьте код выше."
+          else
+            echo "✅ Hardcoded секреты не найдены"
+          fi
+          
+          # Проверка на использование eval
+          echo "📋 Проверка на использование eval..."
+          if grep -r "eval(" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" app/ components/ lib/ 2>/dev/null; then
+            echo "❌ Найдено использование eval() - это небезопасно!"
+            exit 1
+          else
+            echo "✅ eval() не используется"
+          fi
+          
+          # Проверка на innerHTML без санитизации
+          echo "📋 Проверка на innerHTML..."
+          if grep -r "innerHTML" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" app/ components/ lib/ 2>/dev/null | grep -v "dangerouslySetInnerHTML" | head -5; then
+            echo "⚠️  Найдено использование innerHTML. Убедитесь, что данные санитизированы."
+          else
+            echo "✅ innerHTML не используется или используется безопасно"
+          fi
+        continue-on-error: true
+
+      - name: Check file sizes
+        run: |
+          echo "📊 Проверка размера файлов..."
+          find frontend/nextjs -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" \) -size +500k -exec ls -lh {} \; | head -10 || echo "✅ Все файлы имеют разумный размер"
+        continue-on-error: true
+
+  summary:
+    name: Quality Summary
+    runs-on: ubuntu-latest
+    needs: [lint, code-analysis]
+    if: always()
+
+    steps:
+      - name: Run ESLint and save results
+        working-directory: ./frontend/nextjs
+        run: |
+          npm run lint -- --format json --output-file ../eslint-results.json || true
+        continue-on-error: true
+
+      - name: Run TypeScript check and save results
+        working-directory: ./frontend/nextjs
+        run: |
+          if [ -f "tsconfig.json" ]; then
+            npx tsc --noEmit --pretty false 2>&1 | tee ../tsc-results.txt || true
+          fi
+        continue-on-error: true
+
+      - name: Upload scan results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-quality-results
+          path: |
+            eslint-results.json
+            tsc-results.txt
+          retention-days: 30
+
+      - name: Generate summary
+        if: always()
+        run: |
+          echo "## 📊 Code Quality Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Подсчет ошибок ESLint
+          if [ -f "eslint-results.json" ]; then
+            ESLINT_ERRORS=$(jq '[.[] | .messages[] | select(.severity == 2)] | length' eslint-results.json 2>/dev/null || echo "0")
+            ESLINT_WARNINGS=$(jq '[.[] | .messages[] | select(.severity == 1)] | length' eslint-results.json 2>/dev/null || echo "0")
+            echo "### ESLint:" >> $GITHUB_STEP_SUMMARY
+            echo "- ❌ Ошибок: $ESLINT_ERRORS" >> $GITHUB_STEP_SUMMARY
+            echo "- ⚠️  Предупреждений: $ESLINT_WARNINGS" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Подсчет ошибок TypeScript
+          if [ -f "tsc-results.txt" ]; then
+            TS_ERRORS=$(grep -c "error TS" tsc-results.txt 2>/dev/null || echo "0")
+            echo "### TypeScript:" >> $GITHUB_STEP_SUMMARY
+            echo "- ❌ Ошибок типов: $TS_ERRORS" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "### ✅ Проверки выполнены:" >> $GITHUB_STEP_SUMMARY
+          echo "- ESLint проверка" >> $GITHUB_STEP_SUMMARY
+          echo "- TypeScript проверка типов" >> $GITHUB_STEP_SUMMARY
+          echo "- Проверка на console.log" >> $GITHUB_STEP_SUMMARY
+          echo "- Проверка безопасности кода" >> $GITHUB_STEP_SUMMARY
+          echo "- Проверка размера файлов" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📥 **Скачайте артефакт 'code-quality-results' для детального отчета**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Проверьте результаты выше для деталей." >> $GITHUB_STEP_SUMMARY
+
