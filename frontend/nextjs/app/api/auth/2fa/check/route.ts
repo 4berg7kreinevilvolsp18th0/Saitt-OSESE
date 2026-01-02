@@ -18,19 +18,7 @@ export async function POST(request: NextRequest) {
         { status: 401 }
       );
     }
-    var express = require('express');
-    var app = express();
-    // ...
-    app.get('/full-profile/:userId', function(req, res) {
-    
-        if (req.signedCookies.loggedInUserId !== req.params.userId) {
-            // GOOD: login decision made based on server controlled data
-            requireLogin();
-        } else {
-            // ... show private information
-        }
-    
-    });
+
     const body = await request.json();
     const { token } = body;
 
@@ -75,4 +63,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
