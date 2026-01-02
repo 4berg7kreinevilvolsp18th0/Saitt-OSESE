@@ -248,20 +248,60 @@ pytest
 
 ## Развёртывание
 
-### Docker
+### Быстрый старт
 
-```dockerfile
-FROM python:3.11-slim
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-COPY . .
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+**Рекомендуется:** Railway.app (бесплатный план, автоматический деплой)
+
+1. Зарегистрируйтесь на [Railway.app](https://railway.app)
+2. Создайте новый проект из GitHub репозитория
+3. Укажите **Root Directory:** `backend/python`
+4. Добавьте PostgreSQL базу данных
+5. Настройте переменные окружения (см. ниже)
+6. Railway автоматически задеплоит
+
+**Подробная инструкция:** [`docs/ru/BACKEND_DEPLOYMENT.md`](../../docs/ru/BACKEND_DEPLOYMENT.md)
+
+### Варианты развертывания
+
+- **Railway** (⭐ Рекомендуется) - бесплатный план, автоматический деплой
+- **Render** - бесплатный план с ограничениями
+- **Fly.io** - бесплатный план, глобальная сеть
+- **Docker** - универсальный вариант для любого хостинга
+
+### Environment variables (Production)
+
+**Обязательные:**
+```env
+DATABASE_URL=postgresql://postgres:[PASSWORD]@db.[PROJECT].supabase.co:5432/postgres
+SUPABASE_URL=https://[PROJECT].supabase.co
+SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+ALLOWED_ORIGINS=https://your-site.vercel.app
+DEBUG=False
+ENVIRONMENT=production
 ```
 
-### Environment variables
+**Опциональные:**
+```env
+PORT=8000
+WORKERS=2
+REDIS_URL=redis://localhost:6379
+```
 
-Убедитесь, что в production установлены:
-- `DATABASE_URL` - строка подключения к БД
-- `DEBUG=False` - отключить debug режим
+### Docker
+
+```bash
+# Сборка образа
+docker build -t oss-dvfu-backend .
+
+# Запуск
+docker run -d \
+  -p 8000:8000 \
+  -e DATABASE_URL=... \
+  -e SUPABASE_URL=... \
+  --name oss-backend \
+  oss-dvfu-backend
+```
+
+**Подробная инструкция:** [`docs/ru/BACKEND_DEPLOYMENT.md`](../../docs/ru/BACKEND_DEPLOYMENT.md)
 
