@@ -229,13 +229,11 @@ create policy "appeals_members_read" on appeals
 drop policy if exists "appeals_members_update" on appeals;
 create policy "appeals_members_update" on appeals
   for update using (
-    -- Board and staff can update all
-    public.has_role('board') or public.has_role('staff')
+    -- Board can update all; leads and members can update appeals of their direction
+    public.has_role('board')
     or
-    -- Lead can update appeals of their direction
     (public.has_role('lead', direction_id) and direction_id is not null)
     or
-    -- Member can update appeals of their direction
     (public.has_role('member', direction_id) and direction_id is not null)
   );
 
@@ -279,7 +277,10 @@ create policy "content_public_read" on content
 drop policy if exists "content_members_manage" on content;
 create policy "content_members_manage" on content
   for all using (
-    public.has_role('board') or public.has_role('staff') or public.has_role('lead')
+    -- Board can manage all; leads can manage content for their direction
+    public.has_role('board')
+    or
+    public.has_role('lead', direction_id)
   );
 
 -- Documents: public can read
@@ -291,7 +292,10 @@ create policy "documents_public_read" on documents
 drop policy if exists "documents_members_manage" on documents;
 create policy "documents_members_manage" on documents
   for all using (
-    public.has_role('board') or public.has_role('staff') or public.has_role('lead')
+    -- Only board and leads for the document's direction can manage
+    public.has_role('board')
+    or
+    public.has_role('lead', direction_id)
   );
 
 -- Student Organizations: public can read active organizations
@@ -303,7 +307,8 @@ create policy "student_organizations_public_read" on student_organizations
 drop policy if exists "student_organizations_members_manage" on student_organizations;
 create policy "student_organizations_members_manage" on student_organizations
   for all using (
-    public.has_role('board') or public.has_role('staff') or public.has_role('lead')
+    -- Management of student organizations is reserved for board or designated leads
+    public.has_role('board') or public.has_role('lead')
   );
 
 -- Appeal Attachments: public can create (when creating appeal)
@@ -340,7 +345,8 @@ create policy "user_roles_read_own" on user_roles
 drop policy if exists "user_roles_manage" on user_roles;
 create policy "user_roles_manage" on user_roles
   for all using (
-    public.has_role('board') or public.has_role('staff')
+    -- Only board may manage user roles
+    public.has_role('board')
   );
 
 -- Note: For production, you need to:
