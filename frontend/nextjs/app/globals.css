@@ -4,8 +4,8 @@
 
 /* OSS brandbook fonts - SF UI Text and SF UI Display */
 @font-face {
-  font-family: "SF UI Text";
-  src: url("/fonts/SFUITEXT-LIGHT (3).TTF") format("truetype");
+  font-family: 'SF UI Text';
+  src: url('/fonts/SFUITEXT-LIGHT (3).TTF') format('truetype');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
