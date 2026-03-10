@@ -1,6 +1,5 @@
-
 -- ===============================
--- OSSID / DVFU OСС Database Schema
+-- ОСС ДВФУ Database Schema исправленный ===============================
 -- ===============================
 
 create extension if not exists "pgcrypto";
@@ -16,7 +15,7 @@ create table if not exists directions (
     created_at timestamptz default now()
 );
 
--- Appeals
+-- Жалобы
 create table if not exists appeals (
     id uuid primary key default gen_random_uuid(),
     direction_id uuid references directions(id),
@@ -39,7 +38,7 @@ create table if not exists appeals (
     closed_at timestamptz
 );
 
--- Appeal Attachments (Вложения к обращениям)
+-- Вложения к жалобам
 create table if not exists appeal_attachments (
     id uuid primary key default gen_random_uuid(),
     appeal_id uuid references appeals(id) on delete cascade,
@@ -50,7 +49,7 @@ create table if not exists appeal_attachments (
     uploaded_at timestamptz default now()
 );
 
--- Appeal comments
+-- Комментарии к жалобам
 create table if not exists appeal_comments (
     id uuid primary key default gen_random_uuid(),
     appeal_id uuid references appeals(id) on delete cascade,
@@ -60,7 +59,7 @@ create table if not exists appeal_comments (
     created_at timestamptz default now()
 );
 
--- Content (news, guides, faq)
+-- Контент (новости, руководства, FAQ)
 create table if not exists content (
     id uuid primary key default gen_random_uuid(),
     type text not null check (type in ('news','guide','faq')),
@@ -74,7 +73,7 @@ create table if not exists content (
     updated_at timestamptz default now()
 );
 
--- Documents
+-- Документы
 create table if not exists documents (
     id uuid primary key default gen_random_uuid(),
     title text not null,
@@ -83,7 +82,7 @@ create table if not exists documents (
     created_at timestamptz default now()
 );
 
--- Student Organizations (Студенческие объединения)
+-- Студенческие объединения
 create table if not exists student_organizations (
     id uuid primary key default gen_random_uuid(),
     title text not null,
@@ -100,7 +99,7 @@ create table if not exists student_organizations (
     updated_at timestamptz default now()
 );
 
--- User Roles (for Supabase Auth integration)
+-- Роли пользователей (для интеграции с Supabase Auth)
 -- Создаем таблицу ДО индексов, чтобы избежать ошибок
 create table if not exists user_roles (
     id uuid primary key default gen_random_uuid(),
@@ -116,7 +115,7 @@ create table if not exists user_roles (
 -- Indexes for Performance
 -- ===============================
 
--- Appeals indexes
+-- Индексы для жалоб
 create index if not exists idx_appeals_status on appeals(status);
 create index if not exists idx_appeals_direction on appeals(direction_id);
 create index if not exists idx_appeals_created_at on appeals(created_at desc);
@@ -125,38 +124,37 @@ create index if not exists idx_appeals_assigned_to on appeals(assigned_to);
 create index if not exists idx_appeals_priority on appeals(priority);
 create index if not exists idx_appeals_deadline on appeals(deadline) where deadline is not null;
 
--- Appeal attachments indexes
+-- Индексы для вложений к жалобам
 create index if not exists idx_appeal_attachments_appeal on appeal_attachments(appeal_id);
 
--- Content indexes
+-- Индексы для контента
 create index if not exists idx_content_status on content(status);
 create index if not exists idx_content_type on content(type);
 create index if not exists idx_content_direction on content(direction_id);
 create index if not exists idx_content_published_at on content(published_at desc);
 create index if not exists idx_content_slug on content(slug);
 
--- Appeal comments indexes
+-- Индексы для комментариев к жалобам
 create index if not exists idx_appeal_comments_appeal on appeal_comments(appeal_id);
 create index if not exists idx_appeal_comments_created_at on appeal_comments(created_at desc);
-
--- User roles indexes
+-- Индексы для ролей пользователей
 create index if not exists idx_user_roles_user_id on user_roles(user_id);
 create index if not exists idx_user_roles_role on user_roles(role);
 create index if not exists idx_user_roles_direction on user_roles(direction_id);
 
--- Directions indexes
+-- Индексы для направлений
 create index if not exists idx_directions_slug on directions(slug);
 create index if not exists idx_directions_active on directions(is_active) where is_active = true;
 
--- Student organizations indexes
+-- Индексы для студенческих объединений
 create index if not exists idx_student_organizations_active on student_organizations(is_active) where is_active = true;
 create index if not exists idx_student_organizations_display_order on student_organizations(display_order);
 
 -- ===============================
--- Row Level Security (RLS) Policies
+-- Политики Row Level Security (RLS)
 -- ===============================
 
--- Enable RLS on all tables
+-- Включаем RLS на всех таблицах
 alter table appeals enable row level security;
 alter table appeal_comments enable row level security;
 alter table content enable row level security;
@@ -166,25 +164,25 @@ alter table student_organizations enable row level security;
 alter table user_roles enable row level security;
 alter table appeal_attachments enable row level security;
 
--- Directions: public read for active directions
+-- Направления: пользователи могут читать активные направления
 drop policy if exists "directions_public_read" on directions;
 create policy "directions_public_read" on directions
   for select using (is_active = true);
 
--- Appeals: public can create
+-- Жалобы: пользователи могут создавать жалобы, обращеения вопросы и предложения
 drop policy if exists "appeals_public_insert" on appeals;
 create policy "appeals_public_insert" on appeals
   for insert with check (true);
 
--- Appeals: public can read by public_token
+-- Жалобы: публичный может читать по public_token
 drop policy if exists "appeals_public_read_by_token" on appeals;
 create policy "appeals_public_read_by_token" on appeals
   for select using (
-    -- Allow read if public_token matches (will be checked in application)
+    -- Разрешаем чтение если public_token совпадает (будет проверено в приложении)
     true
   );
 
--- Helper function to check user role
+-- Вспомогательная функция для проверки роли пользователя, чтобы убедиться, что они имеют правильные роли
 create or replace function public.has_role(p_role text, p_direction_id uuid default null)
 returns boolean
 language plpgsql
@@ -192,7 +190,7 @@ security definer
 as $$
 begin
   if p_direction_id is null then
-    -- Check if user has role without direction (board/staff)
+    -- Проверяем если пользователь имеет роль без направления (board/staff)
     return exists (
       select 1 from user_roles
       where user_id = (SELECT auth.uid())::uuid
@@ -200,7 +198,7 @@ begin
         and direction_id is null
     );
   else
-    -- Check if user has role for specific direction
+    -- Проверяем если пользователь имеет роль для конкретного направления
     return exists (
       select 1 from user_roles
       where user_id = (SELECT auth.uid())::uuid
@@ -211,21 +209,21 @@ begin
 end;
 $$;
 
--- Appeals: members can read appeals of their direction
+  -- Жалобы: члены могут читать жалобы своего направления
 drop policy if exists "appeals_members_read" on appeals;
 create policy "appeals_members_read" on appeals
   for select using (
-    -- Board and staff can see all
+    -- Board и staff могут видеть все
     public.has_role('board') or public.has_role('staff')
     or
-    -- Lead can see appeals of their direction
+    -- Lead могут видеть жалобы своего направления
     (public.has_role('lead', direction_id) and direction_id is not null)
     or
-    -- Member can see appeals of their direction
+    -- Member могут видеть жалобы своего направления
     (public.has_role('member', direction_id) and direction_id is not null)
   );
 
--- Appeals: members can update status
+-- Жалобы: члены могут обновлять статус
 drop policy if exists "appeals_members_update" on appeals;
 create policy "appeals_members_update" on appeals
   for update using (
@@ -237,7 +235,7 @@ create policy "appeals_members_update" on appeals
     (public.has_role('member', direction_id) and direction_id is not null)
   );
 
--- Appeal Comments: members can read and create
+-- Комментарии к жалобам: члены могут читать и создавать
 drop policy if exists "appeal_comments_read" on appeal_comments;
 create policy "appeal_comments_read" on appeal_comments
   for select using (
@@ -268,12 +266,12 @@ create policy "appeal_comments_insert" on appeal_comments
     )
   );
 
--- Content: public can read published content
+-- Контент: публичный может читать опубликованный контент
 drop policy if exists "content_public_read" on content;
 create policy "content_public_read" on content
   for select using (status = 'published');
 
--- Content: members can manage (read all, insert, update)
+-- Контент: члены могут управлять (читать все, создавать, обновлять)
 drop policy if exists "content_members_manage" on content;
 create policy "content_members_manage" on content
   for all using (
@@ -283,12 +281,12 @@ create policy "content_members_manage" on content
     public.has_role('lead', direction_id)
   );
 
--- Documents: public can read
+-- Документы: публичный может читать
 drop policy if exists "documents_public_read" on documents;
 create policy "documents_public_read" on documents
   for select using (true);
 
--- Documents: members can manage
+-- Документы: члены могут управлять
 drop policy if exists "documents_members_manage" on documents;
 create policy "documents_members_manage" on documents
   for all using (
@@ -298,12 +296,12 @@ create policy "documents_members_manage" on documents
     public.has_role('lead', direction_id)
   );
 
--- Student Organizations: public can read active organizations
+-- Студенческие объединения: пользователи могут читать активные объединения
 drop policy if exists "student_organizations_public_read" on student_organizations;
 create policy "student_organizations_public_read" on student_organizations
   for select using (is_active = true);
 
--- Student Organizations: members can manage
+-- Студенческие объединения: члены могут управлять контентом и наполнением раздела студенческих объединений, чтобы убедиться, что они имеют правильные роли и направления
 drop policy if exists "student_organizations_members_manage" on student_organizations;
 create policy "student_organizations_members_manage" on student_organizations
   for all using (
@@ -311,12 +309,12 @@ create policy "student_organizations_members_manage" on student_organizations
     public.has_role('board') or public.has_role('lead')
   );
 
--- Appeal Attachments: public can create (when creating appeal)
+-- Вложения к жалобам: пользователи могут создавать (при создании жалобы), чтобы убедиться, что они имеют правильные роли и направления
 drop policy if exists "appeal_attachments_public_insert" on appeal_attachments;
 create policy "appeal_attachments_public_insert" on appeal_attachments
   for insert with check (true);
 
--- Appeal Attachments: can read if have access to appeal
+-- Вложения к жалобам: пользователи могут читать если имеют доступ к жалобе, чтобы убедиться, что они имеют правильные роли и направления
 drop policy if exists "appeal_attachments_read" on appeal_attachments;
 create policy "appeal_attachments_read" on appeal_attachments
   for select using (
@@ -336,21 +334,21 @@ create policy "appeal_attachments_read" on appeal_attachments
     )
   );
 
--- User Roles: users can read their own roles
+-- Роли пользователей: пользователи могут читать свои роли, чтобы убедиться, что они имеют правильные роли и направления
 drop policy if exists "user_roles_read_own" on user_roles;
 create policy "user_roles_read_own" on user_roles
   for select using (user_id = (SELECT auth.uid())::uuid);
 
--- User Roles: board/staff can manage all roles
+-- Роли пользователей: board/staff могут управлять ролями пользователей
 drop policy if exists "user_roles_manage" on user_roles;
 create policy "user_roles_manage" on user_roles
   for all using (
-    -- Only board may manage user roles
+    -- Только board может управлять ролями пользователей
     public.has_role('board')
   );
 
--- Note: For production, you need to:
--- 1. Set up Supabase Auth
--- 2. Create user_roles table linking users to roles and directions
--- 3. Update policies to check auth.uid() and user_roles
--- 4. Test RLS policies thoroughly
+-- Примечание: Для воспроизводства, тебе нужно выполнить следующие шаги, мой друг:
+-- 1. Настроить Supabase Auth
+-- 2. Создать таблицу user_roles, связывающую пользователей с ролями и направлениями
+-- 3. Обновить политики для проверки auth.uid() и user_roles
+-- 4. Тщательно протестировать политики RLS, чтобы убедиться, что они работают правильно и безопасно и не блокируют доступ к данным
