@@ -12,24 +12,24 @@
 }
 
 @font-face {
-  font-family: "SF UI Text";
-  src: url("/fonts/SFUITEXT-MEDIUM (3).TTF") format("truetype");
+  font-family: 'SF UI Text';
+  src: url('/fonts/SFUITEXT-MEDIUM (3).TTF') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "SF UI Text";
-  src: url("/fonts/SFUITEXT-MEDIUM (3).TTF") format("truetype");
+  font-family: 'SF UI Text';
+  src: url('/fonts/SFUITEXT-MEDIUM (3).TTF') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "SF UI Text";
-  src: url("/fonts/SFUITEXT-SEMIBOLD (3).TTF") format("truetype");
+  font-family: 'SF UI Text';
+  src: url('/fonts/SFUITEXT-SEMIBOLD (3).TTF') format('truetype');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
