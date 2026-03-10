@@ -1,5 +1,5 @@
 """
-Advanced analytics and statistics
+Расширенная аналитика и статистика для анализа и статистики обращений и контента
 """
 from sqlalchemy.orm import Session
 from sqlalchemy import func, and_, extract, case
@@ -33,39 +33,39 @@ def get_detailed_appeal_stats(
     direction_id: Optional[str] = None
 ) -> Dict:
     """
-    Get detailed appeal statistics with time-based analysis
+    Получаем детальную статистику обращений с временным анализом
     """
     query = db.query(Appeal)
-    
+
     if start_date:
         query = query.filter(Appeal.created_at >= start_date)
     if end_date:
         query = query.filter(Appeal.created_at <= end_date)
     if direction_id:
         query = query.filter(Appeal.direction_id == direction_id)
-    
+
     total = query.count()
-    
-    # By status
+
+    # По статусу
     by_status = {}
     for status in ["new", "in_progress", "waiting", "closed"]:
         count = query.filter(Appeal.status == status).count()
         by_status[status] = count
-    
-    # By priority
+
+    # По приоритету
     by_priority = {}
     for priority in ["low", "normal", "high", "urgent"]:
         count = query.filter(Appeal.priority == priority).count()
         by_priority[priority] = count
-    
-    # Average response time (for closed appeals)
+
+    # Среднее время ответа (для закрытых обращений)
     closed_appeals = query.filter(
         and_(
             Appeal.status == "closed",
             Appeal.first_response_at.isnot(None)
         )
     ).all()
-    
+
     avg_response_time = None
     if closed_appeals:
         total_time = sum(
@@ -74,8 +74,8 @@ def get_detailed_appeal_stats(
             if appeal.first_response_at
         )
         avg_response_time = total_time / len(closed_appeals) / 3600  # in hours
-    
-    # Average resolution time
+
+    # Среднее время решения (для закрытых обращений)
     avg_resolution_time = None
     if closed_appeals:
         total_time = sum(
@@ -84,42 +84,42 @@ def get_detailed_appeal_stats(
             if appeal.closed_at
         )
         avg_resolution_time = total_time / len(closed_appeals) / 3600  # in hours
-    
-    # By direction
+
+    # По направлению
     by_direction = {}
     results = db.query(
         Direction.id,
         Direction.title,
         func.count(Appeal.id).label("count")
     ).join(Appeal, Direction.id == Appeal.direction_id, isouter=True)
-    
+
     if start_date:
         results = results.filter(Appeal.created_at >= start_date)
     if end_date:
         results = results.filter(Appeal.created_at <= end_date)
-    
+
     results = results.group_by(Direction.id, Direction.title).all()
-    
+
     for direction_id, direction_title, count in results:
         by_direction[str(direction_id)] = {
             "title": direction_title,
             "count": count
         }
-    
-    # Daily trends (last 30 days)
+
+    # Ежедневные тренды (последние 30 дней)
     daily_trends = []
     for i in range(30):
         day = date.today() - timedelta(days=i)
         day_start = datetime.combine(day, datetime.min.time())
         day_end = datetime.combine(day, datetime.max.time())
-        
+
         created = query.filter(
             and_(
                 Appeal.created_at >= day_start,
                 Appeal.created_at <= day_end
             )
         ).count()
-        
+
         closed = query.filter(
             and_(
                 Appeal.status == "closed",
@@ -127,15 +127,15 @@ def get_detailed_appeal_stats(
                 Appeal.closed_at <= day_end
             )
         ).count()
-        
+
         daily_trends.append({
             "date": day.isoformat(),
             "created": created,
             "closed": closed
         })
-    
-    daily_trends.reverse()  # Oldest first
-    
+
+    daily_trends.reverse()  # Самые старые сначала
+
     return {
         "total": total,
         "by_status": by_status,
@@ -158,21 +158,21 @@ def get_user_performance_stats(
     end_date: Optional[date] = None
 ) -> Dict:
     """
-    Get performance statistics for a specific user
+    Получаем статистику производительности для конкретного пользователя
     """
     query = db.query(Appeal).filter(Appeal.assigned_to == user_id)
-    
+
     if start_date:
         query = query.filter(Appeal.created_at >= start_date)
     if end_date:
         query = query.filter(Appeal.created_at <= end_date)
-    
+
     total_assigned = query.count()
     closed = query.filter(Appeal.status == "closed").count()
     in_progress = query.filter(Appeal.status == "in_progress").count()
     waiting = query.filter(Appeal.status == "waiting").count()
-    
-    # Average resolution time for this user
+
+    # Среднее время решения для этого пользователя
     closed_by_user = query.filter(Appeal.status == "closed").all()
     avg_resolution_time = None
     if closed_by_user:
@@ -182,7 +182,7 @@ def get_user_performance_stats(
             if appeal.closed_at
         )
         avg_resolution_time = total_time / len(closed_by_user) / 3600  # in hours
-    
+
     return {
         "user_id": user_id,
         "total_assigned": total_assigned,
@@ -200,27 +200,27 @@ def get_content_analytics(
     end_date: Optional[date] = None
 ) -> Dict:
     """
-    Get content analytics
+    Получаем аналитику по контенту (новости, гайды, FAQ)
     """
     query = db.query(Content)
-    
+
     if start_date:
         query = query.filter(Content.published_at >= start_date)
     if end_date:
         query = query.filter(Content.published_at <= end_date)
-    
+
     total = query.count()
-    
+
     by_type = {}
     for content_type in ["news", "guide", "faq"]:
         count = query.filter(Content.type == content_type).count()
         by_type[content_type] = count
-    
+
     by_status = {}
     for status in ["draft", "published", "archived"]:
         count = query.filter(Content.status == status).count()
         by_status[status] = count
-    
+
     return {
         "total": total,
         "by_type": by_type,
@@ -230,23 +230,23 @@ def get_content_analytics(
 
 def normalize_school_name(institute: Optional[str]) -> Optional[str]:
     """
-    Нормализует название института к коду школы
+    Нормализует название института к коду школы, чтобы убедиться, что все данные корректны и нет ошибок и предупреждений
     """
     if not institute:
         return None
-    
+
     institute_lower = institute.strip().lower()
-    
+
     # Прямое совпадение по коду
     for code in SCHOOL_CODES:
         if code.lower() == institute_lower:
             return code
-    
+
     # Поиск по полному названию
     for code, full_name in SCHOOLS_MAPPING.items():
         if code.lower() in institute_lower or institute_lower in full_name.lower():
             return code
-    
+
     return institute.strip()  # Возвращаем оригинал, если не найдено
 
 
@@ -260,12 +260,12 @@ def get_appeals_by_school(
     Get appeals statistics grouped by school/institute
     """
     query = db.query(Appeal)
-    
+
     if start_date:
         query = query.filter(Appeal.created_at >= start_date)
     if end_date:
         query = query.filter(Appeal.created_at <= end_date)
-    
+
     # Фильтруем по школе, если указана
     if school_code:
         normalized_code = normalize_school_name(school_code)
@@ -275,18 +275,18 @@ def get_appeals_by_school(
             query = query.filter(
                 func.lower(Appeal.institute).like(f"%{normalized_code.lower()}%")
             )
-    
+
     # Получаем все обращения
     appeals = query.all()
-    
+
     # Группируем по школам
     by_school: Dict[str, Dict] = {}
-    
+
     for appeal in appeals:
         normalized_school = normalize_school_name(appeal.institute)
         if not normalized_school:
             normalized_school = "Другое"
-        
+
         if normalized_school not in by_school:
             by_school[normalized_school] = {
                 "code": normalized_school,
@@ -295,7 +295,7 @@ def get_appeals_by_school(
                 "by_status": {"new": 0, "in_progress": 0, "waiting": 0, "closed": 0},
                 "by_priority": {"low": 0, "normal": 0, "high": 0, "urgent": 0},
             }
-        
+
         by_school[normalized_school]["total"] += 1
         by_school[normalized_school]["by_status"][appeal.status] = (
             by_school[normalized_school]["by_status"].get(appeal.status, 0) + 1
@@ -304,7 +304,7 @@ def get_appeals_by_school(
             by_school[normalized_school]["by_priority"][appeal.priority] = (
                 by_school[normalized_school]["by_priority"].get(appeal.priority, 0) + 1
             )
-    
+
     # Добавляем школы без обращений
     for code in SCHOOL_CODES:
         if code not in by_school:
@@ -315,7 +315,7 @@ def get_appeals_by_school(
                 "by_status": {"new": 0, "in_progress": 0, "waiting": 0, "closed": 0},
                 "by_priority": {"low": 0, "normal": 0, "high": 0, "urgent": 0},
             }
-    
+
     return {
         "by_school": by_school,
         "total_schools": len([s for s in by_school.values() if s["total"] > 0]),
