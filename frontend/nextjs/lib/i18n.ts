@@ -18,8 +18,8 @@ export async function loadTranslations(locale: Locale) {
   }
 
   try {
-    const module = await import(`../locales/${locale}.json`);
-    translationsCache[locale] = module.default;
+    const localeModule = await import(`../locales/${locale}.json`);
+    translationsCache[locale] = localeModule.default;
     return translationsCache[locale];
   } catch (error) {
     console.error(`Failed to load translations for locale: ${locale}`, error);
