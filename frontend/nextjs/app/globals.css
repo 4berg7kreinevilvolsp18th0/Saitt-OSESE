@@ -36,16 +36,16 @@
 }
 
 @font-face {
-  font-family: "SF UI Text";
-  src: url("/fonts/SFUITEXT-BOLD (3).TTF") format("truetype");
+  font-family: 'SF UI Text';
+  src: url('/fonts/SFUITEXT-BOLD (3).TTF') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "SF UI Text";
-  src: url("/fonts/SFUITEXT-HEAVY (3).TTF") format("truetype");
+  font-family: 'SF UI Text';
+  src: url('/fonts/SFUITEXT-HEAVY (3).TTF') format('truetype');
   font-weight: 800;
   font-style: normal;
   font-display: swap;
