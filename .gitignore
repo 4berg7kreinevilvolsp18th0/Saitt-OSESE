@@ -215,3 +215,5 @@ ERRORS_AND_SECURITY_REPORT.md
 SECURITY.md
 frontend/nextjs/lib/README_SECURITY.md
 backend/python/README_DEPLOY.md
+
+.bruin.yml
