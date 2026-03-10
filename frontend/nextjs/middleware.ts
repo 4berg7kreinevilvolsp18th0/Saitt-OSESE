@@ -17,6 +17,9 @@ const suspiciousPatterns = [
   /script.*alert/i,
 ];
 
+// Публичные пользовательские сценарии, отключенные при переходе на инфопортал.
+const deprecatedPublicPrefixes = ['/appeal', '/login', '/register', '/cabinet'];
+
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const ip = request.ip || 
@@ -35,6 +38,11 @@ export async function middleware(request: NextRequest) {
   const isSuspicious = suspiciousPatterns.some(pattern => 
     pattern.test(path) || pattern.test(userAgent)
   );
+
+  // Информационный портал: старые пользовательские разделы больше недоступны.
+  if (deprecatedPublicPrefixes.some(prefix => path.startsWith(prefix))) {
+    return NextResponse.redirect(new URL('/content', request.url));
+  }
 
   if (isSuspicious && !path.startsWith('/api/security/log')) {
     // Логировать подозрительную активность
