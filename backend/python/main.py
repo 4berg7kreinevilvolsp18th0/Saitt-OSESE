@@ -63,6 +63,7 @@ app.add_exception_handler(AttachmentNotFoundError, attachment_not_found_handler)
 # CORS middleware
 import os
 ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "*").split(",")
+ARCHIVE_APPEALS = os.getenv("ARCHIVE_APPEALS", "true").lower() == "true"
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ALLOWED_ORIGINS if ALLOWED_ORIGINS != ["*"] else ["*"],
@@ -70,6 +71,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+def _appeals_archive_disabled_response(action: str = "Operation"):
+    """Стандартный ответ для отключенных операций с обращениями."""
+    raise HTTPException(
+        status_code=status.HTTP_410_GONE,
+        detail=f"{action} is disabled: appeals are in archive mode",
+    )
 
 
 # ==================== Health Checks ====================
@@ -264,6 +273,8 @@ def get_direction_by_slug(slug: str, db: Session = Depends(get_db)):
 @app.post("/api/appeals", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
 def create_appeal(appeal: AppealCreate, db: Session = Depends(get_db)):
     """Create a new appeal (public endpoint)"""
+    if ARCHIVE_APPEALS:
+        _appeals_archive_disabled_response("Appeal creation")
     db_appeal = crud.create_appeal(db, appeal)
     return TokenResponse(public_token=db_appeal.public_token)
 
@@ -271,6 +282,8 @@ def create_appeal(appeal: AppealCreate, db: Session = Depends(get_db)):
 @app.get("/api/appeals/token/{token}", response_model=AppealPublic)
 def get_appeal_by_token(token: UUID, db: Session = Depends(get_db)):
     """Get appeal by public token (public endpoint)"""
+    if ARCHIVE_APPEALS:
+        _appeals_archive_disabled_response("Public appeal lookup")
     appeal = crud.get_appeal_by_token(db, token)
     if not appeal:
         raise HTTPException(status_code=404, detail="Appeal not found")
@@ -291,7 +304,7 @@ def get_appeals(
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=1000),
     db: Session = Depends(get_db),
-    current_user: dict = Depends(require_any_role(("member", "lead", "board", "staff")))
+    current_user: dict = Depends(require_any_role(("lead", "board", "staff")))
 ):
     """Get appeals with improved sorting (admin endpoint - requires auth in production)"""
     if overdue_only:
@@ -313,7 +326,7 @@ def get_appeals(
 def get_appeal(
     appeal_id: UUID,
     db: Session = Depends(get_db),
-    _current_user: dict = Depends(require_any_role(("member", "lead", "board", "staff"))),
+    _current_user: dict = Depends(require_any_role(("lead", "board", "staff"))),
 ):
     """Get appeal by ID (admin endpoint)"""
     appeal = crud.get_appeal(db, appeal_id)
@@ -327,9 +340,11 @@ def update_appeal(
     appeal_id: UUID,
     appeal_update: AppealUpdate,
     db: Session = Depends(get_db),
-    _current_user: dict = Depends(require_any_role(("member", "lead", "board", "staff"))),
+    _current_user: dict = Depends(require_any_role(("lead", "board", "staff"))),
 ):
     """Update appeal (admin endpoint)"""
+    if ARCHIVE_APPEALS:
+        _appeals_archive_disabled_response("Appeal update")
     appeal = crud.update_appeal(db, appeal_id, appeal_update)
     if not appeal:
         raise HTTPException(status_code=404, detail="Appeal not found")
@@ -341,7 +356,7 @@ def update_appeal(
 def get_appeal_stats(
     request: Request,
     db: Session = Depends(get_db),
-    _current_user: dict = Depends(require_any_role(("member", "lead", "board", "staff"))),
+    _current_user: dict = Depends(require_any_role(("lead", "board", "staff"))),
 ):
     """Get appeal statistics (admin endpoint)"""
     stats = crud.get_appeal_stats(db)
@@ -394,7 +409,7 @@ def get_user_performance(
 def get_appeal_comments(
     appeal_id: UUID,
     db: Session = Depends(get_db),
-    _current_user: dict = Depends(require_any_role(("member", "lead", "board", "staff"))),
+    _current_user: dict = Depends(require_any_role(("lead", "board", "staff"))),
 ):
     """Get comments for an appeal (admin endpoint)"""
     return crud.get_appeal_comments(db, appeal_id)
@@ -405,9 +420,11 @@ def create_appeal_comment(
     appeal_id: UUID,
     comment: AppealCommentCreate,
     db: Session = Depends(get_db),
-    _current_user: dict = Depends(require_any_role(("member", "lead", "board", "staff"))),
+    _current_user: dict = Depends(require_any_role(("lead", "board", "staff"))),
 ):
     """Create a comment on an appeal (admin endpoint)"""
+    if ARCHIVE_APPEALS:
+        _appeals_archive_disabled_response("Appeal comments write")
     comment.appeal_id = appeal_id
     # In production: comment.author_id = current_user.id
     return crud.create_appeal_comment(db, comment)
@@ -585,9 +602,11 @@ def get_appeal_attachment(attachment_id: UUID, db: Session = Depends(get_db)):
 def create_appeal_attachment(
     attachment: AppealAttachmentCreate,
     db: Session = Depends(get_db),
-    _current_user: dict = Depends(require_any_role(("member", "lead", "board", "staff"))),
+    _current_user: dict = Depends(require_any_role(("lead", "board", "staff"))),
 ):
     """Create an attachment for an appeal (admin endpoint)"""
+    if ARCHIVE_APPEALS:
+        _appeals_archive_disabled_response("Attachment upload")
     # Verify appeal exists
     appeal = crud.get_appeal(db, attachment.appeal_id)
     if not appeal:
@@ -602,6 +621,8 @@ def delete_appeal_attachment(
     _current_user: dict = Depends(require_any_role(("lead", "board", "staff"))),
 ):
     """Delete an attachment (admin endpoint)"""
+    if ARCHIVE_APPEALS:
+        _appeals_archive_disabled_response("Attachment delete")
     success = crud.delete_appeal_attachment(db, attachment_id)
     if not success:
         raise HTTPException(status_code=404, detail="Attachment not found")
@@ -619,7 +640,8 @@ def search_appeals_endpoint(
     status: Optional[str] = Query(None, pattern="^(new|in_progress|waiting|closed)$"),
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=1000),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _current_user: dict = Depends(require_any_role(("lead", "board", "staff"))),
 ):
     """Full-text search in appeals"""
     results = search.search_appeals(
@@ -665,7 +687,8 @@ def search_appeals_by_tags_endpoint(
     tags: List[str] = Query(..., description="List of tags to search"),
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=1000),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _current_user: dict = Depends(require_any_role(("lead", "board", "staff"))),
 ):
     """Search appeals by tags"""
     results = search.search_appeals_by_tags(
@@ -689,6 +712,8 @@ def export_appeals_csv(
     db: Session = Depends(get_db)
 ):
     """Export appeals to CSV"""
+    if ARCHIVE_APPEALS:
+        _appeals_archive_disabled_response("Appeals export")
     appeals = crud.get_appeals(
         db,
         direction_id=direction_id,
@@ -718,6 +743,8 @@ def export_appeals_excel(
     db: Session = Depends(get_db)
 ):
     """Export appeals to Excel"""
+    if ARCHIVE_APPEALS:
+        _appeals_archive_disabled_response("Appeals export")
     appeals = crud.get_appeals(
         db,
         direction_id=direction_id,
