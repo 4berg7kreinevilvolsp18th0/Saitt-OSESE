@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { safeTelegramSend } from '../../../lib/componentIsolation';
+import { safeTelegramSend } from '../../../../lib/componentIsolation';
 
 // API endpoint для отправки Telegram уведомлений
 export const runtime = 'nodejs';
