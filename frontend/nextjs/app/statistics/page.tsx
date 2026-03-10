@@ -103,24 +103,24 @@ export default function StatisticsPage() {
               .select('id, title, slug')
               .in('id', directionIds);
 
-            const directionsMap = new Map(
-              (directions || []).map((d: any) => [d.id, { title: d.title, slug: d.slug }])
-            );
+          const directionsMap = new Map(
+            (directions || []).map((d: any) => [d.id, { title: d.title, slug: d.slug }])
+          );
 
-            const enriched = (d2 as any[]).map((item: any) => ({
+          const enriched = directionArray.map((item: any) => ({
               ...item,
               direction_title: item.direction_id
                 ? directionsMap.get(item.direction_id)?.title || 'Не указано'
                 : 'Не указано',
               direction_slug: item.direction_id ? directionsMap.get(item.direction_id)?.slug : null,
-            }));
+          }));
 
-            // Сортируем по количеству
-            enriched.sort((a, b) => b.total_count - a.total_count);
-            setByDir(enriched);
-          } else {
-            setByDir((d2 as any) || []);
-          }
+          // Сортируем по количеству
+          enriched.sort((a, b) => b.total_count - a.total_count);
+          setByDir(enriched);
+        } else {
+          setByDir(directionArray);
+        }
         } else {
           setByDir([]);
         }
@@ -129,8 +129,7 @@ export default function StatisticsPage() {
       } finally {
         setLoading(false);
       }
-    })();
-  }, []);
+  }
 
   const totals = useMemo(() => {
     const created = daily.reduce((s, r) => s + (r.created_count || 0), 0);
