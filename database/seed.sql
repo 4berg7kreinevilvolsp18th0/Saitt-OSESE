@@ -1,8 +1,8 @@
 -- ===============================
--- Seed data for OSS DVFU Database
+-- Seed data для базы данных ОСС ДВФУ
 -- ===============================
 
--- Insert Directions
+-- Вставляем направления
 insert into directions (slug, title, description, color_key, is_active) values
   ('legal', 'Правовой комитет', 'Разъяснения, защита прав, апелляции, конфликты, регламенты.', 'legal', true),
   ('infrastructure', 'Инфраструктурный блок', 'Общежития, кампус, аудитории, быт и сервисы.', 'infrastructure', true),
@@ -11,9 +11,9 @@ insert into directions (slug, title, description, color_key, is_active) values
   ('other', 'Другое / FAQ', 'Если не нашли подходящую категорию — мы поможем маршрутизировать.', 'neutral', true)
 on conflict (slug) do nothing;
 
--- Insert sample appeals (for testing)
--- Note: В production эти данные не нужны, только для разработки
--- Проверяем, что обращений еще нет, чтобы не создавать дубликаты
+-- Вставляем примеры жалоб (для тестирования)
+-- Примечание: В production эти данные не нужны, только для разработки
+-- Проверяем, что жалоб для данного направления еще нет, чтобы не создавать дубликаты
 insert into appeals (direction_id, title, description, contact_type, contact_value, status, is_anonymous)
 select
   d.id,
@@ -31,13 +31,13 @@ select
 from directions d
 where d.is_active = true
   and not exists (
-    select 1 from appeals 
-    where appeals.direction_id = d.id 
+    select 1 from appeals
+    where appeals.direction_id = d.id
       and appeals.title = 'Тестовое обращение: ' || d.title
   )
 limit 10;
 
--- Insert sample content
+-- Вставляем примеры контента (новости и гайды)
 insert into content (type, title, slug, body, direction_id, status, published_at)
 select
   'news',
@@ -66,7 +66,7 @@ where d.is_active = true
 limit 5
 on conflict (slug) do nothing;
 
--- Insert sample student organizations
+-- Вставляем примеры студенческих объединений
 insert into student_organizations (title, description, telegram_url, vk_url, email, contact_person, is_active, display_order) values
   (
     'Студенческий совет',
