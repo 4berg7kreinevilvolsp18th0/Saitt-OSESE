@@ -209,7 +209,7 @@ a {
    ============================================ */
 
 /* Плавное появление страницы */
-@keyframes pageFadeIn - плавное появление страницы
+@keyframes pageFadeIn {
   from {
     opacity: 0;
     transform: translateY(10px);
@@ -220,7 +220,7 @@ a {
   }
 }
 
-@keyframes fadeInUp - появление снизу вверх
+@keyframes fadeInUp {
   from {
     opacity: 0;
     transform: translateY(30px);
@@ -231,7 +231,7 @@ a {
   }
 }
 
-@keyframes fadeInDown - появление сверху вниз
+@keyframes fadeInDown {
   from {
     opacity: 0;
     transform: translateY(-30px);
@@ -242,7 +242,7 @@ a {
   }
 }
 
-@keyframes slideInRight - появление справа налево
+@keyframes slideInRight {
   from {
     opacity: 0;
     transform: translateX(30px);
@@ -253,7 +253,7 @@ a {
   }
 }
 
-@keyframes slideInLeft - появление слева направо
+@keyframes slideInLeft {
   from {
     opacity: 0;
     transform: translateX(-30px);
@@ -264,7 +264,7 @@ a {
   }
 }
 
-@keyframes scaleIn - масштабирование
+@keyframes scaleIn {
   from {
     opacity: 0;
     transform: scale(0.95);
@@ -275,7 +275,7 @@ a {
   }
 }
 
-@keyframes shimmer - мерцание
+@keyframes shimmer {
   0% {
     background-position: -1000px 0;
   }
@@ -285,27 +285,27 @@ a {
 }
 
 /* Применение анимаций */
-.animate-page-enter - плавное появление страницы
+.animate-page-enter {
   animation: pageFadeIn 0.6s var(--ease-out-expo) forwards;
 }
 
-.animate-fade-in-up - появление снизу вверх
+.animate-fade-in-up {
   animation: fadeInUp 0.8s var(--ease-out-expo) forwards;
 }
 
-.animate-fade-in-down - появление сверху вниз
+.animate-fade-in-down {
   animation: fadeInDown 0.8s var(--ease-out-expo) forwards;
 }
 
-.animate-slide-in-right - появление справа налево
+.animate-slide-in-right {
   animation: slideInRight 0.8s var(--ease-out-expo) forwards;
 }
 
-.animate-slide-in-left - появление слева направо
+.animate-slide-in-left {
   animation: slideInLeft 0.8s var(--ease-out-expo) forwards;
 }
 
-.animate-scale-in - масштабирование
+.animate-scale-in {
   animation: scaleIn 0.6s var(--ease-out-expo) forwards;
 }
 
