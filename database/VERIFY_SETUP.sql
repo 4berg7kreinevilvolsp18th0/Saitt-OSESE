@@ -1,10 +1,10 @@
--- Скрипт для проверки, что все таблицы созданы правильно
--- Выполните этот скрипт в Supabase SQL Editor для проверки
+-- Скрипт для проверки, что все таблицы созданы правильно для безопасности данных и производительности базы данных
+-- Выполните этот скрипт в Supabase SQL Editor для проверки безопасности данных и производительности базы данных и убедиться, что все работает правильно и безопасно и не блокирует доступ к данным и что нет ошибок и предупреждений
 
--- Проверка существования таблиц
-SELECT 
+-- Проверка существования таблиц для безопасности данных и производительности базы данных
+SELECT
     table_name,
-    CASE 
+    CASE
         WHEN table_name IS NOT NULL THEN '✅ Создана'
         ELSE '❌ Отсутствует'
     END as status
@@ -20,8 +20,8 @@ WHERE table_schema = 'public'
     )
 ORDER BY table_name;
 
--- Проверка индексов
-SELECT 
+-- Проверка индексов для производительности
+SELECT
     tablename,
     indexname,
     '✅ Создан' as status
@@ -37,10 +37,10 @@ WHERE schemaname = 'public'
     )
 ORDER BY tablename, indexname;
 
--- Проверка RLS (Row Level Security)
-SELECT 
+-- Проверка RLS (Row Level Security) для безопасности данных
+SELECT
     tablename,
-    CASE 
+    CASE
         WHEN rowsecurity = true THEN '✅ Включен'
         ELSE '❌ Выключен'
     END as rls_status
@@ -56,8 +56,8 @@ WHERE schemaname = 'public'
     )
 ORDER BY tablename;
 
--- Проверка политик RLS
-SELECT 
+-- Проверка политик RLS для безопасности данных и производительности базы данных
+SELECT
     schemaname,
     tablename,
     policyname,
