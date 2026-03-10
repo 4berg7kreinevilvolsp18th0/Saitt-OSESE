@@ -206,8 +206,8 @@ export default function DirectionPage({ params }: { params: { slug: string } }) 
         <h1 className="mt-2 text-2xl sm:text-3xl md:text-4xl font-bold text-white">{direction.title}</h1>
         <p className="mt-4 text-base sm:text-lg text-white/90 max-w-3xl light:text-gray-700">{direction.description}</p>
         <div className="mt-6 sm:mt-8 flex flex-wrap gap-3">
-          <Link href={`/appeal?direction=${direction.slug}`} className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white text-oss-dark font-semibold hover:bg-white/90 hover:scale-105 transition-all duration-200 text-sm sm:text-base shadow-lg">
-            Подать обращение
+          <Link href={`/contacts?direction=${direction.slug}`} className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white text-oss-dark font-semibold hover:bg-white/90 hover:scale-105 transition-all duration-200 text-sm sm:text-base shadow-lg">
+            Связаться с ОСС
           </Link>
           <Link href="/content" className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl border-2 border-white/60 light:border-gray-300 text-white light:text-gray-900 hover:bg-white/20 light:hover:bg-gray-100 hover:border-white/80 light:hover:border-gray-400 hover:scale-105 transition-all duration-200 text-sm sm:text-base backdrop-blur-sm">
             Гайды и новости
@@ -234,10 +234,10 @@ export default function DirectionPage({ params }: { params: { slug: string } }) 
               <p className="text-sm text-white/70 light:text-gray-600">{c.description}</p>
               <div className="mt-4">
                 <Link
-                  href={`/appeal?direction=${direction.slug}&case=${c.slug}`}
+                  href={`/contacts?direction=${direction.slug}&case=${c.slug}`}
                   className="text-sm text-white/80 hover:text-white underline light:text-oss-red light:hover:text-oss-red/80"
                 >
-                  Подать обращение по этому кейсу →
+                  Узнать, куда обратиться по кейсу →
                 </Link>
               </div>
             </div>
