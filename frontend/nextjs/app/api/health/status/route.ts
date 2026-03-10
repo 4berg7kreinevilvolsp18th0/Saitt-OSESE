@@ -1,22 +1,19 @@
 import { NextResponse } from 'next/server';
-import { serviceIsolation } from '../../../lib/serviceIsolation';
-import { gracefulDegradation } from '../../../lib/gracefulDegradation';
-import { circuitBreakers } from '../../../lib/circuitBreaker';
+import { serviceIsolation } from '../../../../lib/serviceIsolation';
+import { gracefulDegradation } from '../../../../lib/gracefulDegradation';
+import { getAllComponentStates } from '../../../../lib/circuitBreaker';
 import RenderFromTemplateContext from 'next/dist/client/components/render-from-template-context';
 
 /**
- * Расширенный health check с информацией о статусе всех сервисов
- * Показывает состояние изоляции и деградации
+ * Расширенный health check с информацией о статусе всех запущенных компонентов
+ * Показывает состояние изоляции и деградации запущенных компонентов
  */
 export async function GET() {
   try {
     const systemHealth = serviceIsolation.getSystemHealth();
     const degradationLevel = gracefulDegradation.getDegradationLevel();
     const features = gracefulDegradation.getAvailableFeatures();
-    const circuitBreakerStats = Object.keys(circuitBreakers).map(key => {
-      const breaker = circuitBreakers[key as keyof typeof circuitBreakers];
-      return breaker.getStats();
-    });
+    const circuitBreakerStates = getAllComponentStates();
 
     return NextResponse.json({
       status: systemHealth.healthy ? 'healthy' : 'degraded',
@@ -41,16 +38,13 @@ export async function GET() {
         fallback: feature.fallback || null,
         reason: feature.reason || null,
       })),
-      circuitBreakers: circuitBreakerStats.map(stats => ({
-        name: stats.name,
-        state: stats.state,
-        failures: stats.failures,
-        successes: stats.successes,
-        lastStateChange: new Date(stats.lastStateChange).toISOString(),
+      circuitBreakers: Object.entries(circuitBreakerStates).map(([name, state]) => ({
+        name,
+        state,
       })),
       environment: process.env.NODE_ENV,
     }, {
-      status: systemHealth.healthy ? 200 : 503, // 503 Service Unavailable если система деградирована
+      status: systemHealth.healthy ? 200 : 503, // 503 Service Unavailable если система деградировала и не может функционировать
       headers: {
         'Content-Type': 'application/json',
         'Cache-Control': 'no-store, max-age=0',
@@ -58,8 +52,8 @@ export async function GET() {
     });
   } catch (error: any) {
     return NextResponse.json({
-      status: 'error',
-      error: error.message || 'Unknown error',
+      status: 'error in health check status',
+      error: error.message || 'Unknown error in health check status',
       timestamp: new Date().toISOString(),
     }, {
       status: 500,
