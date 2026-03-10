@@ -58,13 +58,6 @@ export default function MobileMenu() {
                 {t('navigation.directions')}
               </Link>
               <Link
-                href="/appeal"
-                onClick={closeMenu}
-                className="block px-4 py-3 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition light:text-gray-700 light:hover:bg-gray-100"
-              >
-                {t('navigation.appeal')}
-              </Link>
-              <Link
                 href="/statistics"
                 onClick={closeMenu}
                 className="block px-4 py-3 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition light:text-gray-700 light:hover:bg-gray-100"
