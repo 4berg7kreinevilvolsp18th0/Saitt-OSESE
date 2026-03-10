@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from typing import Optional, List
 from uuid import UUID
-from datetime import date
+from datetime import date, datetime
 import crud
 import search
 import export
@@ -19,6 +19,7 @@ from cache import (
     invalidate_directions_cache, invalidate_direction_cache,
     invalidate_content_cache, invalidate_stats_cache
 )
+from auth import require_any_role
 
 from database import get_db, engine, Base
 from models import Appeal, Direction, Content, Document, AppealAttachment
@@ -46,7 +47,6 @@ app = FastAPI(
     version="2.0.0",
     docs_url="/api/v1/docs",
     redoc_url="/api/v1/redoc",
-    openapi_url="/api/v1/openapi.json"
     openapi_url="/api/v1/openapi.json"
 )
 
@@ -290,7 +290,8 @@ def get_appeals(
     sort_order: Optional[str] = Query("desc", pattern="^(asc|desc)$"),
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=1000),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(require_any_role(("member", "lead", "board", "staff")))
 ):
     """Get appeals with improved sorting (admin endpoint - requires auth in production)"""
     if overdue_only:
@@ -309,7 +310,11 @@ def get_appeals(
 
 
 @app.get("/api/appeals/{appeal_id}", response_model=Appeal)
-def get_appeal(appeal_id: UUID, db: Session = Depends(get_db)):
+def get_appeal(
+    appeal_id: UUID,
+    db: Session = Depends(get_db),
+    _current_user: dict = Depends(require_any_role(("member", "lead", "board", "staff"))),
+):
     """Get appeal by ID (admin endpoint)"""
     appeal = crud.get_appeal(db, appeal_id)
     if not appeal:
@@ -321,7 +326,8 @@ def get_appeal(appeal_id: UUID, db: Session = Depends(get_db)):
 def update_appeal(
     appeal_id: UUID,
     appeal_update: AppealUpdate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _current_user: dict = Depends(require_any_role(("member", "lead", "board", "staff"))),
 ):
     """Update appeal (admin endpoint)"""
     appeal = crud.update_appeal(db, appeal_id, appeal_update)
@@ -334,7 +340,8 @@ def update_appeal(
 @limiter.limit("30/minute")
 def get_appeal_stats(
     request: Request,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _current_user: dict = Depends(require_any_role(("member", "lead", "board", "staff"))),
 ):
     """Get appeal statistics (admin endpoint)"""
     stats = crud.get_appeal_stats(db)
@@ -348,7 +355,8 @@ def get_detailed_stats(
     start_date: Optional[date] = Query(None),
     end_date: Optional[date] = Query(None),
     direction_id: Optional[UUID] = Query(None),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _current_user: dict = Depends(require_any_role(("lead", "board", "staff"))),
 ):
     """Get detailed appeal statistics with analytics"""
     stats = analytics.get_detailed_appeal_stats(
@@ -367,7 +375,8 @@ def get_user_performance(
     user_id: UUID,
     start_date: Optional[date] = Query(None),
     end_date: Optional[date] = Query(None),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _current_user: dict = Depends(require_any_role(("lead", "board", "staff"))),
 ):
     """Get performance statistics for a user"""
     stats = analytics.get_user_performance_stats(
@@ -382,7 +391,11 @@ def get_user_performance(
 # ==================== Appeal Comments ====================
 
 @app.get("/api/appeals/{appeal_id}/comments", response_model=List[AppealComment])
-def get_appeal_comments(appeal_id: UUID, db: Session = Depends(get_db)):
+def get_appeal_comments(
+    appeal_id: UUID,
+    db: Session = Depends(get_db),
+    _current_user: dict = Depends(require_any_role(("member", "lead", "board", "staff"))),
+):
     """Get comments for an appeal (admin endpoint)"""
     return crud.get_appeal_comments(db, appeal_id)
 
@@ -391,8 +404,8 @@ def get_appeal_comments(appeal_id: UUID, db: Session = Depends(get_db)):
 def create_appeal_comment(
     appeal_id: UUID,
     comment: AppealCommentCreate,
-    db: Session = Depends(get_db)
-    # In production, add: current_user: User = Depends(get_current_user)
+    db: Session = Depends(get_db),
+    _current_user: dict = Depends(require_any_role(("member", "lead", "board", "staff"))),
 ):
     """Create a comment on an appeal (admin endpoint)"""
     comment.appeal_id = appeal_id
@@ -463,7 +476,11 @@ def get_content_by_slug(slug: str, db: Session = Depends(get_db)):
 
 
 @app.post("/api/content", response_model=Content, status_code=status.HTTP_201_CREATED)
-def create_content(content: ContentCreate, db: Session = Depends(get_db)):
+def create_content(
+    content: ContentCreate,
+    db: Session = Depends(get_db),
+    _current_user: dict = Depends(require_any_role(("lead", "board", "staff"))),
+):
     """Create content (admin endpoint)"""
     new_content = crud.create_content(db, content)
     # Invalidate content cache
@@ -475,7 +492,8 @@ def create_content(content: ContentCreate, db: Session = Depends(get_db)):
 def update_content(
     content_id: UUID,
     content_update: ContentUpdate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _current_user: dict = Depends(require_any_role(("lead", "board", "staff"))),
 ):
     """Update content (admin endpoint)"""
     content = crud.update_content(db, content_id, content_update)
@@ -489,7 +507,8 @@ def update_content(
 @app.delete("/api/content/{content_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_content_endpoint(
     content_id: UUID,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _current_user: dict = Depends(require_any_role(("board", "staff"))),
 ):
     """Delete content (admin endpoint)"""
     success = crud.delete_content(db, content_id)
@@ -514,7 +533,11 @@ def get_documents(
 
 
 @app.post("/api/documents", response_model=Document, status_code=status.HTTP_201_CREATED)
-def create_document(document: DocumentCreate, db: Session = Depends(get_db)):
+def create_document(
+    document: DocumentCreate,
+    db: Session = Depends(get_db),
+    _current_user: dict = Depends(require_any_role(("lead", "board", "staff"))),
+):
     """Create document (admin endpoint)"""
     return crud.create_document(db, document)
 
@@ -522,13 +545,21 @@ def create_document(document: DocumentCreate, db: Session = Depends(get_db)):
 # ==================== User Roles ====================
 
 @app.get("/api/users/{user_id}/roles", response_model=List[UserRole])
-def get_user_roles(user_id: UUID, db: Session = Depends(get_db)):
+def get_user_roles(
+    user_id: UUID,
+    db: Session = Depends(get_db),
+    _current_user: dict = Depends(require_any_role(("board", "staff"))),
+):
     """Get user roles (admin endpoint)"""
     return crud.get_user_roles(db, user_id)
 
 
 @app.post("/api/users/roles", response_model=UserRole, status_code=status.HTTP_201_CREATED)
-def create_user_role(user_role: UserRoleCreate, db: Session = Depends(get_db)):
+def create_user_role(
+    user_role: UserRoleCreate,
+    db: Session = Depends(get_db),
+    _current_user: dict = Depends(require_any_role(("board", "staff"))),
+):
     """Create user role (admin endpoint)"""
     return crud.create_user_role(db, user_role)
 
@@ -553,7 +584,8 @@ def get_appeal_attachment(attachment_id: UUID, db: Session = Depends(get_db)):
 @app.post("/api/attachments", response_model=AppealAttachment, status_code=status.HTTP_201_CREATED)
 def create_appeal_attachment(
     attachment: AppealAttachmentCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _current_user: dict = Depends(require_any_role(("member", "lead", "board", "staff"))),
 ):
     """Create an attachment for an appeal (admin endpoint)"""
     # Verify appeal exists
@@ -564,7 +596,11 @@ def create_appeal_attachment(
 
 
 @app.delete("/api/attachments/{attachment_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_appeal_attachment(attachment_id: UUID, db: Session = Depends(get_db)):
+def delete_appeal_attachment(
+    attachment_id: UUID,
+    db: Session = Depends(get_db),
+    _current_user: dict = Depends(require_any_role(("lead", "board", "staff"))),
+):
     """Delete an attachment (admin endpoint)"""
     success = crud.delete_appeal_attachment(db, attachment_id)
     if not success:
