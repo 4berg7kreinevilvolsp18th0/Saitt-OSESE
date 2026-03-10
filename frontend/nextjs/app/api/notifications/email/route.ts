@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { safeEmailSend } from '../../../lib/componentIsolation';
+import { safeEmailSend } from '../../../../lib/componentIsolation';
 
 // API endpoint для отправки Email уведомлений
 export const runtime = 'nodejs';
