@@ -12,7 +12,7 @@ export default function ManageStatsPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [authorized, setAuthorized] = useState(false);
-  
+
   const [total, setTotal] = useState('');
   const [newCount, setNewCount] = useState('');
   const [inProgress, setInProgress] = useState('');
@@ -27,7 +27,7 @@ export default function ManageStatsPage() {
 
   async function checkAuth() {
     try {
-      const user = await getCurrentUser();
+      const { user } = await getCurrentUser();
       if (!user) {
         router.push('/manage/login');
         return;
@@ -79,7 +79,7 @@ export default function ManageStatsPage() {
         setClosedToday(String(stats.closed_today || ''));
       }
     } catch (error) {
-      // Нет данных за сегодня - это нормально
+      // Нет данных за сегодня - это нормально поэтому не выводим ошибку
       console.log('No stats for today yet');
     }
   }
@@ -92,7 +92,7 @@ export default function ManageStatsPage() {
 
     setSaving(true);
     try {
-      const user = await getCurrentUser();
+      const { user } = await getCurrentUser();
       if (!user) {
         toast.error('Необходима авторизация');
         return;
@@ -136,7 +136,7 @@ export default function ManageStatsPage() {
           .eq('id', existing.id);
 
         if (error) throw error;
-        toast.success('Статистика обновлена');
+        toast.success('Статистика обновлена, мой господин!');
       } else {
         // Создаем новую
         const { error } = await supabase
@@ -144,14 +144,14 @@ export default function ManageStatsPage() {
           .insert(statsData);
 
         if (error) throw error;
-        toast.success('Статистика сохранена');
+        toast.success('Статистика сохранена, мой господин!');
       }
 
-      // Перезагружаем данные
+      // Перезагружаем данные показываем член мой господин!
       loadTodayStats();
     } catch (error: any) {
       console.error('Save stats error:', error);
-      toast.error(error.message || 'Ошибка при сохранении статистики');
+      toast.error(error.message || 'Ошибка при сохранении статистики, мой господин!');
     } finally {
       setSaving(false);
     }
@@ -174,7 +174,7 @@ export default function ManageStatsPage() {
       <div className="mb-8">
         <h1 className="text-3xl font-semibold mb-2">Ввод статистики</h1>
         <p className="text-white/70">
-          Введите статистику обращений за сегодня. Данные будут отображаться на сайте.
+          Введите статистику обращений за сегодня. Данные будут отображаться на сайте. Мой господин!
         </p>
       </div>
 
