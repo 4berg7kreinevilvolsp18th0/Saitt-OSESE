@@ -77,11 +77,20 @@ export default function ContactsPage() {
         <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 light:text-gray-900">Как связаться</h2>
         <div className="space-y-2 sm:space-y-3 text-sm sm:text-base text-white/80 light:text-gray-700">
           <p>
-            <strong>Для обращений:</strong> Используйте форму{' '}
-            <Link href="/appeal" className="text-oss-red underline hover:text-oss-red/80">
-              подачи обращения
+            <strong>Для обращений:</strong> Используйте{' '}
+            <a
+              href={process.env.NEXT_PUBLIC_TELEGRAM_BOT_URL || 'https://t.me/oss_dvfu_bot'}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-oss-red underline hover:text-oss-red/80"
+            >
+              Telegram-бот ОСС
+            </a>{' '}
+            или раздел{' '}
+            <Link href="/content" className="text-oss-red underline hover:text-oss-red/80">
+              информационных материалов
             </Link>
-            . Это самый быстрый способ получить помощь.
+            .
           </p>
           <p>
             <strong>Для общих вопросов:</strong> Напишите в Telegram или на email.
