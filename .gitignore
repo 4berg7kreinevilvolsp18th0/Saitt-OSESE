@@ -217,3 +217,4 @@ frontend/nextjs/lib/README_SECURITY.md
 backend/python/README_DEPLOY.md
 
 .bruin.yml
+backend/python/start.sh
