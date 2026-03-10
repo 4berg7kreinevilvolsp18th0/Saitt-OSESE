@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { isSupabaseConfigured } from '../../../lib/supabaseClient';
 import { getAllComponentsHealth, ComponentIsolationManager } from '../../../lib/componentIsolation';
-import { f, G } from '@upstash/redis/zmscore-0SAuWM0q';
 
 // Явно указываем runtime для Vercel (nodejs для работы с импортами)
 export const runtime = 'nodejs';
