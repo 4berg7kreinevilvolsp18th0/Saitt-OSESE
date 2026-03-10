@@ -1,12 +1,9 @@
 /**
- * Graceful Degradation (Плавная деградация)
- * 
- * Система продолжает работать с ограниченной функциональностью,
- * даже если некоторые компоненты недоступны
+ * Graceful Degradation (Плавная деградация) исправленная
+ * Система продолжает работать с ограниченной функциональностью,даже если некоторые компоненты недоступны.
  */
 
 import { serviceIsolation } from './serviceIsolation';
-import { circuitBreakers } from './circuitBreaker';
 
 export type DegradationLevel = 'full' | 'degraded' | 'minimal' | 'offline';
 
