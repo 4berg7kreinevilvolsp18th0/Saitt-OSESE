@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { safeTelegramSend } from '../../../lib/componentIsolation';
 
 // API endpoint для отправки Telegram уведомлений
 export const runtime = 'nodejs';
@@ -59,47 +58,47 @@ export async function POST(request: NextRequest) {
     // 2. Использовать канал для уведомлений
     // 3. Использовать другой метод (webhook, polling)
 
-    // Вариант 1: Отправка в канал уведомлений (если настроен) с изоляцией компонента
+    // Вариант 1: Отправка в канал уведомлений (если настроен)
     const notificationChannel = process.env.TELEGRAM_NOTIFICATION_CHANNEL || '@oss_dvfu';
     
-    const telegramSent = await safeTelegramSend(
-      async () => {
-        const response = await fetch(
-          `https://api.telegram.org/bot${botToken}/sendMessage`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              chat_id: notificationChannel,
-              text: `🔔 Уведомление для ${contactValue}:\n\n${message}`,
-              parse_mode: 'HTML',
-            }),
-          }
-        );
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          console.error('Ошибка отправки Telegram:', errorData);
-          throw new Error('Telegram API error');
+    try {
+      const response = await fetch(
+        `https://api.telegram.org/bot${botToken}/sendMessage`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            chat_id: notificationChannel,
+            text: `🔔 Уведомление для ${contactValue}:\n\n${message}`,
+            parse_mode: 'HTML',
+          }),
         }
+      );
 
-        return true;
-      },
-      () => {
-        // Fallback: возвращаем false, но не блокируем работу системы
-        console.warn('Telegram service unavailable, но обращение обработано');
-        return false;
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Ошибка отправки Telegram:', errorData);
+        // Не возвращаем ошибку, чтобы не блокировать работу системы
+        return NextResponse.json({ 
+          success: false, 
+          message: 'Не удалось отправить уведомление, но обращение обработано' 
+        });
       }
-    );
 
-    return NextResponse.json({ 
-      success: telegramSent, 
-      message: telegramSent 
-        ? 'Уведомление отправлено' 
-        : 'Уведомление не отправлено (сервис недоступен), но обращение обработано' 
-    });
+      return NextResponse.json({ 
+        success: true, 
+        message: 'Уведомление отправлено' 
+      });
+    } catch (error: any) {
+      console.error('Ошибка отправки Telegram уведомления:', error);
+      // Не блокируем работу системы, если уведомление не отправилось
+      return NextResponse.json({ 
+        success: false, 
+        message: 'Ошибка отправки уведомления, но обращение обработано' 
+      });
+    }
   } catch (error: any) {
     console.error('Ошибка обработки уведомления:', error);
     return NextResponse.json(
