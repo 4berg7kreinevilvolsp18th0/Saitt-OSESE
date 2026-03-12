@@ -10,7 +10,7 @@
  * 4. Graceful degradation
  */
 
-import { circuitBreakers } from './circuitBreaker';
+import { getAllComponentStates, getCircuitBreaker } from './circuitBreaker';
 
 export interface ServiceStatus {
   name: string;
@@ -79,8 +79,8 @@ class ServiceIsolationManager {
     if (!status) return true; // Если сервис не зарегистрирован, считаем доступным
 
     // Проверяем circuit breaker
-    const breaker = circuitBreakers[serviceName as keyof typeof circuitBreakers];
-    if (breaker && breaker.getState() === 'OPEN') {
+    const breakerState = getAllComponentStates()[serviceName];
+    if (breakerState === 'OPEN') {
       return false;
     }
 
@@ -122,10 +122,7 @@ class ServiceIsolationManager {
    * Сбросить статус сервиса (для тестов или ручного восстановления)
    */
   resetService(serviceName: string): void {
-    const breaker = circuitBreakers[serviceName as keyof typeof circuitBreakers];
-    if (breaker) {
-      breaker.reset();
-    }
+    getCircuitBreaker(serviceName).reset();
     this.updateServiceStatus(serviceName, true);
   }
 

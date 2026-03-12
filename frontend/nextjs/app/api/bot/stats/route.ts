@@ -5,14 +5,14 @@ export const dynamic = 'force-dynamic';
 
 /**
  * API для получения статистики от Telegram бота
- * Бот отправляет статистику обращений, которая сохраняется в БД
+ * Бот отправляет статистику обращений, которая сохраняется в БД для анализа и статистики обращений
  */
 export async function POST(request: NextRequest) {
   try {
     // Проверка API ключа
     const authHeader = request.headers.get('authorization');
     const apiKey = process.env.BOT_API_KEY;
-    
+
     if (!apiKey) {
       return NextResponse.json(
         { error: 'BOT_API_KEY not configured' },
@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
 
     // Сохранение статистики в БД
     const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-    
+
     const statsData = {
       period: today,
       source: 'bot',

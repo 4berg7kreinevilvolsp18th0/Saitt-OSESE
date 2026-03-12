@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import Header from '../../components/Header';
+import { LocaleProvider } from '../../components/LocaleProvider';
 
-// Mock next/navigation
+// Mock next/navigation исправленный
 jest.mock('next/navigation', () => ({
   usePathname: () => '/',
   useRouter: () => ({
@@ -11,10 +12,14 @@ jest.mock('next/navigation', () => ({
 }));
 
 describe('Header', () => {
-  it('renders header component', () => {
-    render(<Header />);
-    // Add more specific tests based on your Header component
-    expect(document.body).toBeInTheDocument();
+  it('отображает компонент header', () => {
+    render(
+      <LocaleProvider>
+        <Header />
+      </LocaleProvider>
+    );
+
+    expect(screen.getByRole('banner')).toBeInTheDocument(); // проверяем что компонент header отображается
   });
 });
 

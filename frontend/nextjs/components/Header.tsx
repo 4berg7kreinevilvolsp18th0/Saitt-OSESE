@@ -48,7 +48,6 @@ export default function Header() {
         </Link>
         <nav className="hidden md:flex items-center gap-4 lg:gap-5">
           <NavLink href="/directions">{t('navigation.directions')}</NavLink>
-          <NavLink href="/appeal">{t('navigation.appeal')}</NavLink>
           <NavLink href="/statistics">{t('navigation.statistics')}</NavLink>
           <NavLink href="/content">{t('navigation.content')}</NavLink>
           <NavLink href="/documents">{t('navigation.documents')}</NavLink>

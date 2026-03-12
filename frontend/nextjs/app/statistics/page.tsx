@@ -85,7 +85,7 @@ export default function StatisticsPage() {
 
       setDaily(dailyArray);
 
-      // Статистика по направлениям (из последней записи)
+      // Статистика по направлениям (из последней записи в таблице statistics)
       const latestStat = stats[stats.length - 1];
       const byDirection = latestStat.data.by_direction || {};
       
@@ -103,34 +103,33 @@ export default function StatisticsPage() {
               .select('id, title, slug')
               .in('id', directionIds);
 
-            const directionsMap = new Map(
-              (directions || []).map((d: any) => [d.id, { title: d.title, slug: d.slug }])
-            );
+          const directionsMap = new Map(
+            (directions || []).map((d: any) => [d.id, { title: d.title, slug: d.slug }])
+          );
 
-            const enriched = (d2 as any[]).map((item: any) => ({
+          const enriched = directionArray.map((item: any) => ({
               ...item,
               direction_title: item.direction_id
-                ? directionsMap.get(item.direction_id)?.title || 'Не указано'
+                ? (directionsMap.get(item.direction_id) as { title: string })?.title || 'Не указано'
                 : 'Не указано',
               direction_slug: item.direction_id ? directionsMap.get(item.direction_id)?.slug : null,
-            }));
+          }));
 
-            // Сортируем по количеству
-            enriched.sort((a, b) => b.total_count - a.total_count);
-            setByDir(enriched);
-          } else {
-            setByDir((d2 as any) || []);
-          }
+          // Сортируем по количеству обращений в каждом направлении
+          enriched.sort((a, b) => b.total_count - a.total_count);
+          setByDir(enriched);
+        } else {
+          setByDir(directionArray);
+        }
         } else {
           setByDir([]);
         }
       } catch (err) {
-        setError('Произошла ошибка при загрузке данных');
+        setError('Произошла ошибка при загрузке данных статистики по направлениям');
       } finally {
         setLoading(false);
       }
-    })();
-  }, []);
+  }
 
   const totals = useMemo(() => {
     const created = daily.reduce((s, r) => s + (r.created_count || 0), 0);
@@ -140,25 +139,25 @@ export default function StatisticsPage() {
 
   return (
     <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-      <h1 className="text-2xl sm:text-3xl font-semibold light:text-gray-900">Статистика обращений</h1>
+      <h1 className="text-2xl sm:text-3xl font-semibold light:text-gray-900">Статистика ОСС</h1>
       <p className="mt-3 text-sm sm:text-base text-white/70 max-w-3xl light:text-gray-600">
-        Здесь показываются только агрегированные данные. Никаких персональных данных студентов или содержания обращений.
+        Здесь показываются только агрегированные данные. Исторические метрики обращений отображаются в архивном формате без персональных данных.
       </p>
 
       <div className="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 light:bg-white light:border-gray-200 light:shadow-sm">
-          <div className="text-xs sm:text-sm text-white/60 light:text-gray-500">Создано (последние 90 дней)</div>
+          <div className="text-xs sm:text-sm text-white/60 light:text-gray-500">Создано (последние 90 дней) - всего обращений</div>
           <div className="mt-2 text-2xl sm:text-3xl font-semibold light:text-gray-900">{loading ? '…' : totals.created}</div>
         </div>
         <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 light:bg-white light:border-gray-200 light:shadow-sm">
-          <div className="text-xs sm:text-sm text-white/60 light:text-gray-500">Закрыто (последние 90 дней)</div>
+          <div className="text-xs sm:text-sm text-white/60 light:text-gray-500">Закрыто (последние 90 дней) - всего обращений</div>
           <div className="mt-2 text-2xl sm:text-3xl font-semibold light:text-gray-900">{loading ? '…' : totals.closed}</div>
         </div>
       </div>
 
       <section className="mt-6 sm:mt-8 rounded-2xl sm:rounded-3xl border border-white/10 bg-white/5 p-4 sm:p-6 light:bg-white light:border-gray-200 light:shadow-sm">
         <h2 className="text-lg sm:text-xl font-semibold light:text-gray-900">Динамика</h2>
-        <p className="mt-2 text-xs sm:text-sm text-white/70 light:text-gray-600">Количество обращений по дням (создано/закрыто).</p>
+        <p className="mt-2 text-xs sm:text-sm text-white/70 light:text-gray-600">Количество обращений по дням (создано/закрыто) - всего обращений.</p>
         <div className="mt-4 sm:mt-6 h-64 sm:h-72">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={daily}>
@@ -180,14 +179,14 @@ export default function StatisticsPage() {
 
       <section className="mt-6 sm:mt-8 rounded-2xl sm:rounded-3xl border border-white/10 bg-white/5 p-4 sm:p-6 light:bg-white light:border-gray-200 light:shadow-sm">
         <h2 className="text-lg sm:text-xl font-semibold light:text-gray-900">Распределение по направлениям</h2>
-        <p className="mt-2 text-xs sm:text-sm text-white/70 light:text-gray-600">Сколько обращений относится к каждому направлению (накопительно).</p>
+        <p className="mt-2 text-xs sm:text-sm text-white/70 light:text-gray-600">Сколько обращений относится к каждому направлению (накопительно) - всего обращений.</p>
         {loading ? (
           <div className="mt-4 sm:mt-6 h-64 sm:h-72 flex items-center justify-center text-white/50 text-sm sm:text-base light:text-gray-500">
-            Загрузка данных...
+            Загрузка данных статистики по направлениям...
           </div>
         ) : byDir.length === 0 ? (
           <div className="mt-4 sm:mt-6 h-64 sm:h-72 flex items-center justify-center text-white/50 text-sm sm:text-base light:text-gray-500">
-            Нет данных для отображения
+            Нет данных для отображения статистики по направлениям. Данные будут загружены автоматически от бота или вручную.
           </div>
         ) : (
           <>

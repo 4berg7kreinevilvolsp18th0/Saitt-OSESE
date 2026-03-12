@@ -36,7 +36,7 @@ module.exports = {
         'international-blur-2': "#FFD531",
         neutral: "#6B7280",
         'neutral-blur-1': "#8B92A0",
-        'neutral-blur-2': "#9BA2B0',
+        'neutral-blur-2': "#9BA2B0",
       },
       backgroundImage: {
         // Правовой комитет - яркий синий с золотыми акцентами

@@ -158,7 +158,7 @@ export default function Home() {
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.169 0-.315.06-.459.19l-1.15.956-2.22 1.851c-.09.08-.18.15-.27.22-.09.07-.18.13-.27.18-.09.05-.18.09-.27.12-.09.03-.18.05-.27.05-.09 0-.18-.02-.27-.05-.09-.03-.18-.07-.27-.12-.09-.05-.18-.11-.27-.18-.09-.07-.18-.14-.27-.22l-2.22-1.851-1.15-.956c-.144-.13-.29-.19-.459-.19-.169 0-.315.06-.459.19-.144.13-.229.31-.229.52 0 .21.085.39.229.52l1.15.956 2.22 1.851c.09.08.18.15.27.22.09.07.18.13.27.18.09.05.18.09.27.12.09.03.18.05.27.05.09 0 .18-.02.27-.05.09-.03.18-.07.27-.12.09-.05.18-.11.27-.18.09-.07.18-.14.27-.22l2.22-1.851 1.15-.956c.144-.13.229-.31.229-.52 0-.21-.085-.39-.229-.52-.144-.13-.29-.19-.459-.19z"/>
               </svg>
-              Подать обращение через бот
+              Telegram ОСС
             </a>
             <Link 
               href="/statistics" 
@@ -170,18 +170,18 @@ export default function Home() {
               Статистика
             </Link>
             <Link 
-              href="/cabinet" 
+              href="/documents" 
               className="professional-button professional-button-secondary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-400
                 light:bg-white light:border-2 light:border-gray-300 light:text-gray-900 
                 light:hover:bg-gray-50 light:hover:border-oss-red/40 light:hover:text-oss-red
                 light:shadow-[0_2px_8px_rgba(0,0,0,0.08)] light:hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)]"
             >
-              Личный кабинет
+              Документы ОСС
             </Link>
           </div>
           <div className="mt-4 text-center">
             <p className="text-xs sm:text-sm text-white/60 light:text-gray-500 px-4">
-              Все обращения теперь принимаются через единый Telegram бот для удобства и оперативности
+              В Telegram публикуются оперативные обновления и полезные ссылки от ОСС
             </p>
           </div>
           <div className="mt-4 sm:mt-6 flex justify-center">
