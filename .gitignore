@@ -1,89 +1,49 @@
-# ============================================
 # Dependencies
-# ============================================
 node_modules/
 .pnp
 .pnp.js
-.yarn/cache
-.yarn/unplugged
-.yarn/build-state.yml
-.yarn/install-state.gz
 
-# ============================================
-# Testing & Coverage
-# ============================================
+# Testing
 coverage/
 .nyc_output
-*.lcov
-.jest/
-test-results/
-playwright-report/
-playwright/.cache/
 
-# ============================================
-# Next.js / Frontend
-# ============================================
+# Next.js
 .next/
 out/
 build/
 dist/
-.vercel
-.vercel.json
-*.tsbuildinfo
-next-env.d.ts
-.swc/
 
-# ============================================
-# Logs
-# ============================================
+# Production
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
-.pnpm-debug.log*
 
-# ============================================
-# Environment Variables & Secrets
-# ============================================
+# Environment variables
 .env
-.env.*
-!.env.example
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 .env*.local
-*.key
-*.pem
-*.p12
-*.pfx
-secrets/
-.secrets/
 
-# ============================================
-# IDE & Editors
-# ============================================
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# IDE
 .vscode/
-!.vscode/extensions.json
-!.vscode/settings.json
 .idea/
 *.swp
 *.swo
 *~
 .DS_Store
-Thumbs.db
-*.sublime-project
-*.sublime-workspace
-.project
-.classpath
-.settings/
-*.iml
 
-# ============================================
-# Python / Backend
-# ============================================
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -93,125 +53,14 @@ venv/
 env/
 ENV/
 .venv
-pip-log.txt
-pip-delete-this-directory.txt
-.pytest_cache/
-.mypy_cache/
-.dmypy.json
-dmypy.json
-.pytype/
-cython_debug/
-*.egg-info/
-dist/
-build/
-*.egg
-*.whl
 
-# ============================================
-# Database
-# ============================================
-*.db
-*.sqlite
-*.sqlite3
-*.db-journal
-*.db-shm
-*.db-wal
-pgdata/
-postgres-data/
-.database/
-
-# ============================================
-# Supabase
-# ============================================
-.supabase/
-supabase/.temp/
-supabase/.branches/
-supabase/.temp/
-
-# ============================================
-# CMS & Content
-# ============================================
+# Keystatic
 .keystatic/
-.keystatic-build/
-content/.cache/
 
-# ============================================
-# Redis & Cache
-# ============================================
-dump.rdb
-*.rdb
-redis-data/
-.cache/
-.parcel-cache/
+# Supabase
+.supabase/
 
-# ============================================
-# Temporary Files
-# ============================================
-*.tmp
-*.temp
-*.bak
-*.backup
-*.old
-*.orig
-.tmp/
-temp/
-tmp/
-
-# ============================================
-# OS Files
-# ============================================
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Desktop.ini
-$RECYCLE.BIN/
-
-# ============================================
-# Build Artifacts
-# ============================================
-*.min.js
-*.min.css
-*.map
-sourcemaps/
-*.bundle.js
-*.chunk.js
-
-# ============================================
-# Security & Audit
-# ============================================
-audit-report.json
-security-audit.json
-.npm/
-.yarn-integrity
-package-lock.json.backup
-
-# ============================================
-# GitHub (keep workflows)
-# ============================================
+# GitHub Actions (keep workflows)
 !.github/workflows/
-.github/CODEOWNERS.backup
 
-# ============================================
-# Documentation (temporary, will be added later)
-# ============================================
-# MD files will be handled separately later
-
-# ============================================
-# Project Specific
-# ============================================
-uploads/
-files/
-storage/
-public/uploads/
-public/files/
-*.pdf.backup
-/docs
-backend/python/DEPLOY_CHECKLIST.md
-ERRORS_REPORT.md
-ERRORS_AND_SECURITY_REPORT.md
-SECURITY.md
-frontend/nextjs/lib/README_SECURITY.md
-backend/python/README_DEPLOY.md
+docs/ru/GITHUB_ACTIONS_TROUBLESHOOTING.md
