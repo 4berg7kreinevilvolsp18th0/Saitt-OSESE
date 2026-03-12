@@ -127,7 +127,7 @@
   color-scheme: dark;
   --font-sf-text: 'SF UI Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-sf-display: 'SF UI Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  
+
   /* Professional easing functions */
   --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
   --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
@@ -339,14 +339,14 @@ a {
 .light .professional-card {
   background: #FFFFFF;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 
+  box-shadow:
     0 1px 3px rgba(0, 0, 0, 0.05),
     0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
 .light .professional-card:hover {
   border-color: rgba(0, 0, 0, 0.12);
-  box-shadow: 
+  box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.08),
     0 8px 24px rgba(0, 0, 0, 0.04);
   transform: translateY(-4px);
@@ -380,14 +380,14 @@ a {
 .professional-button-primary {
   background: linear-gradient(135deg, #D11F2A 0%, #B91C1C 100%);
   color: #FFFFFF;
-  box-shadow: 
+  box-shadow:
     0 4px 12px rgba(209, 31, 42, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .professional-button-primary:hover {
   background: linear-gradient(135deg, #B91C1C 0%, #991B1B 100%);
-  box-shadow: 
+  box-shadow:
     0 8px 24px rgba(209, 31, 42, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
@@ -406,14 +406,14 @@ a {
 }
 
 .light .professional-button-primary {
-  box-shadow: 
+  box-shadow:
     0 2px 8px rgba(209, 31, 42, 0.25),
     0 4px 16px rgba(209, 31, 42, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .light .professional-button-primary:hover {
-  box-shadow: 
+  box-shadow:
     0 4px 16px rgba(209, 31, 42, 0.35),
     0 8px 32px rgba(209, 31, 42, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
@@ -433,7 +433,7 @@ a {
 /* Winter styles for buttons - improved colors */
 .winter-theme .professional-button-primary {
   background: linear-gradient(135deg, #5B9BD5 0%, #3D7BA8 50%, #2D5A7E 100%) !important;
-  box-shadow: 
+  box-shadow:
     0 4px 16px rgba(91, 155, 213, 0.45),
     0 8px 32px rgba(91, 155, 213, 0.25),
     0 0 0 1px rgba(126, 200, 227, 0.2),
@@ -444,7 +444,7 @@ a {
 
 .winter-theme .professional-button-primary:hover {
   background: linear-gradient(135deg, #6BAFE5 0%, #4D8BB8 50%, #3D6A8E 100%) !important;
-  box-shadow: 
+  box-shadow:
     0 6px 24px rgba(91, 155, 213, 0.55),
     0 12px 48px rgba(91, 155, 213, 0.35),
     0 0 0 1px rgba(126, 200, 227, 0.4),
@@ -467,7 +467,7 @@ a {
 
 .winter-theme.light .professional-button-primary {
   background: linear-gradient(135deg, #5B9BD5 0%, #3D7BA8 50%, #2D5A7E 100%) !important;
-  box-shadow: 
+  box-shadow:
     0 4px 16px rgba(91, 155, 213, 0.35),
     0 8px 32px rgba(91, 155, 213, 0.2),
     0 0 0 1px rgba(126, 200, 227, 0.25),
@@ -479,7 +479,7 @@ a {
 
 .winter-theme.light .professional-button-primary:hover {
   background: linear-gradient(135deg, #6BAFE5 0%, #4D8BB8 50%, #3D6A8E 100%) !important;
-  box-shadow: 
+  box-shadow:
     0 6px 24px rgba(91, 155, 213, 0.45),
     0 12px 48px rgba(91, 155, 213, 0.3),
     0 0 0 1px rgba(126, 200, 227, 0.45),
@@ -656,7 +656,7 @@ a {
 .light {
   background: linear-gradient(135deg, #FFFFFF 0%, #FAFBFC 50%, #F5F7FA 100%);
   background-attachment: fixed;
-  color: #1F2937;
+  color: #0a0f16;
   min-height: 100vh;
 }
 
@@ -690,7 +690,7 @@ a {
 
 .light .bg-white\/5 {
   background: #FFFFFF;
-  box-shadow: 
+  box-shadow:
     0 1px 3px rgba(0, 0, 0, 0.05),
     0 4px 12px rgba(0, 0, 0, 0.03);
   border: 1px solid rgba(0, 0, 0, 0.06);
@@ -698,7 +698,7 @@ a {
 
 .light .bg-white\/10 {
   background: #FAFBFC;
-  box-shadow: 
+  box-shadow:
     0 1px 3px rgba(0, 0, 0, 0.05),
     0 4px 12px rgba(0, 0, 0, 0.03);
   border: 1px solid rgba(0, 0, 0, 0.06);
@@ -706,7 +706,7 @@ a {
 
 .light .hover\:bg-white\/10:hover {
   background: #F5F7FA;
-  box-shadow: 
+  box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.08),
     0 8px 24px rgba(0, 0, 0, 0.04);
   transform: translateY(-2px);
@@ -894,7 +894,7 @@ a {
 /* Премиум эффекты для светлой темы */
 .light .premium-card {
   background: #FFFFFF;
-  box-shadow: 
+  box-shadow:
     0 1px 3px rgba(0, 0, 0, 0.05),
     0 4px 12px rgba(0, 0, 0, 0.03),
     0 0 0 1px rgba(0, 0, 0, 0.05);
@@ -903,7 +903,7 @@ a {
 }
 
 .light .premium-card:hover {
-  box-shadow: 
+  box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.08),
     0 8px 24px rgba(0, 0, 0, 0.04),
     0 0 0 1px rgba(0, 0, 0, 0.08);
@@ -912,7 +912,7 @@ a {
 
 .light .premium-button {
   background: linear-gradient(135deg, #D11F2A 0%, #B91C1C 100%);
-  box-shadow: 
+  box-shadow:
     0 2px 8px rgba(209, 31, 42, 0.25),
     0 4px 16px rgba(209, 31, 42, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
@@ -921,7 +921,7 @@ a {
 
 .light .premium-button:hover {
   background: linear-gradient(135deg, #B91C1C 0%, #991B1B 100%);
-  box-shadow: 
+  box-shadow:
     0 4px 16px rgba(209, 31, 42, 0.35),
     0 8px 32px rgba(209, 31, 42, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
@@ -931,7 +931,7 @@ a {
 .light .premium-button-secondary {
   background: #FFFFFF;
   border: 2px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 
+  box-shadow:
     0 1px 3px rgba(0, 0, 0, 0.05),
     0 4px 12px rgba(0, 0, 0, 0.03);
   transition: all 0.3s var(--ease-out-quart);
@@ -940,7 +940,7 @@ a {
 .light .premium-button-secondary:hover {
   background: #FAFBFC;
   border-color: rgba(209, 31, 42, 0.3);
-  box-shadow: 
+  box-shadow:
     0 4px 12px rgba(209, 31, 42, 0.15),
     0 8px 24px rgba(209, 31, 42, 0.08);
   transform: translateY(-2px);
@@ -1014,7 +1014,7 @@ a {
 }
 
 .light .hover-lift:hover {
-  box-shadow: 
+  box-shadow:
     0 8px 24px rgba(0, 0, 0, 0.1),
     0 16px 48px rgba(0, 0, 0, 0.05);
 }
@@ -1034,13 +1034,13 @@ a {
 
 /* Элегантные тени */
 .elegant-shadow {
-  box-shadow: 
+  box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.15),
     0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 .light .elegant-shadow {
-  box-shadow: 
+  box-shadow:
     0 2px 8px rgba(0, 0, 0, 0.08),
     0 4px 16px rgba(0, 0, 0, 0.04);
 }
@@ -1094,7 +1094,7 @@ a {
   left: 0;
   right: 0;
   bottom: 0;
-  background: 
+  background:
     radial-gradient(circle at 20% 50%, rgba(126, 200, 227, 0.15) 0%, transparent 50%),
     radial-gradient(circle at 80% 80%, rgba(184, 230, 240, 0.12) 0%, transparent 50%),
     radial-gradient(circle at 40% 20%, rgba(139, 126, 200, 0.08) 0%, transparent 50%),
@@ -1121,7 +1121,7 @@ a {
   background: rgba(255, 255, 255, 0.06) !important;
   backdrop-filter: blur(12px) !important;
   border: 1px solid rgba(126, 200, 227, 0.25) !important;
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(26, 58, 90, 0.35),
     0 2px 8px rgba(91, 155, 213, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
@@ -1130,7 +1130,7 @@ a {
 
 .winter-theme .premium-card:hover {
   border-color: rgba(126, 200, 227, 0.4) !important;
-  box-shadow: 
+  box-shadow:
     0 12px 48px rgba(26, 58, 90, 0.4),
     0 4px 16px rgba(91, 155, 213, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
@@ -1139,7 +1139,7 @@ a {
 .winter-theme .light .premium-card {
   background: rgba(255, 255, 255, 0.85) !important;
   border: 1px solid rgba(126, 200, 227, 0.35) !important;
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(126, 200, 227, 0.25),
     0 2px 8px rgba(91, 155, 213, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
@@ -1148,7 +1148,7 @@ a {
 
 .winter-theme .light .premium-card:hover {
   border-color: rgba(91, 155, 213, 0.5) !important;
-  box-shadow: 
+  box-shadow:
     0 12px 48px rgba(126, 200, 227, 0.3),
     0 4px 16px rgba(91, 155, 213, 0.25),
     inset 0 1px 0 rgba(255, 255, 255, 1) !important;
@@ -1157,7 +1157,7 @@ a {
 /* Зимние кнопки - улучшенные градиенты */
 .winter-theme .premium-button {
   background: linear-gradient(135deg, #5B9BD5 0%, #3D7BA8 50%, #2D5A7E 100%) !important;
-  box-shadow: 
+  box-shadow:
     0 4px 16px rgba(91, 155, 213, 0.45),
     0 8px 32px rgba(91, 155, 213, 0.25),
     0 0 0 1px rgba(126, 200, 227, 0.2),
@@ -1168,7 +1168,7 @@ a {
 
 .winter-theme .premium-button:hover {
   background: linear-gradient(135deg, #6BAFE5 0%, #4D8BB8 50%, #3D6A8E 100%) !important;
-  box-shadow: 
+  box-shadow:
     0 6px 24px rgba(91, 155, 213, 0.55),
     0 12px 48px rgba(91, 155, 213, 0.35),
     0 0 0 1px rgba(126, 200, 227, 0.4),
@@ -1238,7 +1238,7 @@ a {
   border-color: #5B9BD5;
 }
 
-/* Зимние градиенты - улучшенные */
+/* Зимние градиенты */
 .winter-theme .gradient-accent {
   background: linear-gradient(135deg, rgba(126, 200, 227, 0.25) 0%, rgba(91, 155, 213, 0.15) 50%, rgba(139, 126, 200, 0.1) 100%);
 }
@@ -1269,7 +1269,7 @@ a {
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: 
+  background-image:
     radial-gradient(2px 2px at 20% 30%, rgba(255, 255, 255, 0.2), transparent),
     radial-gradient(2px 2px at 60% 70%, rgba(255, 255, 255, 0.15), transparent),
     radial-gradient(1px 1px at 50% 50%, rgba(255, 255, 255, 0.25), transparent),
@@ -1296,7 +1296,7 @@ a {
 
 /* Зимние тени - улучшенные */
 .winter-theme .elegant-shadow {
-  box-shadow: 
+  box-shadow:
     0 4px 12px rgba(26, 58, 90, 0.35),
     0 8px 24px rgba(26, 58, 90, 0.25),
     0 2px 4px rgba(91, 155, 213, 0.15),
@@ -1304,7 +1304,7 @@ a {
 }
 
 .winter-theme .light .elegant-shadow {
-  box-shadow: 
+  box-shadow:
     0 4px 12px rgba(126, 200, 227, 0.25),
     0 8px 24px rgba(126, 200, 227, 0.15),
     0 2px 4px rgba(91, 155, 213, 0.1),
@@ -1318,7 +1318,7 @@ a {
 
 /* Зимние hover эффекты - улучшенные */
 .winter-theme .hover-lift:hover {
-  box-shadow: 
+  box-shadow:
     0 8px 24px rgba(91, 155, 213, 0.35),
     0 16px 48px rgba(91, 155, 213, 0.25),
     0 4px 8px rgba(126, 200, 227, 0.2);
