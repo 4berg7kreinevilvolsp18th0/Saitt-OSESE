@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { safeEmailSend } from '../../../lib/componentIsolation';
 
 // API endpoint для отправки Email уведомлений
 export const runtime = 'nodejs';
@@ -69,63 +68,61 @@ export async function POST(request: NextRequest) {
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://oss-dvfu.vercel.app';
     const statusUrl = `${siteUrl}/appeal/status?token=${publicToken}`;
 
-    // Отправка через Resend с изоляцией компонента
+    // Отправка через Resend (пример)
     if (emailService === 'resend') {
-      const emailSent = await safeEmailSend(
-        async () => {
-          const response = await fetch('https://api.resend.com/emails', {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${emailApiKey}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              from: process.env.EMAIL_FROM || 'noreply@oss-dvfu.ru',
-              to: contactValue,
-              subject: statusMessage.subject,
-              html: `
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                  <h2 style="color: #DC2626;">${statusMessage.subject}</h2>
-                  <p>Здравствуйте!</p>
-                  <p>${statusMessage.body}</p>
-                  <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 20px 0;">
-                    <strong>Обращение:</strong> ${title}
-                  </div>
-                  <p>
-                    <a href="${statusUrl}" style="background: #DC2626; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
-                      Проверить статус обращения
-                    </a>
-                  </p>
-                  <p style="color: #666; font-size: 12px; margin-top: 30px;">
-                    С уважением,<br>
-                    ОСС ДВФУ
-                  </p>
+      try {
+        const response = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${emailApiKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            from: process.env.EMAIL_FROM || 'noreply@oss-dvfu.ru',
+            to: contactValue,
+            subject: statusMessage.subject,
+            html: `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <h2 style="color: #DC2626;">${statusMessage.subject}</h2>
+                <p>Здравствуйте!</p>
+                <p>${statusMessage.body}</p>
+                <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                  <strong>Обращение:</strong> ${title}
                 </div>
-              `,
-            }),
+                <p>
+                  <a href="${statusUrl}" style="background: #DC2626; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
+                    Проверить статус обращения
+                  </a>
+                </p>
+                <p style="color: #666; font-size: 12px; margin-top: 30px;">
+                  С уважением,<br>
+                  ОСС ДВФУ
+                </p>
+              </div>
+            `,
+          }),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error('Ошибка отправки Email:', errorData);
+          return NextResponse.json({ 
+            success: false, 
+            message: 'Не удалось отправить уведомление, но обращение обработано' 
           });
-
-          if (!response.ok) {
-            const errorData = await response.json();
-            console.error('Ошибка отправки Email:', errorData);
-            throw new Error('Email service error');
-          }
-
-          return true;
-        },
-        () => {
-          // Fallback: возвращаем false, но не блокируем работу системы
-          console.warn('Email service unavailable, но обращение обработано');
-          return false;
         }
-      );
 
-      return NextResponse.json({ 
-        success: emailSent, 
-        message: emailSent 
-          ? 'Уведомление отправлено' 
-          : 'Уведомление не отправлено (сервис недоступен), но обращение обработано' 
-      });
+        return NextResponse.json({ 
+          success: true, 
+          message: 'Уведомление отправлено' 
+        });
+      } catch (error: any) {
+        console.error('Ошибка отправки Email уведомления:', error);
+        return NextResponse.json({ 
+          success: false, 
+          message: 'Ошибка отправки уведомления, но обращение обработано' 
+        });
+      }
     }
 
     // Для других сервисов (SendGrid, Supabase Email и т.д.) можно добавить аналогичную логику
