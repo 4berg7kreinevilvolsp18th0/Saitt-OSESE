@@ -1,14 +1,21 @@
 # Security Policy
 
 ## Supported Versions
-Текущая версия сайта ОСС поддерживается и обновляется.
+
+Use this section to tell people about which versions of your project are
+currently being supported with security updates.
+
+| Version | Supported          |
+| ------- | ------------------ |
+| 5.1.x   | :white_check_mark: |
+| 5.0.x   | :x:                |
+| 4.0.x   | :white_check_mark: |
+| < 4.0   | :x:                |
 
 ## Reporting a Vulnerability
-Если вы обнаружили уязвимость, пожалуйста, **не публикуйте её публично**.
 
-Свяжитесь с командой ОСС напрямую:
-- через официальный сайт
-- или через ответственного за инфраструктуру
+Use this section to tell people how to report a vulnerability.
 
-Мы рассматриваем вопросы безопасности в приоритетном порядке,
-особенно если они касаются данных студентов.
+Tell them where to go, how often they can expect to get an update on a
+reported vulnerability, what to expect if the vulnerability is accepted or
+declined, etc.
