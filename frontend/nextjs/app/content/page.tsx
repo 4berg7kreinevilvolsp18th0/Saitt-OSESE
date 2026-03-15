@@ -100,6 +100,33 @@ export default function ContentPage() {
         Официальные разъяснения, инструкции и новости ОСС.
       </p>
 
+      <section className="mt-6 sm:mt-8 rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 light:bg-white light:border-gray-200 light:shadow-sm">
+        <h2 className="text-lg sm:text-xl font-semibold light:text-gray-900">Демо-гайды</h2>
+        <p className="mt-2 text-sm sm:text-base text-white/70 light:text-gray-600">
+          Черновые макеты, чтобы оценить подачу и структуру материалов до публикации в базе.
+        </p>
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+          <Link
+            href="/guides/infrastructure"
+            className="rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition light:bg-gray-50 light:border-gray-200 light:hover:bg-gray-100"
+          >
+            <p className="text-sm font-semibold light:text-gray-900">Инфраструктура: базовый алгоритм</p>
+            <p className="mt-1 text-xs sm:text-sm text-white/60 light:text-gray-600">
+              Что подготовить, куда писать сначала и как контролировать статус.
+            </p>
+          </Link>
+          <Link
+            href="/guides/infrastructure-deepdive"
+            className="rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition light:bg-gray-50 light:border-gray-200 light:hover:bg-gray-100"
+          >
+            <p className="text-sm font-semibold light:text-gray-900">Инфраструктура: эскалация и сроки</p>
+            <p className="mt-1 text-xs sm:text-sm text-white/60 light:text-gray-600">
+              Расширенный сценарий: уровни эскалации, шаблоны и таблица действий.
+            </p>
+          </Link>
+        </div>
+      </section>
+
       {/* Фильтры и поиск */}
       <div className="mt-6 sm:mt-8 space-y-3 sm:space-y-4">
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
