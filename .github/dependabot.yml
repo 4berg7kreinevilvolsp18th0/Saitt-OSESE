@@ -3,7 +3,7 @@ version: 2
 updates:
   # 1) Node/Next.js зависимости (package.json + lock-файл)
   - package-ecosystem: "npm"
-    directory: "/frontend/nextjs"
+    directory: "/"
     schedule:
       interval: "weekly"
       day: "monday"
@@ -13,14 +13,10 @@ updates:
     labels:
       - "dependencies"
       - "security"
-      - "frontend"
     commit-message:
-      prefix: "deps(frontend)"
+      prefix: "deps"
       include: "scope"
-    # Приоритет для security обновлений
-    allow:
-      - dependency-type: "direct"
-      - dependency-type: "indirect"
+
     # Группируем апдейты, чтобы не было 30 PR в неделю
     groups:
       nextjs-and-react:
@@ -43,21 +39,19 @@ updates:
         patterns:
           - "@supabase/supabase-js"
           - "recharts"
-          - "otplib"
-          - "qrcode"
-          - "@upstash/redis"
-          - "ioredis"
+          - "zod"
+          - "jsonwebtoken"
+          - "helmet"
+          - "next-safe-middleware"
       all-minor-patch:
         update-types:
           - "minor"
           - "patch"
+
     # Чтобы не ломать прод неожиданными мажорами — оставляем мажоры отдельно (ручная проверка)
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
-    # Автоматически объединять security обновления
-    pull-request-branch-name:
-      separator: "/"
 
   # 2) GitHub Actions (workflow-экосистема)
   - package-ecosystem: "github-actions"
@@ -71,14 +65,8 @@ updates:
     labels:
       - "dependencies"
       - "ci"
-      - "github-actions"
     commit-message:
       prefix: "ci"
       include: "scope"
-    groups:
-      actions:
-        patterns:
-          - "actions/*"
-          - "github/*"
 
 

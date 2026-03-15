@@ -62,7 +62,6 @@ VALUES (
   false   -- Telegram (настроить позже)
 );
 ```
-
 ### Вариант 2: Через Supabase API (программно)
 
 **Создать скрипт для регистрации:**
@@ -85,7 +84,7 @@ async function createAdminAccount() {
   const email = '4.berg7kreinevilvol.sp.18th0nd@gmail.com';
   const password = 'YOUR_GENERATED_PASSWORD'; // Вставить сгенерированный пароль
   
-  // Создать пользователя
+  // Создать пользователя 
   const { data: userData, error: userError } = await supabase.auth.admin.createUser({
     email,
     password,
