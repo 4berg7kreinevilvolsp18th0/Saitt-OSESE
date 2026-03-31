@@ -6,6 +6,7 @@ import GuideBreadcrumbs from './GuideBreadcrumbs';
 import GuideShare from './GuideShare';
 import { GuideMeta } from '../../lib/guides';
 import { trackGuideEvent } from '../../lib/guideAnalytics';
+import { committeeBadgeClasses } from '../../lib/theme';
 
 type TocItem = {
   id: string;
@@ -30,6 +31,7 @@ export default function GuideLayout({
 
   const publishedStatusVisible = process.env.NODE_ENV !== 'production';
   const depthMarks = useMemo(() => [25, 50, 75, 100], []);
+  const committeeClasses = committeeBadgeClasses(meta.colorKey);
 
   useEffect(() => {
     const onScroll = () => {
@@ -63,7 +65,7 @@ export default function GuideLayout({
                 {badge}
               </span>
             ))}
-            <span className="inline-flex items-center rounded-full border border-oss-red/30 bg-oss-red/10 px-3 py-1 text-xs font-semibold text-oss-red">
+            <span className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${committeeClasses}`}>
               {meta.committee}
             </span>
           </div>
