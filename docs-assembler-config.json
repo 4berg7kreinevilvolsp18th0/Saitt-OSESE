@@ -1,0 +1,20 @@
+{
+    "organisation": "",
+    "contact": "",
+    "gitConfig": {
+        "owner": "4berg7kreinevilvolsp18th0",
+        "repo": "Saitt-OSESE",
+        "branch": "master",
+        "publishUrl": "https://4berg7kreinevilvolsp18th0.github.io/Saitt-OSESE/"
+    },
+    "repoConfig": {
+        "assetFolderName": "δ steps",
+        "variableFolderName": "Ω variables",
+        "publishFolderName": "pub",
+        "docsFolderName": "docs",
+        "mapsFolderName": "tsmaps"
+    },
+    "devConfig": {
+        "forceJsDelivr": true
+    }
+}
