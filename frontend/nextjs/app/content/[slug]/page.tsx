@@ -79,7 +79,7 @@ export default function ContentItem() {
             Опубликовано: {new Date(content.published_at).toLocaleDateString('ru-RU')}
           </p>
         )}
-        <div className="prose prose-invert prose-lg max-w-none text-white/80 markdown-content">
+        <div className="prose prose-lg max-w-none text-white/85 light:text-gray-700 dark:prose-invert markdown-content">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             components={{
