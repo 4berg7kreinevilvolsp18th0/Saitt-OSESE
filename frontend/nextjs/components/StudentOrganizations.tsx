@@ -99,7 +99,7 @@ export default function StudentOrganizations() {
             key={org.id}
             className={`professional-card rounded-xl sm:rounded-2xl p-5 sm:p-6 hover-lift focus-ring animate-fade-in-up ${delayClass}
               border-2 border-neutral/50 light:border-neutral/30
-              bg-gradient-neutral bg-opacity-20 hover:bg-opacity-30
+              bg-gradient-neutral bg-opacity-25 hover:bg-opacity-35
               light:bg-opacity-0 light:bg-gradient-to-br light:from-white light:via-white light:to-gray-50
               light:border-opacity-40 relative overflow-hidden`}
           >
@@ -122,9 +122,9 @@ export default function StudentOrganizations() {
                 </div>
               </div>
             )}
-            <h3 className="text-lg sm:text-xl font-bold mb-3 text-white light:text-gray-900">{org.title}</h3>
+            <h3 className="text-lg sm:text-xl font-bold mb-3 text-white light:text-gray-900 drop-shadow-[0_1px_6px_rgba(0,0,0,0.25)] light:drop-shadow-none">{org.title}</h3>
             {org.description && (
-              <p className="text-sm sm:text-base text-white/80 mb-5 line-clamp-3 leading-relaxed light:text-gray-700 light:font-medium">
+              <p className="text-sm sm:text-base text-white/90 mb-5 line-clamp-3 leading-relaxed light:text-gray-700 light:font-medium">
                 {org.description}
               </p>
             )}
