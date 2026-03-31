@@ -19,6 +19,9 @@ module.exports = {
         oss: {
           red: "#D11F2A",
           dark: "#0F1115",
+          burgundy: "#9C1C29",
+          graphite: "#251D1D",
+          steel: "#9BA2B0",
         },
         legal: "#2A3B5C",
         'legal-gold': "#FFD700",
@@ -37,6 +40,13 @@ module.exports = {
         neutral: "#6B7280",
         'neutral-blur-1': "#8B92A0",
         'neutral-blur-2': "#9BA2B0",
+        committee: {
+          legal: "#2A3B5C",
+          infrastructure: "#2A7FFF",
+          scholarship: "#2E8B57",
+          international: "#F5B301",
+          oss: "#D11F2A",
+        },
       },
       backgroundImage: {
         // Правовой комитет - яркий синий с золотыми акцентами
@@ -58,6 +68,10 @@ module.exports = {
         // Нейтральный/Объединение - яркий серый
         'gradient-neutral': 'linear-gradient(135deg, #6B7280 0%, #7B8290 50%, #6B7280 100%)',
         'gradient-neutral-light': 'linear-gradient(135deg, #F3F4F6 0%, #E5E7EB 50%, #F3F4F6 100%)',
+        'gradient-oss-soft-dark':
+          'radial-gradient(circle at 15% 20%, rgba(220, 46, 66, 0.2) 0%, transparent 45%), radial-gradient(circle at 82% 0%, rgba(156, 28, 41, 0.18) 0%, transparent 45%), linear-gradient(160deg, #0F1115 0%, #251D1D 100%)',
+        'gradient-oss-soft-light':
+          'radial-gradient(circle at 20% 10%, rgba(220, 46, 66, 0.1) 0%, transparent 45%), radial-gradient(circle at 90% 0%, rgba(156, 28, 41, 0.08) 0%, transparent 50%), linear-gradient(160deg, #FFFFFF 0%, #F5F7FA 100%)',
       },
     },
   },
