@@ -105,7 +105,7 @@ export default function ContentPage() {
         <p className="mt-2 text-sm sm:text-base text-white/70 light:text-gray-600">
           Подборка материалов: опубликованный гайд правового комитета и демонстрационные шаблоны.
         </p>
-        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
           <Link
             href="/guides/conflict-commission"
             className="rounded-xl border border-oss-red/30 bg-oss-red/10 p-4 hover:bg-oss-red/15 transition light:bg-red-50 light:border-red-200 light:hover:bg-red-100"
@@ -140,6 +140,15 @@ export default function ContentPage() {
             <p className="text-sm font-semibold light:text-gray-900">Медицинское обслуживание</p>
             <p className="mt-1 text-xs sm:text-sm text-white/70 light:text-gray-600">
               Прикрепление к поликлинике, ОМС и помощь в университетской поликлинике.
+            </p>
+          </Link>
+          <Link
+            href="/guides/showcase"
+            className="rounded-xl border border-fuchsia-300/30 bg-fuchsia-500/10 p-4 hover:bg-fuchsia-500/15 transition light:bg-fuchsia-50 light:border-fuchsia-200 light:hover:bg-fuchsia-100"
+          >
+            <p className="text-sm font-semibold light:text-gray-900">Showcase: мега-гайд</p>
+            <p className="mt-1 text-xs sm:text-sm text-white/70 light:text-gray-600">
+              Витрина всех элементов: инфографика, таблицы, выноски, FAQ, таймлайн.
             </p>
           </Link>
         </div>
