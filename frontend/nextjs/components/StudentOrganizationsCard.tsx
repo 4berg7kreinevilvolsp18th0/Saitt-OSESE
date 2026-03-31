@@ -27,17 +27,17 @@ export default function StudentOrganizationsCard() {
         <div className={`absolute bottom-0 left-0 w-24 h-24 ${gradient} rounded-full opacity-40 blur-2xl group-hover:opacity-50 transition-opacity duration-300 
           light:opacity-15 light:blur-3xl light:group-hover:opacity-25`}></div>
         
-        <div className={`relative text-sm sm:text-base uppercase tracking-wider font-bold mb-3 text-neutral 
-          drop-shadow-md light:drop-shadow-none`}>
+        <div className={`inline-flex items-center rounded-md px-2.5 py-1 relative text-sm sm:text-base uppercase tracking-wider font-bold mb-3 text-slate-50 light:text-slate-800
+          bg-black/35 light:bg-white/85 shadow-[0_1px_10px_rgba(0,0,0,0.35)] light:shadow-sm`}>
           Студенческие объединения
         </div>
-        <div className={`text-sm sm:text-base leading-relaxed font-sf-text mb-4 flex-1 text-white light:text-gray-700 
+        <div className={`text-sm sm:text-base leading-relaxed font-sf-text mb-4 flex-1 text-white/95 light:text-gray-700 
           light:font-medium`}>
           Организации и сообщества студентов ДВФУ, которые помогают развивать студенческую жизнь и реализовывать инициативы.
         </div>
-        <div className="inline-flex items-center gap-2 text-sm sm:text-base font-semibold text-white light:text-gray-700 group-hover:gap-3 transition-all mt-auto">
+        <div className="inline-flex items-center gap-2 text-sm sm:text-base font-semibold text-white/95 light:text-gray-800 group-hover:gap-3 transition-all mt-auto">
           Перейти
-          <span className={`text-neutral group-hover:translate-x-1 transition-transform duration-300
+          <span className={`text-slate-100 group-hover:translate-x-1 transition-transform duration-300
             light:text-oss-red light:group-hover:text-oss-red/80`}>→</span>
         </div>
       </div>
