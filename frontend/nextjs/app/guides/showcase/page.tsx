@@ -76,7 +76,7 @@ export default function ShowcaseGuidePage() {
           ))}
         </div>
         <div className="mt-4">
-          <GuideCallout variant="important">
+          <GuideCallout variant="important" colorKey={meta.colorKey}>
             Этот гайд — тестовый шаблон для визуальной оценки. Контент можно адаптировать под любой
             комитет без изменения структуры страницы.
           </GuideCallout>
@@ -120,7 +120,7 @@ export default function ShowcaseGuidePage() {
               'Контакт для обратной связи',
             ]}
           />
-          <GuideCallout variant="tip">
+          <GuideCallout variant="tip" colorKey={meta.colorKey}>
             Пишите нейтрально и по фактам: меньше эмоций, больше конкретики и хронологии.
           </GuideCallout>
         </div>
