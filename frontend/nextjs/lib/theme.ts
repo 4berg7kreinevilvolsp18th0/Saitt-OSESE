@@ -80,6 +80,52 @@ export function gradientBorder(colorKey: ColorKey): string {
   }
 }
 
+export function committeeColorKey(committee: string): ColorKey {
+  const normalized = committee.toLowerCase();
+  if (normalized.includes('прав')) return 'legal';
+  if (normalized.includes('инфра')) return 'infrastructure';
+  if (normalized.includes('стип')) return 'scholarship';
+  if (normalized.includes('иност')) return 'international';
+  if (normalized.includes('осс')) return 'oss';
+  return 'neutral';
+}
+
+export function committeeBadgeClasses(colorKey: ColorKey): string {
+  switch (colorKey) {
+    case 'legal':
+      return 'border-legal/45 bg-legal/15 text-blue-100 light:text-legal-dark-blue light:bg-legal/20';
+    case 'infrastructure':
+      return 'border-infrastructure/45 bg-infrastructure/15 text-cyan-100 light:text-blue-800 light:bg-infrastructure/20';
+    case 'scholarship':
+      return 'border-scholarship/45 bg-scholarship/15 text-emerald-100 light:text-emerald-800 light:bg-scholarship/20';
+    case 'international':
+      return 'border-international/45 bg-international/20 text-yellow-100 light:text-amber-800 light:bg-international/25';
+    case 'neutral':
+      return 'border-neutral/45 bg-neutral/20 text-slate-100 light:text-slate-700 light:bg-neutral/15';
+    case 'oss':
+    default:
+      return 'border-oss-red/45 bg-oss-red/15 text-red-100 light:text-oss-red light:bg-oss-red/10';
+  }
+}
+
+export function committeePrimaryButtonClasses(colorKey: ColorKey): string {
+  switch (colorKey) {
+    case 'legal':
+      return 'bg-gradient-legal text-white hover:brightness-110';
+    case 'infrastructure':
+      return 'bg-gradient-infrastructure text-white hover:brightness-110';
+    case 'scholarship':
+      return 'bg-gradient-scholarship text-white hover:brightness-110';
+    case 'international':
+      return 'bg-gradient-international text-oss-dark hover:brightness-105';
+    case 'neutral':
+      return 'bg-gradient-neutral text-white hover:brightness-110';
+    case 'oss':
+    default:
+      return 'bg-gradient-to-r from-oss-red to-red-700 text-white hover:brightness-110';
+  }
+}
+
 // Функции для получения цветов размытых декоративных элементов
 export function getBlurColor1(colorKey: ColorKey): string {
   switch (colorKey) {
