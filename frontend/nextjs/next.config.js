@@ -1,8 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Убрали output: 'standalone' для правильной работы на Vercel
+  compress: true,
+  poweredByHeader: false,
   images: {
     domains: [],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**.supabase.co',
+      },
+    ],
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 60 * 60 * 24 * 7,
   },
   // Для SEO
   async headers() {
