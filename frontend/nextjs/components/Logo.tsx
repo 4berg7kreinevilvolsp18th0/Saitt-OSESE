@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { getTheme } from '../lib/theme';
 
 interface LogoProps {
@@ -9,6 +10,7 @@ interface LogoProps {
   color?: string;
   showText?: boolean;
   useImage?: boolean;
+  priority?: boolean;
 }
 
 export default function Logo({ 
@@ -16,7 +18,8 @@ export default function Logo({
   size = 40, 
   color,
   showText = false,
-  useImage = true
+  useImage = true,
+  priority = false,
 }: LogoProps) {
   const [imageError, setImageError] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
@@ -30,17 +33,6 @@ export default function Logo({
     const handleThemeChange = () => {
       setTheme(getTheme());
     };
-    
-    // Проверяем изменения темы каждые 100ms (для синхронизации)
-    const interval = setInterval(() => {
-      const currentTheme = getTheme();
-      setTheme((prevTheme) => {
-        if (currentTheme !== prevTheme) {
-          return currentTheme;
-        }
-        return prevTheme;
-      });
-    }, 100);
     
     // Также слушаем изменения в localStorage
     window.addEventListener('storage', handleThemeChange);
@@ -56,7 +48,6 @@ export default function Logo({
     });
     
     return () => {
-      clearInterval(interval);
       window.removeEventListener('storage', handleThemeChange);
       observer.disconnect();
     };
@@ -101,13 +92,15 @@ export default function Logo({
       {useImage && !imageError ? (
         // Используем изображение логотипа, если оно есть
         <div className="flex-shrink-0 relative" style={{ width: size, height: size }}>
-          <img
+          <Image
             src={currentSrc}
             alt="ОСС ДВФУ"
             width={size}
             height={size}
             className="object-contain"
             onError={handleImageError}
+            priority={priority}
+            sizes={`${size}px`}
             style={{ display: 'block', width: size, height: size }}
           />
         </div>
