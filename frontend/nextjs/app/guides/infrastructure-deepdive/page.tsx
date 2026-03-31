@@ -42,7 +42,7 @@ export default function InfrastructureDeepdiveGuidePage() {
       </GuideSection>
 
       <GuideSection id="template" title="Шаблон формулировки">
-        <GuideCallout variant="tip">
+        <GuideCallout variant="tip" colorKey={meta.colorKey}>
           <strong>Тема:</strong> Проблема инфраструктуры в корпусе [X], помещение [Y].
           <br />
           <strong>Описание:</strong> [что произошло], обнаружено [дата/время], влияет на
