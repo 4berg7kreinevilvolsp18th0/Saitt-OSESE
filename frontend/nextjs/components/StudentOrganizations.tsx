@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { supabase, isSupabaseConfigured, safeSupabaseQuery } from '../lib/supabaseClient';
 
 interface StudentOrganization {
@@ -110,10 +111,13 @@ export default function StudentOrganizations() {
             {org.logo_url && (
               <div className="mb-5 flex justify-center">
                 <div className="p-3 rounded-lg bg-white/5 light:bg-gray-50 light:border light:border-gray-200">
-                  <img
+                  <Image
                     src={org.logo_url}
                     alt={org.title}
+                    width={80}
+                    height={80}
                     className="h-16 sm:h-20 w-auto object-contain"
+                    sizes="(max-width: 640px) 64px, 80px"
                   />
                 </div>
               </div>
