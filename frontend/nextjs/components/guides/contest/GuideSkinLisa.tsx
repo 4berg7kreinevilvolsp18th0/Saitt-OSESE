@@ -1,6 +1,41 @@
 import Link from 'next/link';
 import { ReactNode } from 'react';
 
+export function LisaSection({
+  id,
+  title,
+  children,
+}: {
+  id: string;
+  title: string;
+  children: ReactNode;
+}) {
+  return (
+    <section id={id} className="scroll-mt-28 mt-10 first:mt-0">
+      <h2 className="text-lg font-semibold text-[#37352f] dark:text-neutral-100">{title}</h2>
+      <div
+        className="mt-3 space-y-3 text-[15px] leading-relaxed text-[#37352f]/90 dark:text-neutral-300
+        [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2
+        [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:space-y-2
+        [&_strong]:font-semibold [&_strong]:text-[#37352f] dark:[&_strong]:text-neutral-100"
+      >
+        {children}
+      </div>
+    </section>
+  );
+}
+
+export function LisaCallout({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <div className="rounded-lg border border-[#e9e9e7] bg-[#f7f6f3] px-4 py-3 dark:border-white/10 dark:bg-white/5">
+      <p className="text-xs font-semibold uppercase tracking-wide text-[#9b9a97] dark:text-neutral-500">
+        {title}
+      </p>
+      <div className="mt-2 text-[15px] leading-relaxed text-[#37352f]/90 dark:text-neutral-300">{children}</div>
+    </div>
+  );
+}
+
 export type GuideSkinLisaTocItem = {
   id: string;
   title: string;
@@ -133,37 +168,7 @@ export default function GuideSkinLisa({
               </p>
             )}
 
-            <div
-              className="mt-8 space-y-1
-              [&_section]:scroll-mt-28
-              [&_section]:mt-8
-              [&_h2]:text-lg
-              [&_h2]:font-semibold
-              [&_h2]:text-[#37352f]
-              dark:[&_h2]:text-neutral-100
-              [&_p]:mt-3
-              [&_p]:text-[15px]
-              [&_p]:leading-relaxed
-              [&_p]:text-[#37352f]/90
-              dark:[&_p]:text-neutral-300
-              [&_ul]:mt-2
-              [&_ul]:list-disc
-              [&_ul]:pl-6
-              [&_ul]:space-y-2
-              [&_ul]:text-[15px]
-              [&_ul]:text-[#37352f]/90
-              dark:[&_ul]:text-neutral-300
-              [&_ol]:mt-2
-              [&_ol]:list-decimal
-              [&_ol]:pl-6
-              [&_ol]:space-y-2
-              [&_ol]:text-[15px]
-              [&_strong]:font-semibold
-              [&_strong]:text-[#37352f]
-              dark:[&_strong]:text-neutral-100"
-            >
-              {children}
-            </div>
+            <div className="mt-8">{children}</div>
 
             {showReferenceStrip && (
               <div className="mt-12 pt-8 border-t border-[#e9e9e7] dark:border-white/10">
