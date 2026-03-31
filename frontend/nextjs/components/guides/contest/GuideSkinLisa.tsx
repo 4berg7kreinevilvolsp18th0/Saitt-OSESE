@@ -181,7 +181,7 @@ export default function GuideSkinLisa({
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        src={`/guides/contest/lisa/${name.replace('part-', 'part-')}.png`}
+                        src={`/guides/contest/lisa/${name}.png`}
                         alt={`Макет ${name}`}
                         className="w-full h-24 object-cover object-top opacity-90 hover:opacity-100 transition-opacity"
                       />
