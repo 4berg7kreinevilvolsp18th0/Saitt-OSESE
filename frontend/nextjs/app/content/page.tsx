@@ -48,7 +48,7 @@ export default function ContentPage() {
         return;
       }
 
-      // Получаем названия направлений
+      // Получаем названия направлений для контента
       if (data && data.length > 0) {
         const directionIds = data
           .map((item) => item.direction_id)
@@ -101,11 +101,20 @@ export default function ContentPage() {
       </p>
 
       <section className="mt-6 sm:mt-8 rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 light:bg-white light:border-gray-200 light:shadow-sm">
-        <h2 className="text-lg sm:text-xl font-semibold light:text-gray-900">Демо-гайды</h2>
+        <h2 className="text-lg sm:text-xl font-semibold light:text-gray-900">Гайды ОСС</h2>
         <p className="mt-2 text-sm sm:text-base text-white/70 light:text-gray-600">
-          Черновые макеты, чтобы оценить подачу и структуру материалов до публикации в базе.
+          Подборка материалов: опубликованный гайд правового комитета и демонстрационные шаблоны.
         </p>
-        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <Link
+            href="/guides/conflict-commission"
+            className="rounded-xl border border-oss-red/30 bg-oss-red/10 p-4 hover:bg-oss-red/15 transition light:bg-red-50 light:border-red-200 light:hover:bg-red-100"
+          >
+            <p className="text-sm font-semibold light:text-gray-900">Конфликтная комиссия (правовой комитет)</p>
+            <p className="mt-1 text-xs sm:text-sm text-white/70 light:text-gray-600">
+              Что это такое, как проходит заседание и как подготовиться заранее.
+            </p>
+          </Link>
           <Link
             href="/guides/infrastructure"
             className="rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition light:bg-gray-50 light:border-gray-200 light:hover:bg-gray-100"
@@ -122,6 +131,15 @@ export default function ContentPage() {
             <p className="text-sm font-semibold light:text-gray-900">Инфраструктура: эскалация и сроки</p>
             <p className="mt-1 text-xs sm:text-sm text-white/60 light:text-gray-600">
               Расширенный сценарий: уровни эскалации, шаблоны и таблица действий.
+            </p>
+          </Link>
+          <Link
+            href="/guides/medical-service"
+            className="rounded-xl border border-cyan-300/30 bg-cyan-500/10 p-4 hover:bg-cyan-500/15 transition light:bg-cyan-50 light:border-cyan-200 light:hover:bg-cyan-100"
+          >
+            <p className="text-sm font-semibold light:text-gray-900">Медицинское обслуживание</p>
+            <p className="mt-1 text-xs sm:text-sm text-white/70 light:text-gray-600">
+              Прикрепление к поликлинике, ОМС и помощь в университетской поликлинике.
             </p>
           </Link>
         </div>
