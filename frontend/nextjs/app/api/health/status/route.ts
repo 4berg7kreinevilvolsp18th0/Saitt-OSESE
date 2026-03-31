@@ -44,7 +44,7 @@ export async function GET() {
       })),
       environment: process.env.NODE_ENV,
     }, {
-      status: systemHealth.healthy ? 200 : 503, // 503 Service Unavailable если система деградировала и не может функционировать
+      status: systemHealth.healthy ? 200 : 503, // 503 Service Unavailable если система деградировала и не может функционировать из-за недоступности критичных компонентов сервиса
       headers: {
         'Content-Type': 'application/json',
         'Cache-Control': 'no-store, max-age=0',
