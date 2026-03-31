@@ -167,6 +167,10 @@ export async function GET(request: NextRequest) {
       source: data.source,
       data: data.data,
       created_at: data.created_at,
+    }, {
+      headers: {
+        'Cache-Control': 'public, max-age=30, s-maxage=60, stale-while-revalidate=120',
+      },
     });
   } catch (error: any) {
     console.error('Get stats API error:', error);
