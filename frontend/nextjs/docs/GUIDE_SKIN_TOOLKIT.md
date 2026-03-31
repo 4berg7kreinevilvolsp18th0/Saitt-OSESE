@@ -7,6 +7,40 @@
 1. **Контент** — секции, списки, таблицы, ссылки — остаётся в JSX страницы или общих компонентах (`GuideSection`, `GuideCallout`, …).
 2. **Скин** — только layout, фон, типографика, навигация, анимации оболочки. Один скин = один React-компонент-обёртка вокруг `children`.
 3. Новый участник конкурса: добавить `GuideSkin{Name}.tsx` в `components/guides/contest/` и страницу под `app/guides/contest/{slug}/`.
+4. Черновые стилевые прототипы (не привязанные к конкретному участнику): скины в `components/guides/lab/` и страницы под `app/guides/lab/{concept}/…`.
+
+## Лаборатория vs конкурс
+
+| Раздел | URL | Назначение |
+|--------|-----|------------|
+| **Лаборатория** | `/guides/lab` | Черновики оболочек для команды и жюри: быстрые эксперименты со стилями. |
+| **Конкурс** | `/guides/contest` | Финальные демо четырёх дизайнеров; итоговые макеты для оценки. |
+
+**Правило «один контент — много скинов»:** канонический текст и структура секций вынесены в общий модуль без визуала. Страница подключает скин и передаёт в модуль пары `Section` / `Callout` этого скина.
+
+- Пример тела: `components/guides/content/DisputesCommissionGuideBody.tsx` — экспорт `DisputesCommissionGuideBody`, `DISPUTES_COMMISSION_TOC`, `DISPUTES_COMMISSION_COPY`.
+- Использование:
+
+```tsx
+import {
+  DISPUTES_COMMISSION_COPY,
+  DISPUTES_COMMISSION_TOC,
+  DisputesCommissionGuideBody,
+} from '@/components/guides/content/DisputesCommissionGuideBody';
+import GuideSkinLabWiki, { WikiCallout, WikiSection } from '@/components/guides/lab/GuideSkinLabWiki';
+
+<GuideSkinLabWiki ... tocItems={DISPUTES_COMMISSION_TOC}>
+  <DisputesCommissionGuideBody Section={WikiSection} Callout={WikiCallout} />
+</GuideSkinLabWiki>
+```
+
+(В проекте допустимы относительные импорты, как в существующих страницах.)
+
+**Папки**
+
+- `components/guides/content/` — переиспользуемые тексты/деревья секций для сравнения скинов.
+- `components/guides/lab/` — обёртки лаборатории (`GuideSkinLabWiki`, `GuideSkinLabMedium`, …).
+- `components/guides/contest/` — обёртки конкурса (`GuideSkinLisa`, …).
 
 ## Контракт обёртки (для анимаций)
 
@@ -64,12 +98,22 @@
 - Безопасные зоны: hover карточек, появление боковой панели, индикатор прогресса чтения по `scroll`, лёгкий `fade-in` первого экрана.
 - Избегайте постоянных крупных движений текста основного содержимого.
 
+## Маршруты лаборатории (текущие)
+
+| URL | Скин (`data-guide-skin`) |
+|-----|--------------------------|
+| `/guides/lab` | Индекс |
+| `/guides/lab/wiki/disputes-commission` | `lab-wiki` |
+| `/guides/lab/medium/disputes-commission` | `lab-medium` |
+| `/guides/lab/timeline/disputes-commission` | `lab-timeline` |
+| `/guides/lab/faq-first/disputes-commission` | `lab-faq` |
+
 ## Маршруты конкурса (текущие)
 
 | URL | Статус |
 |-----|--------|
 | `/guides/contest` | Индекс |
-| `/guides/contest/lisa/disputes-commission` | Готовый гайд + референс-PNG |
+| `/guides/contest/lisa/disputes-commission` | Готовый гайд + референс-PNG (тот же текст, что в лаборатории) |
 | `/guides/contest/danik` | Заглушка |
 | `/guides/contest/german` | Заглушка |
 | `/guides/contest/oledja` | Заглушка + этот документ |
