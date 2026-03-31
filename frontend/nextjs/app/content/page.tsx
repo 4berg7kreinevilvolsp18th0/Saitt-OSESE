@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { supabase } from '../../lib/supabaseClient';
 import ContentCard from '../../components/ContentCard';
-import Badge from '../../components/Badge';
 import { DIRECTIONS } from '../../lib/directions';
+import { getPublishedGuides } from '../../lib/guides';
 
 type ContentItem = {
   id: string;
@@ -19,12 +19,17 @@ type ContentItem = {
 };
 
 export default function ContentPage() {
+  const publishedGuides = getPublishedGuides();
   const [content, setContent] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filterType, setFilterType] = useState<'all' | 'news' | 'guide' | 'faq'>('all');
   const [filterDirection, setFilterDirection] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [guideOnly, setGuideOnly] = useState(false);
+  const [guideCommittee, setGuideCommittee] = useState('all');
+  const [guideLevel, setGuideLevel] = useState<'all' | 'basic' | 'deepdive'>('all');
+  const [guideFreshness, setGuideFreshness] = useState<'all' | '30' | '90'>('all');
 
   useEffect(() => {
     loadContent();
@@ -87,11 +92,30 @@ export default function ContentPage() {
   }
 
   const filteredContent = content.filter((item) => {
+    if (guideOnly && item.type !== 'guide') return false;
     if (filterType !== 'all' && item.type !== filterType) return false;
     if (filterDirection !== 'all' && item.direction_slug !== filterDirection) return false;
     if (searchQuery && !item.title.toLowerCase().includes(searchQuery.toLowerCase())) return false;
     return true;
   });
+
+  const guideCommittees = Array.from(new Set(publishedGuides.map((guide) => guide.committee)));
+  const now = new Date();
+
+  const filteredGuides = publishedGuides.filter((guide) => {
+    if (searchQuery && !guide.title.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+    if (guideCommittee !== 'all' && guide.committee !== guideCommittee) return false;
+    if (guideLevel !== 'all' && guide.level !== guideLevel) return false;
+    if (guideFreshness !== 'all') {
+      const days = Number(guideFreshness);
+      const updated = new Date(guide.updatedAt);
+      const diff = (now.getTime() - updated.getTime()) / (1000 * 60 * 60 * 24);
+      if (diff > days) return false;
+    }
+    return true;
+  });
+
+  const recommendedGuides = publishedGuides.slice(0, 3);
 
   return (
     <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
@@ -105,53 +129,97 @@ export default function ContentPage() {
         <p className="mt-2 text-sm sm:text-base text-white/70 light:text-gray-600">
           Подборка материалов: опубликованный гайд правового комитета и демонстрационные шаблоны.
         </p>
+        {/* GUIDE_PUBLISH_CHECKLIST.md: перед публикацией нового гайда сверяйтесь с чеклистом качества */}
         <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
-          <Link
-            href="/guides/conflict-commission"
-            className="rounded-xl border border-oss-red/30 bg-oss-red/10 p-4 hover:bg-oss-red/15 transition light:bg-red-50 light:border-red-200 light:hover:bg-red-100"
-          >
-            <p className="text-sm font-semibold light:text-gray-900">Конфликтная комиссия (правовой комитет)</p>
-            <p className="mt-1 text-xs sm:text-sm text-white/70 light:text-gray-600">
-              Что это такое, как проходит заседание и как подготовиться заранее.
-            </p>
-          </Link>
-          <Link
-            href="/guides/infrastructure"
-            className="rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition light:bg-gray-50 light:border-gray-200 light:hover:bg-gray-100"
-          >
-            <p className="text-sm font-semibold light:text-gray-900">Инфраструктура: базовый алгоритм</p>
-            <p className="mt-1 text-xs sm:text-sm text-white/60 light:text-gray-600">
-              Что подготовить, куда писать сначала и как контролировать статус.
-            </p>
-          </Link>
-          <Link
-            href="/guides/infrastructure-deepdive"
-            className="rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition light:bg-gray-50 light:border-gray-200 light:hover:bg-gray-100"
-          >
-            <p className="text-sm font-semibold light:text-gray-900">Инфраструктура: эскалация и сроки</p>
-            <p className="mt-1 text-xs sm:text-sm text-white/60 light:text-gray-600">
-              Расширенный сценарий: уровни эскалации, шаблоны и таблица действий.
-            </p>
-          </Link>
-          <Link
-            href="/guides/medical-service"
-            className="rounded-xl border border-cyan-300/30 bg-cyan-500/10 p-4 hover:bg-cyan-500/15 transition light:bg-cyan-50 light:border-cyan-200 light:hover:bg-cyan-100"
-          >
-            <p className="text-sm font-semibold light:text-gray-900">Медицинское обслуживание</p>
-            <p className="mt-1 text-xs sm:text-sm text-white/70 light:text-gray-600">
-              Прикрепление к поликлинике, ОМС и помощь в университетской поликлинике.
-            </p>
-          </Link>
-          <Link
-            href="/guides/showcase"
-            className="rounded-xl border border-fuchsia-300/30 bg-fuchsia-500/10 p-4 hover:bg-fuchsia-500/15 transition light:bg-fuchsia-50 light:border-fuchsia-200 light:hover:bg-fuchsia-100"
-          >
-            <p className="text-sm font-semibold light:text-gray-900">Showcase: мега-гайд</p>
-            <p className="mt-1 text-xs sm:text-sm text-white/70 light:text-gray-600">
-              Витрина всех элементов: инфографика, таблицы, выноски, FAQ, таймлайн.
-            </p>
-          </Link>
+          {publishedGuides.map((guide) => (
+            <Link
+              key={guide.slug}
+              href={`/guides/${guide.slug}`}
+              className="rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition light:bg-gray-50 light:border-gray-200 light:hover:bg-gray-100"
+            >
+              <p className="text-sm font-semibold light:text-gray-900">{guide.title}</p>
+              <p className="mt-1 text-xs sm:text-sm text-white/70 light:text-gray-600">{guide.description}</p>
+              <p className="mt-2 text-[11px] text-white/50 light:text-gray-500">
+                {guide.committee} · {guide.level === 'deepdive' ? 'Расширенный' : 'Базовый'} · {guide.updatedAt}
+              </p>
+            </Link>
+          ))}
         </div>
+      </section>
+
+      <section className="mt-6 sm:mt-8 rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 light:bg-white light:border-gray-200 light:shadow-sm">
+        <h2 className="text-lg sm:text-xl font-semibold light:text-gray-900">Фильтры по гайдам</h2>
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <label className="flex items-center gap-2 text-sm text-white/80 light:text-gray-700">
+            <input type="checkbox" checked={guideOnly} onChange={(e) => setGuideOnly(e.target.checked)} />
+            Только гайды в общей выдаче
+          </label>
+          <select
+            value={guideCommittee}
+            onChange={(e) => setGuideCommittee(e.target.value)}
+            className="rounded-xl bg-white/10 p-3 border border-white/20 text-sm text-white light:bg-white light:border-gray-300 light:text-gray-900"
+          >
+            <option value="all">Комитет: все</option>
+            {guideCommittees.map((committee) => (
+              <option key={committee} value={committee}>
+                {committee}
+              </option>
+            ))}
+          </select>
+          <select
+            value={guideLevel}
+            onChange={(e) => setGuideLevel(e.target.value as 'all' | 'basic' | 'deepdive')}
+            className="rounded-xl bg-white/10 p-3 border border-white/20 text-sm text-white light:bg-white light:border-gray-300 light:text-gray-900"
+          >
+            <option value="all">Уровень: все</option>
+            <option value="basic">Базовый</option>
+            <option value="deepdive">Расширенный</option>
+          </select>
+          <select
+            value={guideFreshness}
+            onChange={(e) => setGuideFreshness(e.target.value as 'all' | '30' | '90')}
+            className="rounded-xl bg-white/10 p-3 border border-white/20 text-sm text-white light:bg-white light:border-gray-300 light:text-gray-900"
+          >
+            <option value="all">Актуальность: все</option>
+            <option value="30">Обновлены за 30 дней</option>
+            <option value="90">Обновлены за 90 дней</option>
+          </select>
+        </div>
+
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {filteredGuides.map((guide) => (
+            <Link
+              key={guide.slug}
+              href={`/guides/${guide.slug}`}
+              className="rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition light:bg-gray-50 light:border-gray-200 light:hover:bg-gray-100"
+            >
+              <p className="text-sm font-semibold light:text-gray-900">{guide.title}</p>
+              <p className="mt-1 text-xs text-white/70 light:text-gray-600">{guide.description}</p>
+            </Link>
+          ))}
+        </div>
+
+        {filteredGuides.length === 0 && (
+          <div className="mt-4 rounded-xl border border-amber-300/40 bg-amber-500/10 p-4 light:bg-amber-50 light:border-amber-200">
+            <p className="text-sm text-white/80 light:text-gray-700">
+              Ничего не найдено по фильтрам. Попробуйте расширить критерии.
+            </p>
+            <p className="mt-3 text-xs uppercase tracking-wider text-white/60 light:text-gray-500">
+              Рекомендуемые гайды
+            </p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {recommendedGuides.map((guide) => (
+                <Link
+                  key={guide.slug}
+                  href={`/guides/${guide.slug}`}
+                  className="rounded-lg border border-white/20 px-3 py-1.5 text-xs text-white/80 hover:bg-white/10 light:text-gray-700 light:border-gray-300 light:hover:bg-gray-100"
+                >
+                  {guide.title}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </section>
 
       {/* Фильтры и поиск */}
