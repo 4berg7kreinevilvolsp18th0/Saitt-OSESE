@@ -1,13 +1,13 @@
 /**
  * Service Isolation Pattern
  * 
- * Изоляция сервисов: при атаке на один компонент остальные продолжают работать
+ * Изоляция сервисов: при атаке на один компонент сервиса остальные продолжают работать
  * 
  * Принципы:
- * 1. Каждый сервис работает независимо
- * 2. Ошибка в одном сервисе не должна влиять на другие
- * 3. Используются fallback механизмы
- * 4. Graceful degradation
+ * 1. Каждый сервис работает независимо и имеет свой fallback
+ * 2. Ошибка в одном компоненте сервиса не должна влиять на другие компоненты сервиса
+ * 3. Используются fallback механизмы для каждого компонента сервиса
+ * 4. Graceful degradation - система работает даже при недоступности некоторых компонентов сервиса
  */
 
 import { getAllComponentStates, getCircuitBreaker } from './circuitBreaker';
@@ -23,10 +23,10 @@ export interface ServiceStatus {
 class ServiceIsolationManager {
   private services: Map<string, ServiceStatus> = new Map();
   private checkInterval: NodeJS.Timeout | null = null;
-  private readonly CHECK_INTERVAL = 30000; // 30 секунд
+  private readonly CHECK_INTERVAL = 30000; // 30 секунд - интервал проверки доступности компонентов сервиса для graceful degradation
 
   constructor() {
-    // Инициализируем сервисы
+    // Инициализируем компоненты сервиса
     this.initializeServices();
   }
 
@@ -43,14 +43,14 @@ class ServiceIsolationManager {
   }
 
   /**
-   * Получить статус сервиса
+   * Получить статус компонента сервиса
    */
   getServiceStatus(serviceName: string): ServiceStatus | null {
     return this.services.get(serviceName) || null;
   }
 
   /**
-   * Обновить статус сервиса
+   * Обновить статус компонента сервиса
    */
   updateServiceStatus(
     serviceName: string,
@@ -60,7 +60,7 @@ class ServiceIsolationManager {
     const current = this.services.get(serviceName);
     if (current) {
       current.healthy = healthy;
-      current.available = healthy; // Можно сделать более сложную логику
+      current.available = healthy; // Можно сделать более сложную логику для определения доступности компонента сервиса
       current.lastCheck = Date.now();
       if (error) {
         current.error = error;
@@ -72,11 +72,11 @@ class ServiceIsolationManager {
   }
 
   /**
-   * Проверить, доступен ли сервис
+   * Проверить, доступен ли компонент сервиса
    */
   isServiceAvailable(serviceName: string): boolean {
     const status = this.services.get(serviceName);
-    if (!status) return true; // Если сервис не зарегистрирован, считаем доступным
+    if (!status) return true; // Если компонент сервиса не зарегистрирован, считаем доступным
 
     // Проверяем circuit breaker
     const breakerState = getAllComponentStates()[serviceName];
@@ -112,14 +112,14 @@ class ServiceIsolationManager {
   }
 
   /**
-   * Получить все статусы сервисов
+   * Получить все статусы компонентов сервиса
    */
   getAllStatuses(): ServiceStatus[] {
     return Array.from(this.services.values());
   }
 
   /**
-   * Сбросить статус сервиса (для тестов или ручного восстановления)
+   * Сбросить статус компонента сервиса (для тестов или ручного восстановления)
    */
   resetService(serviceName: string): void {
     getCircuitBreaker(serviceName).reset();
@@ -127,7 +127,7 @@ class ServiceIsolationManager {
   }
 
   /**
-   * Получить здоровье системы (все критичные сервисы работают)
+   * Получить здоровье системы (все критичные компоненты сервиса работают)
    */
   getSystemHealth(): {
     healthy: boolean;
@@ -151,11 +151,11 @@ class ServiceIsolationManager {
   }
 }
 
-// Глобальный менеджер изоляции
+// Глобальный менеджер изоляции компонентов сервиса
 export const serviceIsolation = new ServiceIsolationManager();
 
 /**
- * Обертка для изолированного выполнения функции
+ * Обертка для изолированного выполнения функции компонента сервиса
  */
 export async function withIsolation<T>(
   serviceName: string,
@@ -166,9 +166,9 @@ export async function withIsolation<T>(
 }
 
 /**
- * Проверить доступность сервиса перед выполнением
+ * Проверить доступность компонента сервиса перед выполнением
  */
-export function requireService(serviceName: string): boolean {
+export function requireComponentAvailability(serviceName: string): boolean {
   return serviceIsolation.isServiceAvailable(serviceName);
 }
 
