@@ -49,14 +49,14 @@ export default function ConflictCommissionGuidePage() {
           <li>предпринимательская деятельность и реклама на территории ДВФУ;</li>
           <li>небрежное отношение к имуществу ДВФУ.</li>
         </ul>
-        <GuideCallout variant="policy">
+        <GuideCallout variant="policy" colorKey={meta.colorKey}>
           Нормативная база: Правила внутреннего распорядка ДВФУ, правила размещения в кампусе и
           правила проживания в городских общежитиях.
         </GuideCallout>
       </GuideSection>
 
       <GuideSection id="report" title="Рапорт и беседа">
-        <GuideCallout variant="important">
+        <GuideCallout variant="important" colorKey={meta.colorKey}>
           При составлении рапорта студент должен ознакомиться с верхней частью документа. Если
           документ не дают прочитать, можно отказаться от объяснений и подписи.
         </GuideCallout>
@@ -90,7 +90,7 @@ export default function ConflictCommissionGuidePage() {
           Комиссия может рекомендовать предупреждение, дисциплинарное взыскание
           (замечание/выговор) или отчисление.
         </p>
-        <GuideCallout variant="risk">
+        <GuideCallout variant="risk" colorKey={meta.colorKey}>
           Решение об отчислении принимает школа. Решение комиссии можно обжаловать проректору по
           молодежной политике в течение 5 рабочих дней.
         </GuideCallout>
