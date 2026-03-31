@@ -41,7 +41,12 @@ export default function ContestGuidesIndexPage() {
       </p>
       <h1 className="mt-2 text-2xl sm:text-3xl font-bold light:text-gray-900">Конкурс дизайнов гайдов</h1>
       <p className="mt-3 text-sm sm:text-base text-white/70 light:text-gray-600">
-        Отдельные демо-маршруты для сравнения. Основные гайды портала остаются в разделе{' '}
+        Отдельные демо-маршруты для сравнения финальных работ участников. Черновые стилевые концепты на том же
+        каноническом тексте — в{' '}
+        <Link href="/guides/lab" className="text-oss-red hover:underline">
+          лаборатории концептов
+        </Link>
+        . Основные гайды портала — в разделе{' '}
         <Link href="/content" className="text-oss-red hover:underline">
           Контент
         </Link>
