@@ -2,14 +2,23 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { DIRECTIONS } from '../lib/directions';
 import DirectionCard from '../components/DirectionCard';
 import ContentCard from '../components/ContentCard';
 import Logo from '../components/Logo';
-import TelegramPosts from '../components/TelegramPosts';
-import StudentOrganizations from '../components/StudentOrganizations';
 import StudentOrganizationsCard from '../components/StudentOrganizationsCard';
 import { supabase, isSupabaseConfigured, safeSupabaseQuery } from '../lib/supabaseClient';
+
+const TelegramPosts = dynamic(() => import('../components/TelegramPosts'), {
+  ssr: false,
+  loading: () => <div className="text-white/50 text-sm">Загрузка Telegram...</div>,
+});
+
+const StudentOrganizations = dynamic(() => import('../components/StudentOrganizations'), {
+  ssr: false,
+  loading: () => null,
+});
 
 export default function Home() {
   const [latestNews, setLatestNews] = useState<any[]>([]);
@@ -125,7 +134,7 @@ export default function Home() {
               <Logo size={80} color="#FFFFFF" useImage={true} />
             </div>
             <div className="hidden sm:block">
-              <Logo size={120} color="#FFFFFF" useImage={true} />
+              <Logo size={120} color="#FFFFFF" useImage={true} priority={true} />
             </div>
           </div>
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 px-2 text-white 
