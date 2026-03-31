@@ -1,4 +1,12 @@
-import Link from 'next/link';
+import type { Metadata } from 'next';
+import GuideLayout from '../../../components/guides/GuideLayout';
+import GuideSection from '../../../components/guides/GuideSection';
+import GuideCallout from '../../../components/guides/GuideCallout';
+import GuideTable from '../../../components/guides/GuideTable';
+import GuideChecklist from '../../../components/guides/GuideChecklist';
+import GuideFAQ from '../../../components/guides/GuideFAQ';
+import GuideCTA from '../../../components/guides/GuideCTA';
+import { getGuideBySlug } from '../../../lib/guides';
 
 const kpiCards = [
   { label: 'Время первичного ответа', value: 'до 24ч', hint: 'В рабочие дни' },
@@ -28,28 +36,34 @@ const faq = [
   },
 ];
 
+const meta = getGuideBySlug('showcase')!;
+
+export const metadata: Metadata = {
+  title: `${meta.title} | ОСС ДВФУ`,
+  description: meta.description,
+  openGraph: {
+    title: meta.title,
+    description: meta.description,
+    type: 'article',
+  },
+};
+
 export default function ShowcaseGuidePage() {
   return (
-    <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-      <article className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/10 via-white/5 to-transparent p-6 sm:p-8 light:bg-white light:border-gray-200 light:shadow-sm">
-        <div className="flex flex-wrap gap-2 mb-4">
-          <span className="inline-flex items-center rounded-full border border-fuchsia-300/40 bg-fuchsia-500/15 px-3 py-1 text-xs font-semibold text-fuchsia-200 light:text-fuchsia-700 light:border-fuchsia-200 light:bg-fuchsia-50">
-            Тестовый гайд
-          </span>
-          <span className="inline-flex items-center rounded-full border border-cyan-300/40 bg-cyan-500/15 px-3 py-1 text-xs font-semibold text-cyan-200 light:text-cyan-700 light:border-cyan-200 light:bg-cyan-50">
-            Showcase
-          </span>
-        </div>
-
-        <h1 className="text-2xl sm:text-3xl font-bold light:text-gray-900">
-          Дизайн-витрина гайда: все элементы в одном шаблоне
-        </h1>
-        <p className="mt-3 text-white/75 light:text-gray-600">
-          Демонстрационный материал для проверки визуального языка портала: пометки, инфоблоки,
-          таблицы, выноски, таймлайн, чеклисты и FAQ.
-        </p>
-
-        <section className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3">
+    <GuideLayout
+      meta={meta}
+      badges={['Тестовый гайд', 'Showcase']}
+      summary="Демонстрационный материал для проверки визуального языка портала: пометки, инфоблоки, таблицы, выноски, таймлайн, чеклисты и FAQ."
+      tocItems={[
+        { id: 'kpi', title: 'Инфографика KPI' },
+        { id: 'timeline', title: 'Таймлайн' },
+        { id: 'table', title: 'Таблица решений' },
+        { id: 'checklist', title: 'Чеклисты и пометки' },
+        { id: 'faq', title: 'FAQ' },
+      ]}
+    >
+      <GuideSection id="kpi" title="Инфографика KPI">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {kpiCards.map((kpi) => (
             <div
               key={kpi.label}
@@ -60,121 +74,75 @@ export default function ShowcaseGuidePage() {
               <p className="mt-1 text-xs text-white/70 light:text-gray-600">{kpi.hint}</p>
             </div>
           ))}
-        </section>
-
-        <section className="mt-8 rounded-xl border border-amber-300/40 bg-amber-500/10 p-4 light:border-amber-200 light:bg-amber-50">
-          <p className="text-sm font-semibold text-amber-200 light:text-amber-800">Выноска (Важно)</p>
-          <p className="mt-1 text-sm text-white/80 light:text-amber-900">
+        </div>
+        <div className="mt-4">
+          <GuideCallout variant="important">
             Этот гайд — тестовый шаблон для визуальной оценки. Контент можно адаптировать под любой
             комитет без изменения структуры страницы.
-          </p>
-        </section>
-
-        <section className="mt-8">
-          <h2 className="text-xl font-semibold light:text-gray-900">Таймлайн работы с кейсом</h2>
-          <div className="mt-4 space-y-3">
-            {timeline.map((item) => (
-              <div
-                key={item.step}
-                className="rounded-xl border border-white/10 bg-white/5 p-4 light:bg-gray-50 light:border-gray-200"
-              >
-                <p className="text-xs uppercase tracking-wider text-cyan-200 light:text-cyan-700">{item.step}</p>
-                <p className="mt-1 font-semibold text-white light:text-gray-900">{item.title}</p>
-                <p className="mt-1 text-sm text-white/75 light:text-gray-700">{item.text}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="mt-8">
-          <h2 className="text-xl font-semibold light:text-gray-900">Таблица: симптом → действие → канал</h2>
-          <div className="mt-3 overflow-x-auto rounded-xl border border-white/10 light:border-gray-200">
-            <table className="w-full text-sm">
-              <thead className="bg-white/10 light:bg-gray-100">
-                <tr>
-                  <th className="px-3 py-2 text-left">Симптом</th>
-                  <th className="px-3 py-2 text-left">Действие</th>
-                  <th className="px-3 py-2 text-left">Канал</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-t border-white/10 light:border-gray-200">
-                  <td className="px-3 py-2">Срочная инфраструктурная поломка</td>
-                  <td className="px-3 py-2">Фиксация + немедленное уведомление</td>
-                  <td className="px-3 py-2">Контакты ОСС + Telegram</td>
-                </tr>
-                <tr className="border-t border-white/10 light:border-gray-200">
-                  <td className="px-3 py-2">Нет обратной связи</td>
-                  <td className="px-3 py-2">Эскалация с хронологией</td>
-                  <td className="px-3 py-2">Профильный комитет</td>
-                </tr>
-                <tr className="border-t border-white/10 light:border-gray-200">
-                  <td className="px-3 py-2">Нужны документы/шаблон</td>
-                  <td className="px-3 py-2">Взять шаблон обращения</td>
-                  <td className="px-3 py-2">Раздел «Контент»</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <section className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="rounded-xl border border-emerald-300/40 bg-emerald-500/10 p-4 light:border-emerald-200 light:bg-emerald-50">
-            <p className="font-semibold text-emerald-200 light:text-emerald-800">Чеклист перед отправкой</p>
-            <ul className="mt-2 list-disc pl-5 space-y-1 text-sm text-white/80 light:text-emerald-900">
-              <li>Описание проблемы в 2-3 предложениях</li>
-              <li>Фото/скрин/видео при наличии</li>
-              <li>Место, дата, время</li>
-              <li>Контакт для обратной связи</li>
-            </ul>
-          </div>
-          <div className="rounded-xl border border-sky-300/40 bg-sky-500/10 p-4 light:border-sky-200 light:bg-sky-50">
-            <p className="font-semibold text-sky-200 light:text-sky-800">Пометка по тону коммуникации</p>
-            <p className="mt-2 text-sm text-white/80 light:text-sky-900">
-              Пишите нейтрально и по фактам: меньше эмоций, больше конкретики и хронологии. Это
-              ускоряет обработку и повышает качество решения.
-            </p>
-          </div>
-        </section>
-
-        <section className="mt-8">
-          <h2 className="text-xl font-semibold light:text-gray-900">FAQ (раскрывающиеся блоки)</h2>
-          <div className="mt-3 space-y-2">
-            {faq.map((item) => (
-              <details
-                key={item.q}
-                className="group rounded-xl border border-white/10 bg-white/5 p-4 open:bg-white/10 light:bg-gray-50 light:border-gray-200 light:open:bg-gray-100"
-              >
-                <summary className="cursor-pointer list-none font-semibold text-white light:text-gray-900">
-                  {item.q}
-                </summary>
-                <p className="mt-2 text-sm text-white/75 light:text-gray-700">{item.a}</p>
-              </details>
-            ))}
-          </div>
-        </section>
-
-        <blockquote className="mt-8 rounded-xl border-l-4 border-oss-red bg-white/5 p-4 italic text-white/80 light:bg-gray-50 light:text-gray-700">
-          «Хороший гайд не только объясняет, что делать, но и снижает тревожность за счет
-          прозрачного маршрута действий».
-        </blockquote>
-
-        <div className="mt-10 flex flex-wrap gap-3">
-          <Link
-            href="/content"
-            className="rounded-xl bg-oss-red px-4 py-2.5 text-sm font-semibold text-white hover:bg-oss-red/90 transition"
-          >
-            Перейти в раздел контента
-          </Link>
-          <Link
-            href="/guides/infrastructure-deepdive"
-            className="rounded-xl border border-white/20 px-4 py-2.5 text-sm font-semibold text-white/80 hover:text-white hover:bg-white/10 transition light:text-gray-800 light:border-gray-300 light:hover:bg-gray-100"
-          >
-            Сравнить с инфра-гайдом
-          </Link>
+          </GuideCallout>
         </div>
-      </article>
-    </main>
+      </GuideSection>
+
+      <GuideSection id="timeline" title="Таймлайн работы с кейсом">
+        <div className="space-y-3">
+          {timeline.map((item) => (
+            <div
+              key={item.step}
+              className="rounded-xl border border-white/10 bg-white/5 p-4 light:bg-gray-50 light:border-gray-200"
+            >
+              <p className="text-xs uppercase tracking-wider text-cyan-200 light:text-cyan-700">{item.step}</p>
+              <p className="mt-1 font-semibold text-white light:text-gray-900">{item.title}</p>
+              <p className="mt-1 text-sm text-white/75 light:text-gray-700">{item.text}</p>
+            </div>
+          ))}
+        </div>
+      </GuideSection>
+
+      <GuideSection id="table" title="Таблица: симптом → действие → канал">
+        <GuideTable
+          headers={['Симптом', 'Действие', 'Канал']}
+          rows={[
+            ['Срочная инфраструктурная поломка', 'Фиксация + немедленное уведомление', 'Контакты ОСС + Telegram'],
+            ['Нет обратной связи', 'Эскалация с хронологией', 'Профильный комитет'],
+            ['Нужны документы/шаблон', 'Взять шаблон обращения', 'Раздел «Контент»'],
+          ]}
+        />
+      </GuideSection>
+
+      <GuideSection id="checklist" title="Чеклисты и пометки">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <GuideChecklist
+            title="Чеклист перед отправкой"
+            items={[
+              'Описание проблемы в 2-3 предложениях',
+              'Фото/скрин/видео при наличии',
+              'Место, дата, время',
+              'Контакт для обратной связи',
+            ]}
+          />
+          <GuideCallout variant="tip">
+            Пишите нейтрально и по фактам: меньше эмоций, больше конкретики и хронологии.
+          </GuideCallout>
+        </div>
+      </GuideSection>
+
+      <GuideSection id="faq" title="FAQ">
+        <GuideFAQ items={faq} slug={meta.slug} />
+      </GuideSection>
+
+      <blockquote className="mt-8 rounded-xl border-l-4 border-oss-red bg-white/5 p-4 italic text-white/80 light:bg-gray-50 light:text-gray-700">
+        «Хороший гайд не только объясняет, что делать, но и снижает тревожность за счет прозрачного
+        маршрута действий».
+      </blockquote>
+
+      <GuideCTA
+        slug={meta.slug}
+        links={[
+          { href: '/content', label: 'Перейти в раздел контента', primary: true },
+          { href: '/guides/infrastructure-deepdive', label: 'Сравнить с инфра-гайдом' },
+        ]}
+      />
+    </GuideLayout>
   );
 }
 
