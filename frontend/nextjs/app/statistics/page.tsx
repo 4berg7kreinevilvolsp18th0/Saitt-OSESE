@@ -73,7 +73,7 @@ export default function StatisticsPage() {
         dayData.closed_count += data.closed_today || 0;
       });
 
-      // Преобразуем в массив и сортируем
+      // Преобразуем в массив и сортируем 
       const dailyArray = Array.from(dailyMap.entries())
         .map(([day, counts]) => ({
           day,
