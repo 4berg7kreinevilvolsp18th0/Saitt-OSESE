@@ -37,7 +37,7 @@ export default function MedicalServiceGuidePage() {
           <li>платная помощь;</li>
           <li>бесплатная помощь по полису ОМС.</li>
         </ul>
-        <GuideCallout variant="important">
+        <GuideCallout variant="important" colorKey={meta.colorKey}>
           Если вы не из Владивостока, заранее позаботьтесь о смене полиса ОМС на владивостокский.
         </GuideCallout>
       </GuideSection>
@@ -51,7 +51,7 @@ export default function MedicalServiceGuidePage() {
           Заявление о прикреплении заполняется в регистратуре. Уведомление о принятии обычно
           приходит в течение месяца.
         </p>
-        <GuideCallout variant="deadline">
+        <GuideCallout variant="deadline" colorKey={meta.colorKey}>
           Менять лечебное учреждение можно 1 раз в год, исключение — переезд. Без прикрепления
           обычно доступны только экстренные сценарии.
         </GuideCallout>
