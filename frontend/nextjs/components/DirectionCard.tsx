@@ -1,9 +1,8 @@
 import Link from 'next/link';
 import { Direction } from '../lib/directions';
-import { accentClass, gradientBg, gradientBorder } from '../lib/theme';
+import { gradientBg, gradientBorder } from '../lib/theme';
 
 export default function DirectionCard({ d }: { d: Direction }) {
-  const accent = accentClass(d.colorKey);
   const gradient = gradientBg(d.colorKey);
   const borderGradient = gradientBorder(d.colorKey);
   const titleColorClass =
