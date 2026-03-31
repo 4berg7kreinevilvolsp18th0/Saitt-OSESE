@@ -6,6 +6,7 @@ import { supabase } from '../../lib/supabaseClient';
 import ContentCard from '../../components/ContentCard';
 import { DIRECTIONS } from '../../lib/directions';
 import { getPublishedGuides } from '../../lib/guides';
+import { committeeBadgeClasses } from '../../lib/theme';
 
 type ContentItem = {
   id: string;
@@ -139,9 +140,14 @@ export default function ContentPage() {
             >
               <p className="text-sm font-semibold light:text-gray-900">{guide.title}</p>
               <p className="mt-1 text-xs sm:text-sm text-white/70 light:text-gray-600">{guide.description}</p>
-              <p className="mt-2 text-[11px] text-white/50 light:text-gray-500">
-                {guide.committee} · {guide.level === 'deepdive' ? 'Расширенный' : 'Базовый'} · {guide.updatedAt}
-              </p>
+              <div className="mt-2 flex flex-wrap items-center gap-2">
+                <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] font-semibold ${committeeBadgeClasses(guide.colorKey)}`}>
+                  {guide.committee}
+                </span>
+                <p className="text-[11px] text-white/50 light:text-gray-500">
+                  {guide.level === 'deepdive' ? 'Расширенный' : 'Базовый'} · {guide.updatedAt}
+                </p>
+              </div>
             </Link>
           ))}
         </div>
@@ -195,6 +201,9 @@ export default function ContentPage() {
             >
               <p className="text-sm font-semibold light:text-gray-900">{guide.title}</p>
               <p className="mt-1 text-xs text-white/70 light:text-gray-600">{guide.description}</p>
+              <span className={`mt-2 inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] font-semibold ${committeeBadgeClasses(guide.colorKey)}`}>
+                {guide.committee}
+              </span>
             </Link>
           ))}
         </div>
