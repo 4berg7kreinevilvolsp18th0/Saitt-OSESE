@@ -49,15 +49,15 @@ export default function InfrastructureGuidePage() {
 
       <GuideSection id="steps" title="Пошаговый маршрут">
         <div className="space-y-3">
-          <GuideCallout variant="tip">
+          <GuideCallout variant="tip" colorKey={meta.colorKey}>
             <strong>Шаг 1. Локальная фиксация:</strong> сообщите проблему ответственному на месте и
             зафиксируйте, кому и когда передали информацию.
           </GuideCallout>
-          <GuideCallout variant="important">
+          <GuideCallout variant="important" colorKey={meta.colorKey}>
             <strong>Шаг 2. Передача в ОСС:</strong> отправьте структурированное описание в каналы ОСС
             и приложите материалы.
           </GuideCallout>
-          <GuideCallout variant="deadline">
+          <GuideCallout variant="deadline" colorKey={meta.colorKey}>
             <strong>Шаг 3. Контроль статуса:</strong> если срок превышен, запускайте эскалацию по
             расширенному гайду.
           </GuideCallout>
