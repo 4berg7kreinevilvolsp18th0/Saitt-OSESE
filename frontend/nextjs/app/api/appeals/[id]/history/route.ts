@@ -1,12 +1,16 @@
 import { NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic';
 
 export async function GET() {
   return NextResponse.json(
     { error: 'Appeals archive mode: history endpoint is disabled' },
-    { status: 410 }
+    {
+      status: 410,
+      headers: {
+        'Cache-Control': 'public, max-age=300, s-maxage=1800',
+      },
+    }
   );
 }
 
