@@ -106,8 +106,8 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-oss-dark light:bg-gray-50 text-white light:text-gray-900 animate-page-enter winter-main">
-      <section className="bg-oss-red py-12 sm:py-16 md:py-20 
+    <main className="min-h-screen bg-transparent text-white light:text-gray-900 animate-page-enter winter-main">
+      <section className="bg-gradient-to-br from-oss-red via-oss-burgundy to-oss-graphite py-12 sm:py-16 md:py-20 
         light:bg-gradient-to-b light:from-white light:via-gray-50/50 light:to-white
         light:relative light:overflow-hidden
         light:border-b light:border-gray-200/60
@@ -249,7 +249,7 @@ export default function Home() {
                   Публикуем актуальную информацию и инструкции по направлениям. Цель — чтобы часть вопросов решалась без обращения.
                 </p>
               </div>
-              <Link href="/content" className="text-sm sm:text-base text-white/70 hover:text-white transition whitespace-nowrap">
+              <Link href="/content" className="text-sm sm:text-base text-white/80 hover:text-white transition whitespace-nowrap light:text-oss-red light:hover:text-oss-red/80">
                 Все материалы →
               </Link>
             </div>
@@ -281,7 +281,7 @@ export default function Home() {
                 ))}
               </div>
             ) : (
-              <div className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/5 p-6 sm:p-8 md:p-10 text-center text-white/50 text-sm sm:text-base">
+              <div className="rounded-2xl sm:rounded-3xl border border-white/15 bg-white/5 p-6 sm:p-8 md:p-10 text-center text-white/70 text-sm sm:text-base light:text-gray-600">
                 Пока нет опубликованных новостей
               </div>
             )}
