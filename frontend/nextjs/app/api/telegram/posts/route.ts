@@ -37,6 +37,7 @@ export async function GET(request: Request) {
         headers: {
           'User-Agent': 'Mozilla/5.0',
         },
+        next: { revalidate: 120 },
       });
 
       if (rssResponse.ok) {
@@ -70,6 +71,10 @@ export async function GET(request: Request) {
       posts: mockPosts,
       channel: `@${channel}`,
       channelUrl: `https://t.me/${channel}`,
+    }, {
+      headers: {
+        'Cache-Control': 'public, max-age=60, s-maxage=120, stale-while-revalidate=300',
+      },
     });
   } catch (error: any) {
     console.error('Ошибка получения постов Telegram:', error);
