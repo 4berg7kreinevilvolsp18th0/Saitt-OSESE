@@ -5,7 +5,6 @@ import { useParams, notFound } from 'next/navigation';
 import Badge from '../../../components/Badge';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { supabase } from '../../../lib/supabaseClient';
 
 export default function ContentItem() {
   const params = useParams();
