@@ -8,7 +8,6 @@ import DirectionCard from '../components/DirectionCard';
 import ContentCard from '../components/ContentCard';
 import Logo from '../components/Logo';
 import StudentOrganizationsCard from '../components/StudentOrganizationsCard';
-import { supabase, isSupabaseConfigured, safeSupabaseQuery } from '../lib/supabaseClient';
 
 const TelegramPosts = dynamic(() => import('../components/TelegramPosts'), {
   ssr: false,
@@ -27,71 +26,19 @@ export default function Home() {
 
   useEffect(() => {
     async function loadLatestNews() {
-      // Проверяем подключение Supabase
-      if (!isSupabaseConfigured()) {
-        setSupabaseError('Supabase не настроен. Пожалуйста, настройте переменные окружения.');
-        setLoadingNews(false);
-        return;
-      }
-
       try {
-        // Безопасный запрос с обработкой ошибок
-        const { data, error: contentError } = await safeSupabaseQuery(
-          async () => {
-            const result = await supabase
-              .from('content')
-              .select('id, type, title, slug, published_at, direction_id')
-              .eq('status', 'published')
-              .eq('type', 'news')
-              .order('published_at', { ascending: false })
-              .limit(3);
-            return result;
-          },
-          'Ошибка загрузки новостей'
-        );
-
-        if (contentError) {
-          setSupabaseError(contentError);
+        const response = await fetch('/api/data/content?type=news&limit=3', { cache: 'no-store' });
+        const payload = await response.json();
+        if (!response.ok) {
+          setSupabaseError(payload?.error || 'Ошибка загрузки новостей');
           setLoadingNews(false);
           return;
         }
 
+        const data = (payload?.data || []) as any[];
         if (data && data.length > 0) {
-          // Получаем названия направлений
-          const directionIds = data.map((item) => item.direction_id).filter(Boolean);
-          if (directionIds.length > 0) {
-            const { data: directions, error: dirError } = await safeSupabaseQuery(
-              async () => {
-                const result = await supabase
-                  .from('directions')
-                  .select('id, title')
-                  .in('id', directionIds);
-                return result;
-              },
-              'Ошибка загрузки направлений'
-            );
-
-            if (dirError) {
-              console.warn('Не удалось загрузить направления:', dirError);
-              // Продолжаем без направлений
-              setLatestNews(data);
-            } else if (directions) {
-              const directionsMap = new Map((directions || []).map((d: any) => [d.id, d.title]));
-
-              const enriched = data.map((item: any) => ({
-                ...item,
-                direction_title: item.direction_id ? directionsMap.get(item.direction_id) : undefined,
-              }));
-
-              setLatestNews(enriched);
-            } else {
-              setLatestNews(data);
-            }
-          } else {
-            setLatestNews(data);
-          }
+          setLatestNews(data);
         } else {
-          // Нет новостей - это нормально, не ошибка
           setLatestNews([]);
         }
       } catch (err: any) {
