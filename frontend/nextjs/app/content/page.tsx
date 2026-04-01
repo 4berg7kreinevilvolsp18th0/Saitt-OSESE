@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { supabase } from '../../lib/supabaseClient';
 import ContentCard from '../../components/ContentCard';
 import { DIRECTIONS } from '../../lib/directions';
 import { getPublishedGuides } from '../../lib/guides';
@@ -40,48 +39,17 @@ export default function ContentPage() {
     try {
       setLoading(true);
       setError(null);
-
-      let query = supabase
-        .from('content')
-        .select('id, type, title, slug, direction_id, published_at')
-        .eq('status', 'published')
-        .order('published_at', { ascending: false });
-
-      const { data, error: fetchError } = await query;
-
-      if (fetchError) {
-        setError('Не удалось загрузить контент');
+      const response = await fetch('/api/data/content', { cache: 'no-store' });
+      const payload = await response.json();
+      if (!response.ok) {
+        setError(payload?.error || 'Не удалось загрузить контент');
         return;
       }
+      const data = payload?.data || [];
 
       // Получаем названия направлений для контента
       if (data && data.length > 0) {
-        const directionIds = data
-          .map((item) => item.direction_id)
-          .filter(Boolean) as string[];
-
-        if (directionIds.length > 0) {
-          const { data: directions } = await supabase
-            .from('directions')
-            .select('id, title, slug')
-            .in('id', directionIds);
-
-          const directionsMap = new Map(
-            (directions || []).map((d: any) => [d.id, { title: d.title, slug: d.slug }])
-          );
-
-          const enriched = data.map((item: any) => ({
-            ...item,
-            direction_title: item.direction_id
-              ? directionsMap.get(item.direction_id)?.title
-              : undefined,
-            direction_slug: item.direction_id ? directionsMap.get(item.direction_id)?.slug : undefined,
-          }));
-
-          setContent(enriched as ContentItem[]);
-        } else {
-          setContent(data as ContentItem[]);
-        }
+        setContent(data as ContentItem[]);
       } else {
         setContent([]);
       }
