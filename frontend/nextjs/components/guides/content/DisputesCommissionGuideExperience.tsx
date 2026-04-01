@@ -1,3 +1,22 @@
+'use client';
+
+import { useMemo } from 'react';
+import GuideSkinLisa, { LisaCallout, LisaSection } from '../contest/GuideSkinLisa';
+import GuideSkinLabWiki, { WikiCallout, WikiSection } from '../lab/GuideSkinLabWiki';
+import GuideSkinLabMedium, { MediumCallout, MediumSection } from '../lab/GuideSkinLabMedium';
+import GuideSkinLabTimeline, { TimelineCallout, TimelineSection } from '../lab/GuideSkinLabTimeline';
+import GuideSkinLabFaq, { FaqCallout, FaqSection } from '../lab/GuideSkinLabFaq';
+import {
+  DISPUTES_COMMISSION_COPY,
+  DISPUTES_COMMISSION_TOC,
+  DisputesCommissionGuideBody,
+} from './DisputesCommissionGuideBody';
+import { getStoredGuideSkin, resolveSkin, type GuideSkinId } from '../../../lib/guideSkins';
+
+type Props = {
+  mode: 'lab' | 'contest';
+};
+
 const allowedSkins: readonly GuideSkinId[] = ['lisa', 'wiki', 'medium', 'timeline', 'faq'];
 
 export default function DisputesCommissionGuideExperience({ mode }: Props) {
