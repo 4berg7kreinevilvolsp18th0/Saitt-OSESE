@@ -43,7 +43,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // Динамические страницы направлений
+  // Динамические страницы направлений для sitemap
   const directions = [
     { slug: 'legal' },
     { slug: 'infrastructure' },
