@@ -157,7 +157,7 @@ export default function StatisticsPage() {
 
       <section className="mt-6 sm:mt-8 rounded-2xl sm:rounded-3xl border border-white/10 bg-white/5 p-4 sm:p-6 light:bg-white light:border-gray-200 light:shadow-sm">
         <h2 className="text-lg sm:text-xl font-semibold light:text-gray-900">Динамика</h2>
-        <p className="mt-2 text-xs sm:text-sm text-white/70 light:text-gray-600">Количество обращений по дням (создано/закрыто) - всего обращений.</p>
+        <p className="mt-2 text-xs sm:text-sm text-white/70 light:text-gray-600">{'Количество обращений по дням (создано/закрыто) - всего обращений.'}</p>
         <div className="mt-4 sm:mt-6 h-64 sm:h-72">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={daily}>
