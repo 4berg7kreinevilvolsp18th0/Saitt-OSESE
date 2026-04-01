@@ -22,12 +22,8 @@ export default function ContentItem() {
       setLoading(true);
       setError(null);
 
-      const { data, error: fetchError } = await supabase
-        .from('content')
-        .select('id, type, title, slug, body, published_at, direction_id')
-        .eq('slug', slug)
-        .eq('status', 'published')
-        .single();
+      const response = await fetch(`/api/data/content/${encodeURIComponent(slug)}`, { cache: 'no-store' });
+      const payload = await response.json();
 
       if (fetchError || !data) {
         setError('Контент не найден');
