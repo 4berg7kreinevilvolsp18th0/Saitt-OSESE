@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '../../../lib/supabaseClient';
+import { dbQuery, useVercelPostgres } from '../../../lib/db';
 
 // API endpoint для загрузки файлов в Supabase Storage
 export const runtime = 'nodejs';
@@ -65,17 +66,42 @@ export async function POST(request: NextRequest) {
       .getPublicUrl(fileName);
 
     // Сохраняем информацию о файле в БД
-    const { data: attachmentData, error: dbError } = await supabase
-      .from('appeal_attachments')
-      .insert({
-        appeal_id: appealId,
-        file_name: file.name,
-        file_url: urlData.publicUrl,
-        file_size: file.size,
-        mime_type: file.type,
-      })
-      .select()
-      .single();
+    let attachmentData: any = null;
+    let dbError: any = null;
+    if (useVercelPostgres) {
+      try {
+        const res = await dbQuery<{
+          id: string;
+          appeal_id: string;
+          file_name: string;
+          file_url: string;
+          file_size: number;
+          mime_type: string;
+          uploaded_at: string;
+        }>`
+          insert into appeal_attachments (appeal_id, file_name, file_url, file_size, mime_type)
+          values (${appealId}::uuid, ${file.name}, ${urlData.publicUrl}, ${file.size}, ${file.type})
+          returning *
+        `;
+        attachmentData = res.rows[0];
+      } catch (error: any) {
+        dbError = error;
+      }
+    } else {
+      const inserted = await supabase
+        .from('appeal_attachments')
+        .insert({
+          appeal_id: appealId,
+          file_name: file.name,
+          file_url: urlData.publicUrl,
+          file_size: file.size,
+          mime_type: file.type,
+        })
+        .select()
+        .single();
+      attachmentData = inserted.data;
+      dbError = inserted.error;
+    }
 
     if (dbError) {
       console.error('Ошибка сохранения в БД:', dbError);
