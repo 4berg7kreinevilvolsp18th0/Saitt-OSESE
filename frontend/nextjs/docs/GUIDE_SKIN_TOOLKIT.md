@@ -42,6 +42,40 @@ import GuideSkinLabWiki, { WikiCallout, WikiSection } from '@/components/guides/
 - `components/guides/lab/` — обёртки лаборатории (`GuideSkinLabWiki`, `GuideSkinLabMedium`, …).
 - `components/guides/contest/` — обёртки конкурса (`GuideSkinLisa`, …).
 
+## Контракт `?skin=`
+
+- Глобальный переключатель дизайнов работает через query-параметр: `?skin=lisa|wiki|medium|timeline|faq`.
+- Источник истины:
+  1. `skin` в URL,
+  2. затем `localStorage` (`guideSkin`),
+  3. затем fallback (`lisa` или дефолт страницы).
+- Недопустимый skin автоматически заменяется fallback-значением.
+
+Базовые утилиты:
+
+- `lib/guideSkins.ts` — `resolveSkin`, `isSupportedSkin`, `getStoredGuideSkin`, `setStoredGuideSkin`.
+- `components/guides/GuideSkinSwitcher.tsx` — UI переключателя и синхронизация URL.
+
+## Токены читаемости
+
+Чтобы не ломать контраст между скинами, используйте централизованные токены:
+
+- `lib/guideSkinTokens.ts` (`pageBg`, `textPrimary`, `textSecondary`, `surface`, `border`, `calloutBg`, `calloutTitle`, ...).
+- Правило: основной body-текст и callout-текст в скинах брать из токенов, а не задавать произвольные цвета в каждом компоненте.
+
+Целевые пороги:
+
+- основной текст: контраст не ниже `4.5:1`;
+- крупные заголовки: не ниже `3:1`.
+
+## MDX пилот
+
+- Пилотный роут: `/guides/mdx/[slug]`.
+- Контент: `content/guides/*.mdx`.
+- Ридер и frontmatter: `lib/guidesMdx.ts`.
+- Рендерер: `components/guides/GuideRenderer.tsx`.
+- Для ускорения выдачи используется `generateStaticParams` и `revalidate`.
+
 ## Контракт обёртки (для анимаций)
 
 Рекомендуется на корневом элементе скина:
