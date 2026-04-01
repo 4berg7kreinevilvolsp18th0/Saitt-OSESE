@@ -4,9 +4,12 @@ import { ReactNode, useEffect, useMemo, useState } from 'react';
 import GuideToc from './GuideToc';
 import GuideBreadcrumbs from './GuideBreadcrumbs';
 import GuideShare from './GuideShare';
+import GuideSkinSwitcher from './GuideSkinSwitcher';
 import { GuideMeta } from '../../lib/guides';
 import { trackGuideEvent } from '../../lib/guideAnalytics';
 import { committeeBadgeClasses } from '../../lib/theme';
+import { DEFAULT_GUIDE_SKIN, getStoredGuideSkin, resolveSkin, type GuideSkinId } from '../../lib/guideSkins';
+import { getGuideSkinTokens } from '../../lib/guideSkinTokens';
 
 type TocItem = {
   id: string;
@@ -32,6 +35,20 @@ export default function GuideLayout({
   const publishedStatusVisible = process.env.NODE_ENV !== 'production';
   const depthMarks = useMemo(() => [25, 50, 75, 100], []);
   const committeeClasses = committeeBadgeClasses(meta.colorKey);
+  const [currentSkin, setCurrentSkin] = useState<GuideSkinId>(DEFAULT_GUIDE_SKIN);
+
+  useEffect(() => {
+    const querySkin =
+      typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('skin') : null;
+    const resolved = resolveSkin({
+      querySkin,
+      storedSkin: getStoredGuideSkin(),
+      fallback: DEFAULT_GUIDE_SKIN,
+    });
+    setCurrentSkin(resolved);
+  }, []);
+
+  const skinTokens = getGuideSkinTokens(currentSkin);
 
   useEffect(() => {
     const onScroll = () => {
@@ -52,10 +69,13 @@ export default function GuideLayout({
   }, [depthMarks, meta.slug, scrollMarks]);
 
   return (
-    <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <main className={`max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 ${skinTokens.pageText}`}>
       <GuideBreadcrumbs title={meta.title} />
+      <div className="mb-4">
+        <GuideSkinSwitcher currentSkin={currentSkin} />
+      </div>
       <div className="flex flex-col lg:flex-row gap-6">
-        <article className="flex-1 rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-8 light:bg-white light:border-gray-200 light:shadow-sm">
+        <article className={`flex-1 rounded-2xl border p-6 sm:p-8 light:shadow-sm ${skinTokens.surfaceBorder} ${skinTokens.surface}`}>
           <div className="mb-4 flex flex-wrap gap-2">
             {(badges || []).map((badge) => (
               <span
@@ -70,10 +90,10 @@ export default function GuideLayout({
             </span>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-bold light:text-gray-900">{meta.title}</h1>
-          <p className="mt-3 text-white/70 light:text-gray-600">{summary}</p>
+          <h1 className={`text-2xl sm:text-3xl font-bold ${skinTokens.heading}`}>{meta.title}</h1>
+          <p className={`mt-3 ${skinTokens.textSecondary}`}>{summary}</p>
 
-          <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-white/60 light:text-gray-500">
+          <div className={`mt-4 flex flex-wrap items-center gap-3 text-xs ${skinTokens.accent}`}>
             <span>Актуально на: {meta.updatedAt}</span>
             <span>Проверено комитетом: {meta.committee}</span>
             <span>Уровень: {meta.level === 'deepdive' ? 'Расширенный' : 'Базовый'}</span>
