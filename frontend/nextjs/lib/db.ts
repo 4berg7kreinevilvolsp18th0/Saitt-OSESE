@@ -2,7 +2,7 @@ import { sql } from '@vercel/postgres';
 
 export const useVercelPostgres = process.env.USE_VERCEL_POSTGRES === 'true';
 
-export async function dbQuery<T = unknown>(strings: TemplateStringsArray, ...values: unknown[]) {
+export async function dbQuery<T = unknown>(strings: TemplateStringsArray, ...values: any[]) {
   return sql<T>(strings, ...values);
 }
 
