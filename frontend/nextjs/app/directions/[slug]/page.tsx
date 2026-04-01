@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { DIRECTIONS } from '../../../lib/directions';
 import { accentBg, gradientBg, gradientBorder, getBlurColor1, getBlurColor2 } from '../../../lib/theme';
-import { supabase } from '../../../lib/supabaseClient';
 import ContentCard from '../../../components/ContentCard';
 
 function getCasesForDirection(slug: string) {
@@ -130,27 +129,19 @@ export default function DirectionPage({ params }: { params: { slug: string } }) 
     async function loadDirectionAndContent() {
       if (!direction) return;
 
-      // Получаем ID направления из БД
-      const { data: dirData } = await supabase
-        .from('directions')
-        .select('id')
-        .eq('slug', direction.slug)
-        .eq('is_active', true)
-        .single();
+      const directionResponse = await fetch(`/api/data/directions/${encodeURIComponent(direction.slug)}`, {
+        cache: 'no-store',
+      });
+      const directionPayload = await directionResponse.json();
+      const dirData = directionPayload?.data;
 
       if (dirData) {
         setDirectionId(dirData.id);
 
-        // Загружаем связанный контент
-        const { data: contentData } = await supabase
-          .from('content')
-          .select('id, type, title, slug, published_at, direction_id')
-          .eq('direction_id', dirData.id)
-          .eq('status', 'published')
-          .order('published_at', { ascending: false })
-          .limit(6);
-
-        setRelatedContent((contentData as any) || []);
+        const contentResponse = await fetch('/api/data/content?limit=50', { cache: 'no-store' });
+        const contentPayload = await contentResponse.json();
+        const contentData = (contentPayload?.data || []).filter((item: any) => item.direction_id === dirData.id);
+        setRelatedContent((contentData as any[]).slice(0, 6));
       }
       setLoadingContent(false);
     }
