@@ -24,6 +24,8 @@ export default function ContentItem() {
 
       const response = await fetch(`/api/data/content/${encodeURIComponent(slug)}`, { cache: 'no-store' });
       const payload = await response.json();
+      const data = payload?.data;
+      const fetchError = !response.ok;
 
       if (fetchError || !data) {
         setError('Контент не найден');
