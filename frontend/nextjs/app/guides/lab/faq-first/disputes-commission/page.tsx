@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
-import {
-  DISPUTES_COMMISSION_COPY,
-  DisputesCommissionGuideBody,
-} from '../../../../../components/guides/content/DisputesCommissionGuideBody';
-import GuideSkinLabFaq, { FaqCallout, FaqSection } from '../../../../../components/guides/lab/GuideSkinLabFaq';
+import dynamic from 'next/dynamic';
+
+const DisputesCommissionGuideExperience = dynamic(
+  () => import('../../../../../components/guides/content/DisputesCommissionGuideExperience'),
+  { ssr: true }
+);
 
 export const metadata: Metadata = {
   title: 'Лаборатория · FAQ-first · Комиссия по спорам | ОСС ДВФУ',
@@ -11,15 +12,5 @@ export const metadata: Metadata = {
 };
 
 export default function LabFaqFirstDisputesCommissionPage() {
-  return (
-    <GuideSkinLabFaq
-      conceptLabel="FAQ-first"
-      title={DISPUTES_COMMISSION_COPY.title}
-      subtitle={DISPUTES_COMMISSION_COPY.subtitle}
-      badge="Лаборатория · черновик"
-      metaLine={DISPUTES_COMMISSION_COPY.metaLine}
-    >
-      <DisputesCommissionGuideBody Section={FaqSection} Callout={FaqCallout} />
-    </GuideSkinLabFaq>
-  );
+  return <DisputesCommissionGuideExperience mode="lab" />;
 }
