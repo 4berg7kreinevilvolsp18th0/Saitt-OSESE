@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import { ReactNode } from 'react';
+import GuideSkinSwitcher from '../GuideSkinSwitcher';
+import { getGuideSkinTokens } from '../../../lib/guideSkinTokens';
 
 export function LisaSection({
   id,
@@ -10,14 +12,15 @@ export function LisaSection({
   title: string;
   children: ReactNode;
 }) {
+  const tokens = getGuideSkinTokens('lisa');
   return (
     <section id={id} className="scroll-mt-28 mt-10 first:mt-0">
-      <h2 className="text-lg font-semibold text-[#37352f] dark:text-neutral-100">{title}</h2>
+      <h2 className={`text-lg font-semibold ${tokens.heading}`}>{title}</h2>
       <div
-        className="mt-3 space-y-3 text-[15px] leading-relaxed text-[#37352f]/90 dark:text-neutral-300
+        className={`mt-3 space-y-3 text-[15px] leading-relaxed ${tokens.textPrimary}
         [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2
         [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:space-y-2
-        [&_strong]:font-semibold [&_strong]:text-[#37352f] dark:[&_strong]:text-neutral-100"
+        [&_strong]:font-semibold [&_strong]:text-[#37352f] dark:[&_strong]:text-neutral-100`}
       >
         {children}
       </div>
@@ -26,12 +29,13 @@ export function LisaSection({
 }
 
 export function LisaCallout({ title, children }: { title: string; children: ReactNode }) {
+  const tokens = getGuideSkinTokens('lisa');
   return (
-    <div className="rounded-lg border border-[#e9e9e7] bg-[#f7f6f3] px-4 py-3 dark:border-white/10 dark:bg-white/5">
-      <p className="text-xs font-semibold uppercase tracking-wide text-[#9b9a97] dark:text-neutral-500">
+    <div className={`rounded-lg border px-4 py-3 ${tokens.calloutBorder} ${tokens.calloutBg}`}>
+      <p className={`text-xs font-semibold uppercase tracking-wide ${tokens.calloutTitle}`}>
         {title}
       </p>
-      <div className="mt-2 text-[15px] leading-relaxed text-[#37352f]/90 dark:text-neutral-300">{children}</div>
+      <div className={`mt-2 text-[15px] leading-relaxed ${tokens.textPrimary}`}>{children}</div>
     </div>
   );
 }
@@ -119,51 +123,55 @@ export default function GuideSkinLisa({
   className = '',
   showReferenceStrip = false,
 }: GuideSkinLisaProps) {
+  const tokens = getGuideSkinTokens('lisa');
   return (
     <div
       data-guide-skin="lisa"
-      className={`min-h-screen bg-[#ebebea] text-[#37352f] dark:bg-[#191919] dark:text-[#ececec] ${className}`}
+      className={`min-h-screen ${tokens.pageBg} ${tokens.pageText} ${className}`}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+        <div className="mb-4">
+          <GuideSkinSwitcher currentSkin="lisa" />
+        </div>
         <nav
-          className="mb-6 text-[13px] text-[#787774] dark:text-neutral-500"
+          className={`mb-6 text-[13px] ${tokens.navText}`}
           aria-label="Навигация"
         >
-          <Link href="/" className="hover:text-[#37352f] dark:hover:text-neutral-200">
+          <Link href="/" className={tokens.navHover}>
             Главная
           </Link>
           <span className="mx-1.5">/</span>
-          <Link href="/guides/contest" className="hover:text-[#37352f] dark:hover:text-neutral-200">
+          <Link href="/guides/contest" className={tokens.navHover}>
             Конкурс гайдов
           </Link>
           <span className="mx-1.5">/</span>
-          <span className="text-[#37352f] dark:text-neutral-300">{title}</span>
+          <span className={tokens.heading}>{title}</span>
         </nav>
 
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 lg:items-start">
           <TocNav items={tocItems} />
 
-          <article className="flex-1 min-w-0 rounded-xl border border-[#e3e2e0] bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)] dark:border-white/10 dark:bg-[#252525] dark:shadow-none px-6 sm:px-10 py-8 sm:py-10">
+          <article className={`flex-1 min-w-0 rounded-xl border shadow-[0_1px_3px_rgba(0,0,0,0.06)] dark:shadow-none px-6 sm:px-10 py-8 sm:py-10 ${tokens.surfaceBorder} ${tokens.surface}`}>
             {eyebrow && (
-              <p className="text-xs font-medium uppercase tracking-wider text-[#9b9a97] dark:text-neutral-500">
+              <p className={`text-xs font-medium uppercase tracking-wider ${tokens.accent}`}>
                 {eyebrow}
               </p>
             )}
             {badge && (
-              <span className="mt-2 inline-flex rounded-md bg-[#f1f1ef] px-2 py-0.5 text-xs font-medium text-[#37352f] dark:bg-white/10 dark:text-neutral-200">
+              <span className={`mt-2 inline-flex rounded-md px-2 py-0.5 text-xs font-medium ${tokens.chip}`}>
                 {badge}
               </span>
             )}
-            <h1 className="mt-3 text-3xl sm:text-4xl font-bold tracking-tight text-[#37352f] dark:text-white">
+            <h1 className={`mt-3 text-3xl sm:text-4xl font-bold tracking-tight ${tokens.heading}`}>
               {title}
             </h1>
             {subtitle && (
-              <p className="mt-3 text-base sm:text-lg text-[#787774] dark:text-neutral-400 leading-relaxed">
+              <p className={`mt-3 text-base sm:text-lg leading-relaxed ${tokens.textSecondary}`}>
                 {subtitle}
               </p>
             )}
             {metaLine && (
-              <p className="mt-4 text-xs text-[#9b9a97] dark:text-neutral-500 border-b border-[#e9e9e7] dark:border-white/10 pb-4">
+              <p className={`mt-4 text-xs border-b pb-4 ${tokens.accent} ${tokens.calloutBorder}`}>
                 {metaLine}
               </p>
             )}
