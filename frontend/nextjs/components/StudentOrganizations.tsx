@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { supabase, isSupabaseConfigured, safeSupabaseQuery } from '../lib/supabaseClient';
 
 interface StudentOrganization {
   id: string;
@@ -23,31 +22,13 @@ export default function StudentOrganizations() {
 
   useEffect(() => {
     async function loadOrganizations() {
-      if (!isSupabaseConfigured()) {
-        setError('Supabase не настроен');
-        setLoading(false);
-        return;
-      }
-
       try {
-        const { data, error: queryError } = await safeSupabaseQuery(
-          async () => {
-            const result = await supabase
-              .from('student_organizations')
-              .select('*')
-              .eq('is_active', true)
-              .order('display_order', { ascending: true })
-              .order('title', { ascending: true })
-              .limit(6);
-            return result;
-          },
-          'Ошибка загрузки студенческих объединений'
-        );
-
-        if (queryError) {
-          setError(queryError);
-        } else if (data) {
-          setOrganizations(data);
+        const response = await fetch('/api/data/student-organizations', { cache: 'no-store' });
+        const payload = await response.json();
+        if (!response.ok) {
+          setError(payload?.error || 'Ошибка загрузки студенческих объединений');
+        } else {
+          setOrganizations(((payload?.data || []) as StudentOrganization[]).slice(0, 6));
         }
       } catch (err: any) {
         console.error('Ошибка загрузки объединений:', err);
