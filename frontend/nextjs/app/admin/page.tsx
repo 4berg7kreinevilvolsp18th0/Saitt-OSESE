@@ -15,7 +15,7 @@ export default function AdminHome() {
     async function checkAuth() {
       const { user: currentUser } = await getCurrentUser();
       if (!currentUser) {
-        router.push('/admin/login');
+        router.push('/manage/login');
         return;
       }
 
@@ -24,8 +24,7 @@ export default function AdminHome() {
       setRoles(userRoles);
 
       if (userRoles.length === 0) {
-        // User has no roles, redirect to login
-        router.push('/admin/login');
+        router.push('/manage/login');
         return;
       }
 
@@ -37,7 +36,7 @@ export default function AdminHome() {
 
   async function handleSignOut() {
     await signOut();
-    router.push('/admin/login');
+    router.push('/manage/login');
   }
 
   if (loading) {
@@ -61,7 +60,7 @@ export default function AdminHome() {
         <div>
           <h1 className="text-3xl font-semibold">Админ-панель</h1>
           <p className="mt-2 text-white/70">
-            Раздел доступен только пользователям с правами. Доступ определяется Supabase Auth + RLS.
+            Раздел доступен только пользователям с ролями ОСС. Вход и сессия работают через Auth.js, роли читаются из Postgres.
           </p>
         </div>
         <button
