@@ -7,6 +7,7 @@ import Badge from '../../../components/Badge';
 import { DIRECTIONS } from '../../../lib/directions';
 import SearchBar from '../../../components/SearchBar';
 import { useToast } from '../../../components/ToastProvider';
+import { getCurrentUser, getUserRoles } from '../../../lib/auth';
 
 type ContentItem = {
   id: string;
@@ -38,6 +39,11 @@ export default function AdminContentPage() {
     try {
       setLoading(true);
       setError(null);
+      const { user } = await getCurrentUser();
+      const roles = await getUserRoles();
+      // #region agent log
+      fetch('http://127.0.0.1:7816/ingest/14bbcc59-fd66-424d-bf13-862cc5c64d18',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'107e96'},body:JSON.stringify({sessionId:'107e96',runId:'run1',hypothesisId:'B',location:'app/manage/content/page.tsx:45',message:'manage content loading started',data:{hasUser:Boolean(user),userIdPrefix:user?.id?.slice?.(0,8) ?? null,roles:roles.map((role)=>role.role),rolesCount:roles.length},timestamp:Date.now()})}).catch(()=>{});
+      // #endregion
 
       let query = supabase
         .from('content')
@@ -45,6 +51,9 @@ export default function AdminContentPage() {
         .order('updated_at', { ascending: false });
 
       const { data, error: fetchError } = await query;
+      // #region agent log
+      fetch('http://127.0.0.1:7816/ingest/14bbcc59-fd66-424d-bf13-862cc5c64d18',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'107e96'},body:JSON.stringify({sessionId:'107e96',runId:'run1',hypothesisId:'C',location:'app/manage/content/page.tsx:52',message:'manage content supabase query finished',data:{ok:!fetchError,rowsCount:Array.isArray(data)?data.length:null,error:fetchError?.message ?? null},timestamp:Date.now()})}).catch(()=>{});
+      // #endregion
 
       if (fetchError) {
         setError('Не удалось загрузить контент');
