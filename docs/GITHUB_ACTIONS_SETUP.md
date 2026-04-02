@@ -143,7 +143,7 @@ jobs:
 
 ## Несколько дизайнов (несколько проектов Vercel)
 
-См. [VERCEL_MULTI_DESIGN.md](./VERCEL_MULTI_DESIGN.md): отдельный Root Directory на каждый вариант (`frontend/nextjs-design-light`, `frontend/nextjs-design-winter` и базовый `frontend/nextjs`).
+См. [VERCEL_MULTI_DESIGN.md](./VERCEL_MULTI_DESIGN.md): отдельный Root Directory на каждый вариант (базовый `frontend/nextjs`, `nextjs-design-light`, `nextjs-design-winter`, `nextjs-design-midnight-crimson`, `nextjs-design-paper-campus`, `nextjs-design-mono-structure`, `nextjs-design-direction-chapters` и др. из таблицы в документе).
 
 ## Рекомендации
 
