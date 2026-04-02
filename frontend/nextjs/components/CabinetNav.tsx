@@ -27,7 +27,7 @@ export default function CabinetNav({ cabinetType, userEmail, userRoles }: Cabine
 
   async function handleSignOut() {
     await signOut();
-    router.push('/cabinet/login');
+    router.push('/manage/login');
   }
 
   if (!cabinetType) return null;
