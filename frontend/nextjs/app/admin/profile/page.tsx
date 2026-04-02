@@ -38,7 +38,7 @@ export default function ProfilePage() {
   async function checkAuth() {
     const { user: currentUser } = await getCurrentUser();
     if (!currentUser) {
-      router.push('/admin/login');
+      router.push('/manage/login');
       return;
     }
 
@@ -47,7 +47,7 @@ export default function ProfilePage() {
     setRoles(userRoles);
 
     if (userRoles.length === 0) {
-      router.push('/admin/login');
+      router.push('/manage/login');
       return;
     }
 
@@ -98,13 +98,20 @@ export default function ProfilePage() {
 
     setChangingPassword(true);
     try {
-      // Обновить пароль через Supabase Auth
-      const { error } = await supabase.auth.updateUser({
-        password: passwordForm.newPassword,
+      const response = await fetch('/api/auth/password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          currentPassword: passwordForm.currentPassword,
+          newPassword: passwordForm.newPassword,
+        }),
       });
 
-      if (error) {
-        toast.error('Ошибка при изменении пароля: ' + error.message);
+      const payload = await response.json();
+      if (!response.ok) {
+        toast.error(payload.error || 'Ошибка при изменении пароля');
         return;
       }
 
@@ -123,7 +130,7 @@ export default function ProfilePage() {
 
   async function handleSignOut() {
     await signOut();
-    router.push('/admin/login');
+    router.push('/manage/login');
   }
 
   if (loading) {
