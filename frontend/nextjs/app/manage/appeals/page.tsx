@@ -61,16 +61,15 @@ export default function AdminAppealsKanban() {
 
     let usersMap = new Map<string, { id: string; email: string; name?: string }>();
     if (assignedUserIds.length > 0) {
-      // Получаем информацию о пользователях из auth.users (через функцию или напрямую)
-      // Для упрощения используем email из user_roles или создаем заглушку
-      const { data: userRoles } = await supabase
-        .from('user_roles')
-        .select('user_id')
-        .in('user_id', assignedUserIds);
-
-      // В реальности нужно получать email из auth.users, но для MVP используем заглушку
-      assignedUserIds.forEach((userId) => {
-        usersMap.set(userId, { id: userId, email: `user-${userId.substring(0, 8)}@example.com` });
+      const response = await fetch(`/api/auth/users?ids=${assignedUserIds.join(',')}`);
+      const payload = await response.json();
+      const users = (payload?.data || []) as Array<{ id: string; email: string; full_name?: string | null }>;
+      users.forEach((user) => {
+        usersMap.set(user.id, {
+          id: user.id,
+          email: user.email,
+          name: user.full_name ?? undefined,
+        });
       });
     }
 
@@ -83,17 +82,16 @@ export default function AdminAppealsKanban() {
     setAppeals(enrichedAppeals);
     setFilteredAppeals(enrichedAppeals);
     
-    // Загружаем список доступных пользователей для назначения
-    // В реальности это должны быть пользователи с ролями member/lead/board
-    const { data: availableUsers } = await supabase
-      .from('user_roles')
-      .select('user_id, role')
-      .limit(50);
-
-    // Для MVP создаем упрощенный список
-    const availableUsersList = (availableUsers || []).map((ur: any) => ({
-      id: ur.user_id,
-      email: `user-${ur.user_id.substring(0, 8)}@example.com`,
+    const availableUsersResponse = await fetch('/api/auth/users?limit=50');
+    const availableUsersPayload = await availableUsersResponse.json();
+    const availableUsersList = ((availableUsersPayload?.data || []) as Array<{
+      id: string;
+      email: string;
+      full_name?: string | null;
+    }>).map((user) => ({
+      id: user.id,
+      email: user.email,
+      name: user.full_name ?? undefined,
     }));
 
     setUsers(availableUsersList);
