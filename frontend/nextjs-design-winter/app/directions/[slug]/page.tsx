@@ -1,0 +1,280 @@
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { DIRECTIONS } from '../../../lib/directions';
+import { accentBg, gradientBg, gradientBorder, getBlurColor1, getBlurColor2 } from '../../../lib/theme';
+import ContentCard from '../../../components/ContentCard';
+
+function getCasesForDirection(slug: string) {
+  const cases: Record<string, Array<{ title: string; description: string; slug: string }>> = {
+    legal: [
+      {
+        title: 'Стипендия не пришла',
+        description: 'Проверка причин задержки или удержания стипендии',
+        slug: 'scholarship-delayed',
+      },
+      {
+        title: 'Пересдача или апелляция',
+        description: 'Помощь в подготовке документов и процедуре апелляции',
+        slug: 'appeal-exam',
+      },
+      {
+        title: 'Конфликт с преподавателем',
+        description: 'Консультация и помощь в разрешении конфликтной ситуации',
+        slug: 'teacher-conflict',
+      },
+    ],
+    infrastructure: [
+      {
+        title: 'Поломка в общежитии',
+        description: 'Ремонт, замена мебели, проблемы с коммуникациями',
+        slug: 'dorm-repair',
+      },
+      {
+        title: 'Проблема с аудиторией',
+        description: 'Не работает оборудование, неудобства в аудитории',
+        slug: 'classroom-issue',
+      },
+      {
+        title: 'Вопросы по кампусу',
+        description: 'Инфраструктура, доступность, сервисы кампуса',
+        slug: 'campus-service',
+      },
+    ],
+    scholarship: [
+      {
+        title: 'Не пришла стипендия',
+        description: 'Проверка статуса выплаты и причин задержки',
+        slug: 'payment-delayed',
+      },
+      {
+        title: 'Вопрос о размере стипендии',
+        description: 'Расчёт, условия получения, повышение',
+        slug: 'amount-question',
+      },
+      {
+        title: 'Документы для стипендии',
+        description: 'Какие документы нужны, куда подавать',
+        slug: 'documents-needed',
+      },
+    ],
+    international: [
+      {
+        title: 'Вопросы по документам',
+        description: 'Помощь с оформлением документов для иностранных студентов',
+        slug: 'documents-help',
+      },
+      {
+        title: 'Адаптация и коммуникация',
+        description: 'Помощь в адаптации, языковые вопросы',
+        slug: 'adaptation',
+      },
+      {
+        title: 'Миграционные вопросы',
+        description: 'Визы, регистрация, продление документов',
+        slug: 'migration',
+      },
+    ],
+  };
+
+  return cases[slug] || [];
+}
+
+function getChecklistForDirection(slug: string): string[] {
+  const checklists: Record<string, string[]> = {
+    legal: [
+      'ФИО, группа, институт',
+      'Описание ситуации с датами',
+      'Копии документов (если есть)',
+      'Скриншоты переписки (если применимо)',
+      'Номер приказа или распоряжения (если есть)',
+    ],
+    infrastructure: [
+      'Номер корпуса и комнаты/аудитории',
+      'Фото или описание проблемы',
+      'Дата обнаружения проблемы',
+      'Контакт для связи (если нужен доступ)',
+    ],
+    scholarship: [
+      'ФИО, группа, институт',
+      'Период, за который не пришла стипендия',
+      'Номер зачётной книжки',
+      'Скриншот личного кабинета (если доступен)',
+    ],
+    international: [
+      'ФИО, группа, страна',
+      'Тип документа (виза, регистрация и т.д.)',
+      'Срок действия документа',
+      'Копии документов',
+    ],
+  };
+
+  return (
+    checklists[slug] || [
+      'Описание проблемы',
+      'Контакт для связи',
+      'Дополнительные документы (если есть)',
+    ]
+  );
+}
+
+export default function DirectionPage({ params }: { params: { slug: string } }) {
+  const direction = DIRECTIONS.find((d) => d.slug === params.slug);
+  const [relatedContent, setRelatedContent] = useState<any[]>([]);
+  const [loadingContent, setLoadingContent] = useState(true);
+  const [directionId, setDirectionId] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function loadDirectionAndContent() {
+      if (!direction) return;
+
+      const directionResponse = await fetch(`/api/data/directions/${encodeURIComponent(direction.slug)}`, {
+        cache: 'no-store',
+      });
+      const directionPayload = await directionResponse.json();
+      const dirData = directionPayload?.data;
+
+      if (dirData) {
+        setDirectionId(dirData.id);
+
+        const contentResponse = await fetch('/api/data/content?limit=50', { cache: 'no-store' });
+        const contentPayload = await contentResponse.json();
+        const contentData = (contentPayload?.data || []).filter((item: any) => item.direction_id === dirData.id);
+        setRelatedContent((contentData as any[]).slice(0, 6));
+      }
+      setLoadingContent(false);
+    }
+
+    loadDirectionAndContent();
+  }, [direction]);
+
+  if (!direction) {
+    return (
+      <main className="max-w-6xl mx-auto px-6 py-12">
+        <h1 className="text-2xl font-semibold text-white light:text-gray-900">Направление не найдено</h1>
+        <p className="mt-3 text-white/70 light:text-gray-600">Проверьте ссылку или перейдите к списку направлений.</p>
+        <Link className="mt-6 inline-block underline text-white/80 light:text-oss-red hover:text-white light:hover:text-oss-red/80" href="/directions">К направлениям</Link>
+      </main>
+    );
+  }
+
+  const gradient = gradientBg(direction.colorKey);
+  const borderGradient = gradientBorder(direction.colorKey);
+  const blurColor1 = getBlurColor1(direction.colorKey);
+  const blurColor2 = getBlurColor2(direction.colorKey);
+
+  return (
+    <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 text-white light:text-gray-900">
+      <div className={`relative rounded-2xl sm:rounded-3xl border-2 ${borderGradient} ${gradient} bg-opacity-85 dark:bg-opacity-85 p-6 sm:p-8 md:p-10 overflow-hidden light:bg-opacity-80`}>
+        {/* Декоративные размытые элементы согласно дизайну */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* Group 1 - первый набор размытых элементов */}
+          {/* Ellipse 5 - большой размытый элемент слева внизу */}
+          <div className={`absolute ${blurColor1} rounded-full opacity-12 blur-[500px] w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] md:w-[800px] md:h-[800px] lg:w-[1088px] lg:h-[1088px] -left-[100px] sm:-left-[200px] md:-left-[250px] lg:-left-[316px] top-[50%] translate-y-[20%]`}></div>
+          {/* Ellipse 1 - большой размытый элемент справа вверху */}
+          <div className={`absolute ${blurColor1} rounded-full opacity-40 blur-[320px] w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] md:w-[800px] md:h-[800px] lg:w-[1088px] lg:h-[1088px] right-[0px] sm:right-[50px] md:right-[100px] lg:right-[200px] -top-[200px] sm:-top-[300px] md:-top-[400px] lg:-top-[511px]`}></div>
+          {/* Ellipse 3 - средний размытый элемент справа вверху */}
+          <div className={`absolute ${blurColor1} rounded-full opacity-32 blur-[120px] w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] md:w-[800px] md:h-[800px] lg:w-[1088px] lg:h-[1088px] right-[0px] sm:right-[50px] md:right-[100px] lg:right-[200px] -top-[200px] sm:-top-[300px] md:-top-[400px] lg:-top-[511px]`}></div>
+          {/* Ellipse 4 - маленький размытый элемент справа вверху */}
+          <div className={`absolute ${blurColor1} rounded-full opacity-50 blur-[90px] w-[250px] h-[250px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] lg:w-[660px] lg:h-[660px] right-[0px] sm:right-[50px] md:right-[75px] lg:right-[100px] -top-[100px] sm:-top-[150px] md:-top-[200px] lg:-top-[297px]`}></div>
+          
+          {/* Group 2 - второй набор размытых элементов */}
+          {/* Ellipse 6 - большой размытый элемент справа вверху */}
+          <div className={`absolute ${blurColor2} rounded-full opacity-12 blur-[500px] w-[450px] h-[450px] sm:w-[700px] sm:h-[700px] md:w-[950px] md:h-[950px] lg:w-[1258px] lg:h-[1258px] right-[0px] sm:right-[50px] md:right-[100px] lg:right-[200px] -top-[250px] sm:-top-[400px] md:-top-[500px] lg:-top-[638px]`}></div>
+          {/* Ellipse 1 - большой размытый элемент слева внизу */}
+          <div className={`absolute ${blurColor2} rounded-full opacity-40 blur-[320px] w-[450px] h-[450px] sm:w-[700px] sm:h-[700px] md:w-[950px] md:h-[950px] lg:w-[1258px] lg:h-[1258px] -left-[150px] sm:-left-[250px] md:-left-[300px] lg:-left-[393px] top-[50%] translate-y-[20%]`}></div>
+          {/* Ellipse 3 - средний размытый элемент слева внизу */}
+          <div className={`absolute ${blurColor2} rounded-full opacity-32 blur-[120px] w-[450px] h-[450px] sm:w-[700px] sm:h-[700px] md:w-[950px] md:h-[950px] lg:w-[1258px] lg:h-[1258px] -left-[150px] sm:-left-[250px] md:-left-[300px] lg:-left-[393px] top-[50%] translate-y-[20%]`}></div>
+          {/* Ellipse 4 - маленький размытый элемент слева внизу */}
+          <div className={`absolute ${blurColor2} rounded-full opacity-50 blur-[90px] w-[280px] h-[280px] sm:w-[450px] sm:h-[450px] md:w-[550px] md:h-[550px] lg:w-[763px] lg:h-[763px] -left-[70px] sm:-left-[100px] md:-left-[120px] lg:-left-[145px] bottom-[50px] sm:bottom-[75px] md:bottom-[100px]`}></div>
+        </div>
+        
+        <div className="relative z-10">
+        <div className="text-xs uppercase tracking-wide text-white/90 light:text-gray-600">
+          Направление
+        </div>
+        <h1 className="mt-2 text-2xl sm:text-3xl md:text-4xl font-bold text-white">{direction.title}</h1>
+        <p className="mt-4 text-base sm:text-lg text-white/90 max-w-3xl light:text-gray-700">{direction.description}</p>
+        <div className="mt-6 sm:mt-8 flex flex-wrap gap-3">
+          <Link href={`/contacts?direction=${direction.slug}`} className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white text-oss-dark font-semibold hover:bg-white/90 hover:scale-105 transition-all duration-200 text-sm sm:text-base shadow-lg">
+            Связаться с ОСС
+          </Link>
+          <Link href="/content" className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl border-2 border-white/60 light:border-gray-300 text-white light:text-gray-900 hover:bg-white/20 light:hover:bg-gray-100 hover:border-white/80 light:hover:border-gray-400 hover:scale-105 transition-all duration-200 text-sm sm:text-base backdrop-blur-sm">
+            Гайды и новости
+          </Link>
+          <Link href="/documents" className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl border-2 border-white/60 light:border-gray-300 text-white light:text-gray-900 hover:bg-white/20 light:hover:bg-gray-100 hover:border-white/80 light:hover:border-gray-400 hover:scale-105 transition-all duration-200 text-sm sm:text-base backdrop-blur-sm">
+            Документы
+          </Link>
+        </div>
+        </div>
+      </div>
+
+      <section className="mt-8 sm:mt-10">
+        <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 light:text-gray-900">Частые кейсы</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {getCasesForDirection(direction.slug).map((c, i) => (
+            <div
+              key={i}
+              className={`group rounded-xl sm:rounded-2xl border-2 ${borderGradient} ${gradient} bg-opacity-5 dark:bg-opacity-10 p-4 sm:p-6 hover:bg-opacity-15 dark:hover:bg-opacity-20 hover:scale-[1.02] hover:shadow-lg transition-all duration-300 cursor-pointer light:bg-opacity-10 light:hover:bg-opacity-20 light:shadow-md`}
+              onClick={() => {
+                // В будущем можно открыть модалку с алгоритмом или перейти на страницу
+              }}
+            >
+              <h3 className="text-base sm:text-lg font-semibold mb-2 light:text-gray-900">{c.title}</h3>
+              <p className="text-sm text-white/70 light:text-gray-600">{c.description}</p>
+              <div className="mt-4">
+                <Link
+                  href={`/contacts?direction=${direction.slug}&case=${c.slug}`}
+                  className="text-sm text-white/80 hover:text-white underline light:text-oss-red light:hover:text-oss-red/80"
+                >
+                  Узнать, куда обратиться по кейсу →
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-8 sm:mt-10">
+        <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 light:text-gray-900">Чек-лист: что подготовить</h2>
+        <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 light:bg-white light:border-gray-200 light:shadow-sm">
+          <ul className="space-y-2 sm:space-y-3">
+            {getChecklistForDirection(direction.slug).map((item, i) => (
+              <li key={i} className="flex items-start gap-3">
+                <span className="text-oss-red mt-1 flex-shrink-0">✓</span>
+                <span className="text-white/80 text-sm sm:text-base light:text-gray-700">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {relatedContent.length > 0 && (
+        <section className="mt-8 sm:mt-10">
+          <div className="flex items-end justify-between mb-4 sm:mb-6 flex-wrap gap-2">
+            <h2 className="text-xl sm:text-2xl font-semibold light:text-gray-900">Материалы по направлению</h2>
+            <Link
+              href={`/content?direction=${direction.slug}`}
+              className="text-xs sm:text-sm text-white/70 hover:text-white transition light:text-gray-600 light:hover:text-gray-900"
+            >
+              Все материалы →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {relatedContent.map((item) => (
+              <ContentCard
+                key={item.id}
+                title={item.title}
+                slug={item.slug}
+                type={item.type}
+                direction={direction.title}
+                publishedAt={item.published_at}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+    </main>
+  );
+}
