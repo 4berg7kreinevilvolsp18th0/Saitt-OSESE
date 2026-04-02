@@ -72,7 +72,7 @@ export async function getUserCabinetInfo(): Promise<UserCabinetInfo | null> {
  * Получить URL кабинета для редиректа
  */
 export function getCabinetUrl(cabinetType: CabinetType): string {
-  if (!cabinetType) return '/cabinet/login';
+  if (!cabinetType) return '/manage/login';
   
   return `/cabinet/${cabinetType}`;
 }
