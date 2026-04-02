@@ -44,14 +44,50 @@
 - выборочные проверки `slug`, `status`, `published_at`, `public_token`;
 - проверка ссылочной целостности (FK).
 
-## 4) Стратегия Auth (A-bridge)
+## 4) Auth.js / Postgres
 
-Текущий релиз использует bridge:
+Текущий auth-контур больше не опирается на Supabase Auth:
+
+- вход работает через `Auth.js` (`CredentialsProvider`);
+- сессия хранится как JWT;
+- пользователи хранятся в таблице `users`;
+- роли читаются напрямую из Postgres по `session.user.id`.
+
+Выполнить дополнительно SQL:
+
+- `database/migrations/002_auth_users.sql`
+
+Обязательные переменные окружения для auth:
+
+- `AUTH_SECRET` или `NEXTAUTH_SECRET`
+
+### Bootstrap внутренних аккаунтов
+
+Для первого релиза внутренние аккаунты создаются bootstrap-скриптом, а не через публичную регистрацию:
+
+```bash
+BOOTSTRAP_USER_EMAIL=admin@example.com
+BOOTSTRAP_USER_PASSWORD='strong password'
+BOOTSTRAP_USER_FULL_NAME='OSS Admin'
+BOOTSTRAP_USER_ROLE=board
+npx tsx scripts/create-admin.ts
+```
+
+### Временное состояние 2FA
+
+- `2FA` намеренно отключен в UI и API;
+- возврат 2FA запланирован отдельным релизом уже поверх `Auth.js + Postgres`.
+
+## 5) Историческая bridge-стадия
+
+Промежуточный релиз использовал bridge:
 
 - аутентификация остаётся в Supabase Auth;
 - роли читаются через `/api/auth/roles`, который умеет работать и с Supabase, и с Vercel Postgres.
 
-## 5) Rollback
+Эта стадия больше не является целевой архитектурой.
+
+## 6) Rollback
 
 Если обнаружена критическая проблема:
 
