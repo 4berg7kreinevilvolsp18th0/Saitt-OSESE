@@ -14,7 +14,21 @@ import {
 } from 'recharts';
 
 type DailyRow = { day: string; created_count: number; closed_count: number };
-type DirRow = { direction_id: string; total_count: number; direction_title?: string; direction_slug?: string };
+type DirRow = {
+  direction_id: string | null;
+  total_count: number;
+  direction_title?: string;
+  direction_slug?: string | null;
+};
+type StatData = {
+  created_today?: number;
+  closed_today?: number;
+  by_direction?: Record<string, number>;
+};
+type StatRow = {
+  period: string;
+  data: StatData | null;
+};
 
 export default function StatisticsPage() {
   const [daily, setDaily] = useState<DailyRow[]>([]);
@@ -60,11 +74,12 @@ export default function StatisticsPage() {
       }
 
       // Обрабатываем данные для графиков
+      const typedStats = (stats ?? []) as StatRow[];
       const dailyMap = new Map<string, { created_count: number; closed_count: number }>();
-      
-      stats.forEach((stat: any) => {
+
+      typedStats.forEach((stat) => {
         const day = stat.period;
-        const data = stat.data;
+        const data = stat.data ?? {};
         if (!dailyMap.has(day)) {
           dailyMap.set(day, { created_count: 0, closed_count: 0 });
         }
@@ -86,33 +101,39 @@ export default function StatisticsPage() {
       setDaily(dailyArray);
 
       // Статистика по направлениям (из последней записи в таблице statistics)
-      const latestStat = stats[stats.length - 1];
-      const byDirection = latestStat.data.by_direction || {};
-      
-      const directionArray = Object.entries(byDirection).map(([direction_id, total_count]) => ({
+      const latestStat = typedStats[typedStats.length - 1];
+      const byDirection =
+        latestStat?.data && typeof latestStat.data.by_direction === 'object'
+          ? latestStat.data.by_direction
+          : {};
+
+      const directionArray: DirRow[] = Object.entries(byDirection).map(([direction_id, total_count]) => ({
         direction_id: direction_id === 'other' ? null : direction_id,
-        total_count: total_count as number,
+        total_count: Number(total_count) || 0,
       }));
 
       // Получаем названия направлений
       if (directionArray.length > 0) {
-        const directionIds = directionArray.map((d: any) => d.direction_id).filter(Boolean);
+        const directionIds = directionArray
+          .map((d) => d.direction_id)
+          .filter((id): id is string => Boolean(id));
         if (directionIds.length > 0) {
           const { data: directions } = await supabase
             .from('directions')
-              .select('id, title, slug')
-              .in('id', directionIds);
+            .select('id, title, slug')
+            .in('id', directionIds);
 
           const directionsMap = new Map(
-            (directions || []).map((d: any) => [d.id, { title: d.title, slug: d.slug }])
+            (directions || []).map((d: { id: string; title: string; slug: string | null }) => [
+              d.id,
+              { title: d.title, slug: d.slug },
+            ])
           );
 
-          const enriched = directionArray.map((item: any) => ({
-              ...item,
-              direction_title: item.direction_id
-                ? (directionsMap.get(item.direction_id) as { title: string })?.title || 'Не указано'
-                : 'Не указано',
-              direction_slug: item.direction_id ? directionsMap.get(item.direction_id)?.slug : null,
+          const enriched: DirRow[] = directionArray.map((item) => ({
+            ...item,
+            direction_title: item.direction_id ? directionsMap.get(item.direction_id)?.title || 'Не указано' : 'Не указано',
+            direction_slug: item.direction_id ? directionsMap.get(item.direction_id)?.slug || null : null,
           }));
 
           // Сортируем по количеству обращений в каждом направлении
@@ -121,9 +142,9 @@ export default function StatisticsPage() {
         } else {
           setByDir(directionArray);
         }
-        } else {
-          setByDir([]);
-        }
+      } else {
+        setByDir([]);
+      }
       } catch (err) {
         setError('Произошла ошибка при загрузке данных статистики по направлениям');
       } finally {
