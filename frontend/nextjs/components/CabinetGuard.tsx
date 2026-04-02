@@ -20,7 +20,7 @@ export default function CabinetGuard({ children, requiredRole }: CabinetGuardPro
       const info = await getUserCabinetInfo();
       
       if (!info) {
-        router.push('/cabinet/login');
+        router.push('/manage/login');
         return;
       }
 
