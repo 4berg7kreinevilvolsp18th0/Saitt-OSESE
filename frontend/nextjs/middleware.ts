@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { getToken } from 'next-auth/jwt';
 import { checkRateLimitRedis, isIPBlocked } from './lib/redis';
 
 // IP-адреса для блокировки (можно добавить через API)
@@ -63,6 +64,23 @@ export async function middleware(request: NextRequest) {
   if (path.startsWith('/admin') && path !== '/admin/login') {
     const newPath = path.replace('/admin', '/manage');
     return NextResponse.redirect(new URL(newPath, request.url));
+  }
+
+  const isProtectedManagePath = path.startsWith('/manage') && path !== '/manage/login';
+  if (isProtectedManagePath) {
+    const token = await getToken({
+      req: request,
+      secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
+    });
+    // #region agent log
+    fetch('http://127.0.0.1:7816/ingest/14bbcc59-fd66-424d-bf13-862cc5c64d18',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'107e96'},body:JSON.stringify({sessionId:'107e96',runId:'run2',hypothesisId:'E',location:'middleware.ts:75',message:'middleware evaluated protected manage path',data:{path,hasToken:Boolean(token?.sub),tokenSubPrefix:typeof token?.sub === 'string' ? token.sub.slice(0,8) : null},timestamp:Date.now()})}).catch(()=>{});
+    // #endregion
+
+    if (!token?.sub) {
+      const loginUrl = new URL('/manage/login', request.url);
+      loginUrl.searchParams.set('next', `${path}${request.nextUrl.search}`);
+      return NextResponse.redirect(loginUrl);
+    }
   }
 
   // Быстрый путь для информационных страниц: без обращений к Redis.
