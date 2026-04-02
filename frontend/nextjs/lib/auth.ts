@@ -1,4 +1,4 @@
-import { supabase } from './supabaseClient';
+import { authClientGetSessionUser, authClientSignIn, authClientSignOut } from './auth-client';
 
 export type UserRole = 'member' | 'lead' | 'board' | 'staff';
 
@@ -11,11 +11,12 @@ export type UserRoleWithDirection = {
  * Получить текущего авторизованного пользователя
  */
 export async function getCurrentUser() {
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser();
-  return { user, error };
+  try {
+    const user = await authClientGetSessionUser();
+    return { user, error: null };
+  } catch (error) {
+    return { user: null, error };
+  }
 }
 
 /**
@@ -25,28 +26,21 @@ export async function getUserRoles(): Promise<UserRoleWithDirection[]> {
   const { user } = await getCurrentUser();
   if (!user) return [];
 
-  if (process.env.NEXT_PUBLIC_USE_VERCEL_POSTGRES === 'true') {
-    try {
-      const response = await fetch(`/api/auth/roles?userId=${encodeURIComponent(user.id)}`);
-      const payload = await response.json();
-      const rows = (payload?.data || []) as Array<{ role: string; direction_id: string | null }>;
-      return rows.map((r) => ({ role: r.role as UserRole, directionId: r.direction_id }));
-    } catch {
+  try {
+    const response = await fetch('/api/auth/roles', {
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
       return [];
     }
+
+    const payload = await response.json();
+    const rows = (payload?.data || []) as Array<{ role: string; direction_id: string | null }>;
+    return rows.map((r) => ({ role: r.role as UserRole, directionId: r.direction_id }));
+  } catch {
+    return [];
   }
-
-  const { data, error } = await supabase
-    .from('user_roles')
-    .select('role, direction_id')
-    .eq('user_id', user.id);
-
-  if (error || !data) return [];
-
-  return data.map((r) => ({
-    role: r.role as UserRole,
-    directionId: r.direction_id,
-  }));
 }
 
 /**
@@ -82,21 +76,16 @@ export async function isMember(): Promise<boolean> {
 }
 
 /**
- * Войти через Supabase Auth
+ * Войти через Auth.js Credentials
  */
 export async function signIn(email: string, password: string) {
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
-  return { data, error };
+  return authClientSignIn(email, password);
 }
 
 /**
  * Выйти
  */
 export async function signOut() {
-  const { error } = await supabase.auth.signOut();
-  return { error };
+  return authClientSignOut();
 }
 
