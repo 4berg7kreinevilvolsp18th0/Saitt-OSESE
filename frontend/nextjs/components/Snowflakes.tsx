@@ -53,8 +53,6 @@ export default function Snowflakes() {
       }
     };
 
-    const recalc = handleStorageChange;
-
     window.addEventListener('storage', handleStorageChange);
     // Также слушаем кастомное событие для обновления в той же вкладке
     window.addEventListener('winter-theme-change', handleStorageChange);

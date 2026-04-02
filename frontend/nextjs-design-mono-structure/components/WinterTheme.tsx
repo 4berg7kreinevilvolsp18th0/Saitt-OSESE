@@ -1,19 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { isWinterCalendarMonth, shouldActivateWinterTheme } from '../lib/winterSeason';
 
 export default function WinterTheme() {
   const [isActive, setIsActive] = useState(false);
+  const [inWinterSeason, setInWinterSeason] = useState(false);
 
   useEffect(() => {
-    // Проверяем, зима ли сейчас
-    const month = new Date().getMonth();
-    const isWinterMonth = month === 11 || month === 0 || month === 1;
-    
-    // Проверяем localStorage
-    const winterTheme = typeof window !== 'undefined' ? localStorage.getItem('winter-theme') : null;
-    const shouldActivate = winterTheme === 'true' || (winterTheme === null && isWinterMonth);
-    
+    const winter = isWinterCalendarMonth();
+    setInWinterSeason(winter);
+
+    const shouldActivate = shouldActivateWinterTheme();
     setIsActive(shouldActivate);
 
     if (typeof window !== 'undefined') {
@@ -32,9 +30,11 @@ export default function WinterTheme() {
   }, []);
 
   const toggleWinterTheme = () => {
+    if (!isWinterCalendarMonth()) return;
+
     const newState = !isActive;
     setIsActive(newState);
-    localStorage.setItem('winter-theme', String(newState));
+    localStorage.setItem('winter-theme', newState ? 'true' : 'false');
     
     if (newState) {
       document.documentElement.classList.add('winter-theme');
@@ -45,6 +45,10 @@ export default function WinterTheme() {
     // Отправляем событие для обновления снежинок в той же вкладке
     window.dispatchEvent(new Event('winter-theme-change'));
   };
+
+  if (!inWinterSeason) {
+    return null;
+  }
 
   return (
     <button

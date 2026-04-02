@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { shouldActivateWinterTheme } from '../lib/winterSeason';
 
 interface Snowflake {
   id: number;
@@ -16,13 +17,7 @@ export default function Snowflakes() {
   const [isWinter, setIsWinter] = useState(false);
 
   useEffect(() => {
-    // Проверяем, зима ли сейчас (декабрь, январь, февраль)
-    const month = new Date().getMonth();
-    const isWinterMonth = month === 11 || month === 0 || month === 1; // Декабрь, Январь, Февраль
-    
-    // Или можно проверить localStorage для принудительного включения
-    const winterTheme = typeof window !== 'undefined' && localStorage.getItem('winter-theme') === 'true';
-    const shouldShow = isWinterMonth || winterTheme;
+    const shouldShow = shouldActivateWinterTheme();
     setIsWinter(shouldShow);
 
     if (shouldShow) {
@@ -40,10 +35,10 @@ export default function Snowflakes() {
 
     // Слушаем изменения зимней темы
     const handleStorageChange = () => {
-      const winterTheme = localStorage.getItem('winter-theme') === 'true';
-      setIsWinter(isWinterMonth || winterTheme);
-      
-      if (isWinterMonth || winterTheme) {
+      const show = shouldActivateWinterTheme();
+      setIsWinter(show);
+
+      if (show) {
         const flakes: Snowflake[] = Array.from({ length: 50 }, (_, i) => ({
           id: i,
           left: Math.random() * 100,
