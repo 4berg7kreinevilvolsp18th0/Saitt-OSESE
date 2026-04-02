@@ -38,7 +38,7 @@ export default function ProfilePage() {
   async function checkAuth() {
     const { user: currentUser } = await getCurrentUser();
     if (!currentUser) {
-      router.push('/admin/login');
+      router.push('/manage/login');
       return;
     }
 
@@ -47,9 +47,13 @@ export default function ProfilePage() {
     setRoles(userRoles);
 
     if (userRoles.length === 0) {
-      router.push('/admin/login');
+      router.push('/manage/login');
       return;
     }
+
+    // #region agent log
+    fetch('http://127.0.0.1:7816/ingest/14bbcc59-fd66-424d-bf13-862cc5c64d18',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'107e96'},body:JSON.stringify({sessionId:'107e96',runId:'run1',hypothesisId:'D',location:'app/manage/profile/page.tsx:56',message:'manage profile auth resolved',data:{userIdPrefix:currentUser.id?.slice?.(0,8) ?? null,roles:userRoles.map((role)=>role.role),rolesCount:userRoles.length},timestamp:Date.now()})}).catch(()=>{});
+    // #endregion
 
     await loadStats(currentUser.id);
     setLoading(false);
@@ -57,22 +61,23 @@ export default function ProfilePage() {
 
   async function loadStats(userId: string) {
     try {
-      // Всего обращений (если board/staff)
-      const { data: allAppeals } = await supabase
+      const { data: allAppeals, count: allAppealsCount } = await supabase
         .from('appeals')
         .select('id', { count: 'exact', head: true });
 
-      // Назначенные мне
-      const { data: assignedAppeals } = await supabase
+      const { data: assignedAppeals, count: assignedAppealsCount } = await supabase
         .from('appeals')
         .select('id', { count: 'exact', head: true })
         .eq('assigned_to', userId);
 
-      // Закрытые
-      const { data: closedAppeals } = await supabase
+      const { data: closedAppeals, count: closedAppealsCount } = await supabase
         .from('appeals')
         .select('id', { count: 'exact', head: true })
         .eq('status', 'closed');
+
+      // #region agent log
+      fetch('http://127.0.0.1:7816/ingest/14bbcc59-fd66-424d-bf13-862cc5c64d18',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'107e96'},body:JSON.stringify({sessionId:'107e96',runId:'run1',hypothesisId:'D',location:'app/manage/profile/page.tsx:79',message:'manage profile stats query finished',data:{userIdPrefix:userId.slice(0,8),allAppealsDataLength:Array.isArray(allAppeals)?allAppeals.length:null,allAppealsCount,assignedAppealsDataLength:Array.isArray(assignedAppeals)?assignedAppeals.length:null,assignedAppealsCount,closedAppealsDataLength:Array.isArray(closedAppeals)?closedAppeals.length:null,closedAppealsCount},timestamp:Date.now()})}).catch(()=>{});
+      // #endregion
 
       setStats({
         totalAppeals: allAppeals?.length || 0,
@@ -98,13 +103,20 @@ export default function ProfilePage() {
 
     setChangingPassword(true);
     try {
-      // Обновить пароль через Supabase Auth
-      const { error } = await supabase.auth.updateUser({
-        password: passwordForm.newPassword,
+      const response = await fetch('/api/auth/password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          currentPassword: passwordForm.currentPassword,
+          newPassword: passwordForm.newPassword,
+        }),
       });
 
-      if (error) {
-        toast.error('Ошибка при изменении пароля: ' + error.message);
+      const payload = await response.json();
+      if (!response.ok) {
+        toast.error(payload.error || 'Ошибка при изменении пароля');
         return;
       }
 
@@ -123,7 +135,7 @@ export default function ProfilePage() {
 
   async function handleSignOut() {
     await signOut();
-    router.push('/admin/login');
+    router.push('/manage/login');
   }
 
   if (loading) {
@@ -151,7 +163,7 @@ export default function ProfilePage() {
           </p>
         </div>
         <Link
-          href="/admin"
+          href="/manage"
           className="px-4 py-2 rounded-xl border border-white/20 text-white/80 hover:text-white hover:border-white/40 transition"
         >
           ← Назад
@@ -299,7 +311,7 @@ export default function ProfilePage() {
         
         <div className="space-y-3">
           <Link
-            href="/admin/settings/notifications"
+            href="/manage/settings/notifications"
             className="block px-4 py-3 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition"
           >
             <div className="font-medium">Уведомления</div>
