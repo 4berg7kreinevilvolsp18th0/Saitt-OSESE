@@ -95,7 +95,7 @@ uvicorn main:app --reload
 - `board` — руководство ОСС
 - `staff` — аппарат (техподдержка)
 
-Доступ контролируется через Supabase RLS (Row Level Security).
+Доступ контролируется через Vercel RLS (Row Level Security).
 
 ## 📝 Лицензия
 
