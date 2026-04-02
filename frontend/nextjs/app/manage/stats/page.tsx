@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '../../../lib/supabaseClient';
 import { useToast } from '../../../components/ToastProvider';
-import { getCurrentUser } from '../../../lib/auth';
+import { getCurrentUser, getUserRoles } from '../../../lib/auth';
 
 export default function ManageStatsPage() {
   const router = useRouter();
@@ -33,15 +33,9 @@ export default function ManageStatsPage() {
         return;
       }
 
-      // Проверяем роль пользователя
-      const { data: roles } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', user.id)
-        .single();
-
       const allowedRoles = ['member', 'lead', 'board', 'staff'];
-      if (!roles || !allowedRoles.includes(roles.role)) {
+      const roles = await getUserRoles();
+      if (!roles.some((role) => allowedRoles.includes(role.role))) {
         toast.error('У вас нет доступа к этой странице');
         router.push('/manage');
         return;
