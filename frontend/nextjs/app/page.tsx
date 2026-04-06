@@ -19,8 +19,34 @@ const StudentOrganizations = dynamic(() => import('../components/StudentOrganiza
   loading: () => null,
 });
 
+type HomeNewsItem = {
+  id: string;
+  type: 'news' | 'guide' | 'faq';
+  title: string;
+  slug: string;
+  published_at?: string | null;
+  direction_title?: string | null;
+};
+
+function isHomeNewsItem(x: unknown): x is HomeNewsItem {
+  if (x === null || typeof x !== 'object') return false;
+  const o = x as Record<string, unknown>;
+  const type = o.type;
+  return (
+    typeof o.id === 'string' &&
+    typeof o.title === 'string' &&
+    typeof o.slug === 'string' &&
+    (type === 'news' || type === 'guide' || type === 'faq')
+  );
+}
+
+function parseHomeNewsList(raw: unknown): HomeNewsItem[] {
+  if (!Array.isArray(raw)) return [];
+  return raw.filter(isHomeNewsItem);
+}
+
 export default function Home() {
-  const [latestNews, setLatestNews] = useState<any[]>([]);
+  const [latestNews, setLatestNews] = useState<HomeNewsItem[]>([]);
   const [loadingNews, setLoadingNews] = useState(true);
   const [supabaseError, setSupabaseError] = useState<string | null>(null);
 
@@ -35,15 +61,12 @@ export default function Home() {
           return;
         }
 
-        const data = (payload?.data || []) as any[];
-        if (data && data.length > 0) {
-          setLatestNews(data);
-        } else {
-          setLatestNews([]);
-        }
-      } catch (err: any) {
+        const data = parseHomeNewsList(payload?.data);
+        setLatestNews(data);
+      } catch (err: unknown) {
         console.error('Неожиданная ошибка:', err);
-        setSupabaseError(`Неожиданная ошибка: ${err.message || 'Неизвестная ошибка'}`);
+        const message = err instanceof Error ? err.message : 'Неизвестная ошибка';
+        setSupabaseError(`Неожиданная ошибка: ${message}`);
       } finally {
         setLoadingNews(false);
       }
@@ -103,11 +126,29 @@ export default function Home() {
             инфраструктурные, стипендиальные, адаптационные и консультационные вопросы.
           </p>
           <div className="mt-8 sm:mt-10 flex flex-wrap justify-center gap-3 sm:gap-4 px-4">
+            <Link
+              href="/directions"
+              className="professional-button professional-button-secondary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-100
+                light:bg-white light:border-2 light:border-gray-300 light:text-gray-900 
+                light:hover:bg-gray-50 light:hover:border-oss-red/40 light:hover:text-oss-red
+                light:shadow-[0_2px_8px_rgba(0,0,0,0.08)] light:hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)]"
+            >
+              Направления
+            </Link>
+            <Link
+              href="/contacts"
+              className="professional-button professional-button-secondary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-200
+                light:bg-white light:border-2 light:border-gray-300 light:text-gray-900 
+                light:hover:bg-gray-50 light:hover:border-oss-red/40 light:hover:text-oss-red
+                light:shadow-[0_2px_8px_rgba(0,0,0,0.08)] light:hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)]"
+            >
+              Связаться с ОСС
+            </Link>
             <a 
               href={process.env.NEXT_PUBLIC_TELEGRAM_BOT_URL || "https://t.me/oss_dvfu_bot"}
               target="_blank"
               rel="noopener noreferrer"
-              className="professional-button professional-button-primary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-200
+              className="professional-button professional-button-primary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-300
                 light:shadow-[0_4px_12px_rgba(209,31,42,0.25)] light:hover:shadow-[0_8px_24px_rgba(209,31,42,0.35)]
                 flex items-center justify-center gap-2"
             >
@@ -118,7 +159,7 @@ export default function Home() {
             </a>
             <Link 
               href="/statistics" 
-              className="professional-button professional-button-secondary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-300
+              className="professional-button professional-button-secondary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-400
                 light:bg-white light:border-2 light:border-gray-300 light:text-gray-900 
                 light:hover:bg-gray-50 light:hover:border-oss-red/40 light:hover:text-oss-red
                 light:shadow-[0_2px_8px_rgba(0,0,0,0.08)] light:hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)]"
@@ -127,7 +168,7 @@ export default function Home() {
             </Link>
             <Link 
               href="/documents" 
-              className="professional-button professional-button-secondary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-400
+              className="professional-button professional-button-secondary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-500
                 light:bg-white light:border-2 light:border-gray-300 light:text-gray-900 
                 light:hover:bg-gray-50 light:hover:border-oss-red/40 light:hover:text-oss-red
                 light:shadow-[0_2px_8px_rgba(0,0,0,0.08)] light:hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)]"
@@ -205,11 +246,11 @@ export default function Home() {
               <div className="rounded-2xl sm:rounded-3xl border border-yellow-500/50 bg-yellow-500/10 p-6 sm:p-8 md:p-10 text-center">
                 <div className="text-yellow-400 font-semibold mb-2 text-sm sm:text-base">⚠️ Предупреждение</div>
                 <div className="text-white/80 mb-4 text-sm sm:text-base">{supabaseError}</div>
-                <div className="text-xs sm:text-sm text-white/60">
-                  Пожалуйста, настройте Supabase согласно инструкции в{' '}
-                  <a href="/docs/SUPABASE_SETUP.md" className="text-yellow-400 hover:underline">
+                <div className="text-xs sm:text-sm text-white/60 light:text-gray-600">
+                  Проверьте переменные окружения и настройку БД. Инструкция в репозитории:{' '}
+                  <code className="rounded bg-black/20 px-1.5 py-0.5 text-yellow-200/90 light:bg-gray-200 light:text-gray-800">
                     docs/SUPABASE_SETUP.md
-                  </a>
+                  </code>
                 </div>
               </div>
             ) : loadingNews ? (
