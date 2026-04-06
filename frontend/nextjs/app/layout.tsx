@@ -79,11 +79,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body className="oss-site-bg text-white light:text-gray-900 antialiased transition-all duration-500 font-sf-text">
+        <a href="#site-main" className="skip-to-main">
+          К основному содержимому
+        </a>
         <ThemeProvider>
           <LocaleProvider>
             <ToastProvider>
               <Header />
-              {children}
+              <div id="site-main" tabIndex={-1} className="outline-none">
+                {children}
+              </div>
               <Footer />
             </ToastProvider>
           </LocaleProvider>
