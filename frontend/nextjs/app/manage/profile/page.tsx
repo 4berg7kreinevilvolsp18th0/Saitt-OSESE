@@ -51,10 +51,6 @@ export default function ProfilePage() {
       return;
     }
 
-    // #region agent log
-    fetch('http://127.0.0.1:7816/ingest/14bbcc59-fd66-424d-bf13-862cc5c64d18',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'107e96'},body:JSON.stringify({sessionId:'107e96',runId:'run1',hypothesisId:'D',location:'app/manage/profile/page.tsx:56',message:'manage profile auth resolved',data:{userIdPrefix:currentUser.id?.slice?.(0,8) ?? null,roles:userRoles.map((role)=>role.role),rolesCount:userRoles.length},timestamp:Date.now()})}).catch(()=>{});
-    // #endregion
-
     await loadStats(currentUser.id);
     setLoading(false);
   }
@@ -74,10 +70,6 @@ export default function ProfilePage() {
         .from('appeals')
         .select('id', { count: 'exact', head: true })
         .eq('status', 'closed');
-
-      // #region agent log
-      fetch('http://127.0.0.1:7816/ingest/14bbcc59-fd66-424d-bf13-862cc5c64d18',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'107e96'},body:JSON.stringify({sessionId:'107e96',runId:'run1',hypothesisId:'D',location:'app/manage/profile/page.tsx:79',message:'manage profile stats query finished',data:{userIdPrefix:userId.slice(0,8),allAppealsDataLength:Array.isArray(allAppeals)?allAppeals.length:null,allAppealsCount,assignedAppealsDataLength:Array.isArray(assignedAppeals)?assignedAppeals.length:null,assignedAppealsCount,closedAppealsDataLength:Array.isArray(closedAppeals)?closedAppeals.length:null,closedAppealsCount},timestamp:Date.now()})}).catch(()=>{});
-      // #endregion
 
       setStats({
         totalAppeals: allAppeals?.length || 0,
