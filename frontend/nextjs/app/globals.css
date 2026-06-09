@@ -159,6 +159,61 @@ body {
   text-rendering: optimizeLegibility;
   font-feature-settings: "kern" 1;
   font-kerning: normal;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(220, 46, 66, 0.18) 0%, transparent 45%),
+    radial-gradient(circle at 85% 0%, rgba(156, 28, 41, 0.16) 0%, transparent 45%),
+    linear-gradient(160deg, #0f1115 0%, #251d1d 100%);
+  transition: background 0.35s ease, color 0.35s ease;
+}
+
+.light body {
+  background:
+    radial-gradient(circle at 20% 12%, rgba(220, 46, 66, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 88% 0%, rgba(156, 28, 41, 0.06) 0%, transparent 50%),
+    linear-gradient(160deg, #ffffff 0%, #f4f6fa 100%);
+}
+
+.oss-site-bg {
+  background-color: transparent;
+}
+
+.professional-card {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s var(--ease-out-quart);
+}
+
+.professional-card:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.light .professional-card {
+  border: 1px solid rgba(15, 17, 21, 0.12);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 6px 20px rgba(15, 17, 21, 0.08);
+}
+
+.professional-button {
+  transition: all 0.25s var(--ease-out-quart);
+}
+
+.professional-button-primary {
+  background: linear-gradient(135deg, #dc2e42 0%, #9c1c29 100%);
+  color: #fff;
+}
+
+.professional-button-secondary {
+  border: 1px solid rgba(255, 255, 255, 0.36);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.light .professional-button-secondary {
+  border-color: rgba(37, 29, 29, 0.18);
+  color: #1f2937;
 }
 
 /* Strict typography for headings */
@@ -1770,4 +1825,33 @@ a {
   line-height: 1.1;
   color: #fff;
   opacity: 0.9;
+}
+
+/* Пропуск к основному содержимому (клавиатура / скринридеры) */
+.skip-to-main {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  margin: 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+  background: #d11f2a;
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform 0.2s ease;
+}
+
+.skip-to-main:focus {
+  transform: translateY(0);
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+html.light .skip-to-main {
+  color: #fff;
+  background: #b91c1c;
 }

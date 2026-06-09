@@ -7,6 +7,7 @@ import Badge from '../../../components/Badge';
 import { DIRECTIONS } from '../../../lib/directions';
 import SearchBar from '../../../components/SearchBar';
 import { useToast } from '../../../components/ToastProvider';
+import { getCurrentUser, getUserRoles } from '../../../lib/auth';
 
 type ContentItem = {
   id: string;
@@ -38,6 +39,8 @@ export default function AdminContentPage() {
     try {
       setLoading(true);
       setError(null);
+      const { user } = await getCurrentUser();
+      const roles = await getUserRoles();
 
       let query = supabase
         .from('content')

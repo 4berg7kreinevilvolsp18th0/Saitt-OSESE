@@ -141,6 +141,10 @@ jobs:
 - Убедитесь, что Root Directory указан правильно
 - Проверьте настройки веток в Vercel
 
+## Несколько дизайнов (несколько проектов Vercel)
+
+См. [VERCEL_MULTI_DESIGN.md](./VERCEL_MULTI_DESIGN.md): отдельный Root Directory на каждый вариант (базовый `frontend/nextjs`, `nextjs-design-light`, `nextjs-design-winter`, `nextjs-design-midnight-crimson`, `nextjs-design-paper-campus`, `nextjs-design-mono-structure`, `nextjs-design-direction-chapters` и др. из таблицы в документе).
+
 ## Рекомендации
 
 1. **Используйте Vercel интеграцию** для простоты

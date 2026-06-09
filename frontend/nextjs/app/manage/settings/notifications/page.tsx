@@ -80,7 +80,7 @@ export default function NotificationSettingsPage() {
   async function checkAuth() {
     const { user } = await getCurrentUser();
     if (!user) {
-      router.push('/admin/login');
+      router.push('/manage/login');
       return;
     }
     loadSettings(user.id);

@@ -2,92 +2,71 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { DIRECTIONS } from '../lib/directions';
 import DirectionCard from '../components/DirectionCard';
 import ContentCard from '../components/ContentCard';
 import Logo from '../components/Logo';
-import TelegramPosts from '../components/TelegramPosts';
-import StudentOrganizations from '../components/StudentOrganizations';
 import StudentOrganizationsCard from '../components/StudentOrganizationsCard';
-import { supabase, isSupabaseConfigured, safeSupabaseQuery } from '../lib/supabaseClient';
+
+const TelegramPosts = dynamic(() => import('../components/TelegramPosts'), {
+  ssr: false,
+  loading: () => <div className="text-white/50 text-sm">Загрузка Telegram...</div>,
+});
+
+const StudentOrganizations = dynamic(() => import('../components/StudentOrganizations'), {
+  ssr: false,
+  loading: () => null,
+});
+
+type HomeNewsItem = {
+  id: string;
+  type: 'news' | 'guide' | 'faq';
+  title: string;
+  slug: string;
+  published_at?: string | null;
+  direction_title?: string | null;
+};
+
+function isHomeNewsItem(x: unknown): x is HomeNewsItem {
+  if (x === null || typeof x !== 'object') return false;
+  const o = x as Record<string, unknown>;
+  const type = o.type;
+  return (
+    typeof o.id === 'string' &&
+    typeof o.title === 'string' &&
+    typeof o.slug === 'string' &&
+    (type === 'news' || type === 'guide' || type === 'faq')
+  );
+}
+
+function parseHomeNewsList(raw: unknown): HomeNewsItem[] {
+  if (!Array.isArray(raw)) return [];
+  return raw.filter(isHomeNewsItem);
+}
 
 export default function Home() {
-  const [latestNews, setLatestNews] = useState<any[]>([]);
+  const [latestNews, setLatestNews] = useState<HomeNewsItem[]>([]);
   const [loadingNews, setLoadingNews] = useState(true);
   const [supabaseError, setSupabaseError] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadLatestNews() {
-      // Проверяем подключение Supabase
-      if (!isSupabaseConfigured()) {
-        setSupabaseError('Supabase не настроен. Пожалуйста, настройте переменные окружения.');
-        setLoadingNews(false);
-        return;
-      }
-
       try {
-        // Безопасный запрос с обработкой ошибок
-        const { data, error: contentError } = await safeSupabaseQuery(
-          async () => {
-            const result = await supabase
-              .from('content')
-              .select('id, type, title, slug, published_at, direction_id')
-              .eq('status', 'published')
-              .eq('type', 'news')
-              .order('published_at', { ascending: false })
-              .limit(3);
-            return result;
-          },
-          'Ошибка загрузки новостей'
-        );
-
-        if (contentError) {
-          setSupabaseError(contentError);
+        const response = await fetch('/api/data/content?type=news&limit=3', { cache: 'no-store' });
+        const payload = await response.json();
+        if (!response.ok) {
+          setSupabaseError(payload?.error || 'Ошибка загрузки новостей');
           setLoadingNews(false);
           return;
         }
 
-        if (data && data.length > 0) {
-          // Получаем названия направлений
-          const directionIds = data.map((item) => item.direction_id).filter(Boolean);
-          if (directionIds.length > 0) {
-            const { data: directions, error: dirError } = await safeSupabaseQuery(
-              async () => {
-                const result = await supabase
-                  .from('directions')
-                  .select('id, title')
-                  .in('id', directionIds);
-                return result;
-              },
-              'Ошибка загрузки направлений'
-            );
-
-            if (dirError) {
-              console.warn('Не удалось загрузить направления:', dirError);
-              // Продолжаем без направлений
-              setLatestNews(data);
-            } else if (directions) {
-              const directionsMap = new Map((directions || []).map((d: any) => [d.id, d.title]));
-
-              const enriched = data.map((item: any) => ({
-                ...item,
-                direction_title: item.direction_id ? directionsMap.get(item.direction_id) : undefined,
-              }));
-
-              setLatestNews(enriched);
-            } else {
-              setLatestNews(data);
-            }
-          } else {
-            setLatestNews(data);
-          }
-        } else {
-          // Нет новостей - это нормально, не ошибка
-          setLatestNews([]);
-        }
-      } catch (err: any) {
+        const data = parseHomeNewsList(payload?.data);
+        setLatestNews(data);
+      } catch (err: unknown) {
         console.error('Неожиданная ошибка:', err);
-        setSupabaseError(`Неожиданная ошибка: ${err.message || 'Неизвестная ошибка'}`);
+        const message = err instanceof Error ? err.message : 'Неизвестная ошибка';
+        setSupabaseError(`Неожиданная ошибка: ${message}`);
       } finally {
         setLoadingNews(false);
       }
@@ -97,8 +76,8 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-oss-dark light:bg-gray-50 text-white light:text-gray-900 animate-page-enter winter-main">
-      <section className="bg-oss-red py-12 sm:py-16 md:py-20 
+    <main className="min-h-screen bg-transparent text-white light:text-gray-900 animate-page-enter winter-main">
+      <section className="bg-gradient-to-br from-oss-red via-oss-burgundy to-oss-graphite py-12 sm:py-16 md:py-20 
         light:bg-gradient-to-b light:from-white light:via-gray-50/50 light:to-white
         light:relative light:overflow-hidden
         light:border-b light:border-gray-200/60
@@ -125,7 +104,7 @@ export default function Home() {
               <Logo size={80} color="#FFFFFF" useImage={true} />
             </div>
             <div className="hidden sm:block">
-              <Logo size={120} color="#FFFFFF" useImage={true} />
+              <Logo size={120} color="#FFFFFF" useImage={true} priority={true} />
             </div>
           </div>
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 px-2 text-white 
@@ -147,11 +126,29 @@ export default function Home() {
             инфраструктурные, стипендиальные, адаптационные и консультационные вопросы.
           </p>
           <div className="mt-8 sm:mt-10 flex flex-wrap justify-center gap-3 sm:gap-4 px-4">
+            <Link
+              href="/directions"
+              className="professional-button professional-button-secondary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-100
+                light:bg-white light:border-2 light:border-gray-300 light:text-gray-900 
+                light:hover:bg-gray-50 light:hover:border-oss-red/40 light:hover:text-oss-red
+                light:shadow-[0_2px_8px_rgba(0,0,0,0.08)] light:hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)]"
+            >
+              Направления
+            </Link>
+            <Link
+              href="/contacts"
+              className="professional-button professional-button-secondary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-200
+                light:bg-white light:border-2 light:border-gray-300 light:text-gray-900 
+                light:hover:bg-gray-50 light:hover:border-oss-red/40 light:hover:text-oss-red
+                light:shadow-[0_2px_8px_rgba(0,0,0,0.08)] light:hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)]"
+            >
+              Связаться с ОСС
+            </Link>
             <a 
               href={process.env.NEXT_PUBLIC_TELEGRAM_BOT_URL || "https://t.me/oss_dvfu_bot"}
               target="_blank"
               rel="noopener noreferrer"
-              className="professional-button professional-button-primary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-200
+              className="professional-button professional-button-primary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-300
                 light:shadow-[0_4px_12px_rgba(209,31,42,0.25)] light:hover:shadow-[0_8px_24px_rgba(209,31,42,0.35)]
                 flex items-center justify-center gap-2"
             >
@@ -162,7 +159,7 @@ export default function Home() {
             </a>
             <Link 
               href="/statistics" 
-              className="professional-button professional-button-secondary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-300
+              className="professional-button professional-button-secondary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-400
                 light:bg-white light:border-2 light:border-gray-300 light:text-gray-900 
                 light:hover:bg-gray-50 light:hover:border-oss-red/40 light:hover:text-oss-red
                 light:shadow-[0_2px_8px_rgba(0,0,0,0.08)] light:hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)]"
@@ -171,7 +168,7 @@ export default function Home() {
             </Link>
             <Link 
               href="/documents" 
-              className="professional-button professional-button-secondary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-400
+              className="professional-button professional-button-secondary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-500
                 light:bg-white light:border-2 light:border-gray-300 light:text-gray-900 
                 light:hover:bg-gray-50 light:hover:border-oss-red/40 light:hover:text-oss-red
                 light:shadow-[0_2px_8px_rgba(0,0,0,0.08)] light:hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)]"
@@ -240,7 +237,7 @@ export default function Home() {
                   Публикуем актуальную информацию и инструкции по направлениям. Цель — чтобы часть вопросов решалась без обращения.
                 </p>
               </div>
-              <Link href="/content" className="text-sm sm:text-base text-white/70 hover:text-white transition whitespace-nowrap">
+              <Link href="/content" className="text-sm sm:text-base text-white/80 hover:text-white transition whitespace-nowrap light:text-oss-red light:hover:text-oss-red/80">
                 Все материалы →
               </Link>
             </div>
@@ -249,11 +246,11 @@ export default function Home() {
               <div className="rounded-2xl sm:rounded-3xl border border-yellow-500/50 bg-yellow-500/10 p-6 sm:p-8 md:p-10 text-center">
                 <div className="text-yellow-400 font-semibold mb-2 text-sm sm:text-base">⚠️ Предупреждение</div>
                 <div className="text-white/80 mb-4 text-sm sm:text-base">{supabaseError}</div>
-                <div className="text-xs sm:text-sm text-white/60">
-                  Пожалуйста, настройте Supabase согласно инструкции в{' '}
-                  <a href="/docs/SUPABASE_SETUP.md" className="text-yellow-400 hover:underline">
+                <div className="text-xs sm:text-sm text-white/60 light:text-gray-600">
+                  Проверьте переменные окружения и настройку БД. Инструкция в репозитории:{' '}
+                  <code className="rounded bg-black/20 px-1.5 py-0.5 text-yellow-200/90 light:bg-gray-200 light:text-gray-800">
                     docs/SUPABASE_SETUP.md
-                  </a>
+                  </code>
                 </div>
               </div>
             ) : loadingNews ? (
@@ -272,7 +269,7 @@ export default function Home() {
                 ))}
               </div>
             ) : (
-              <div className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/5 p-6 sm:p-8 md:p-10 text-center text-white/50 text-sm sm:text-base">
+              <div className="rounded-2xl sm:rounded-3xl border border-white/15 bg-white/5 p-6 sm:p-8 md:p-10 text-center text-white/70 text-sm sm:text-base light:text-gray-600">
                 Пока нет опубликованных новостей
               </div>
             )}
