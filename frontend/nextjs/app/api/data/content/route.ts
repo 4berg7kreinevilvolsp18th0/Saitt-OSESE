@@ -12,8 +12,11 @@ function unavailable(error: unknown) {
 
 export async function GET(request: NextRequest) {
   try {
-    const type = request.nextUrl.searchParams.get('type');
-    if (type !== null && type !== 'news' && type !== 'guide' && type !== 'faq') {
+    const requestedType = request.nextUrl.searchParams.get('type');
+    const type = requestedType === 'news' || requestedType === 'guide' || requestedType === 'faq'
+      ? requestedType
+      : undefined;
+    if (requestedType !== null && !type) {
       return NextResponse.json({ error: 'Неизвестный тип материала' }, { status: 400 });
     }
     const limitRaw = request.nextUrl.searchParams.get('limit');
