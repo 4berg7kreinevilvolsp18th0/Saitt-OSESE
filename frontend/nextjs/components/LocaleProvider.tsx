@@ -1,13 +1,13 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { Locale, defaultLocale, supportedLocales, loadTranslations } from '../lib/i18n';
+import { Locale, defaultLocale, supportedLocales, getDictionary, t as translate } from '../lib/i18n';
 
 interface LocaleContextType {
   locale: Locale;
   setLocale: (locale: Locale) => void;
   t: (key: string, params?: Record<string, string | number>) => string;
-  translations: any;
+  translations: ReturnType<typeof getDictionary>;
   loaded: boolean;
 }
 
@@ -28,8 +28,7 @@ interface LocaleProviderProps {
 
 export function LocaleProvider({ children, initialLocale }: LocaleProviderProps) {
   const [locale, setLocaleState] = useState<Locale>(initialLocale || defaultLocale);
-  const [translations, setTranslations] = useState<any>({});
-  const [loaded, setLoaded] = useState(false);
+  const translations = getDictionary(locale);
 
   useEffect(() => {
     // Загружаем сохранённую локаль
@@ -39,50 +38,15 @@ export function LocaleProvider({ children, initialLocale }: LocaleProviderProps)
     }
   }, []);
 
-  useEffect(() => {
-    // Загружаем переводы для текущей локали
-    loadTranslations(locale).then((tr) => {
-      setTranslations(tr);
-      setLoaded(true);
-    });
-  }, [locale]);
-
   const setLocale = (newLocale: Locale) => {
     setLocaleState(newLocale);
     localStorage.setItem('locale', newLocale);
   };
 
-  const t = (key: string, params?: Record<string, string | number>): string => {
-    if (!loaded) {
-      return key;
-    }
-
-    const keys = key.split('.');
-    let value: any = translations;
-
-    for (const k of keys) {
-      value = value?.[k];
-      if (value === undefined) {
-        return key;
-      }
-    }
-
-    if (typeof value !== 'string') {
-      return key;
-    }
-
-    // Замена параметров
-    if (params) {
-      return value.replace(/\{\{(\w+)\}\}/g, (match: string, paramKey: string) => {
-        return params[paramKey]?.toString() || match;
-      });
-    }
-
-    return value;
-  };
+  const t: LocaleContextType['t'] = (key, params) => translate(key, translations, params);
 
   return (
-    <LocaleContext.Provider value={{ locale, setLocale, t, translations, loaded }}>
+    <LocaleContext.Provider value={{ locale, setLocale, t, translations, loaded: true }}>
       {children}
     </LocaleContext.Provider>
   );

@@ -19,6 +19,7 @@
     "refresh": "Refresh"
   },
   "navigation": {
+    "menu": "Menu",
     "home": "Home",
     "directions": "Directions",
     "appeal": "Submit Appeal",

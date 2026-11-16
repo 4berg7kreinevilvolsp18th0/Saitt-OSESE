@@ -66,7 +66,7 @@ export const GUIDES_REGISTRY: GuideMeta[] = [
     committee: 'ОСС',
     level: 'deepdive',
     updatedAt: '2026-03-11',
-    status: 'published',
+    status: 'draft',
     tags: ['showcase', 'шаблон', 'дизайн'],
     description: 'Демо-страница со всеми UI-элементами для будущих гайдов.',
     colorKey: committeeColorKey('ОСС'),

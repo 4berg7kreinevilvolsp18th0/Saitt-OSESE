@@ -1,40 +1,14 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Locale, defaultLocale, supportedLocales } from '../lib/i18n';
+import { Locale, supportedLocales } from '../lib/i18n';
+import { useLocale } from './LocaleProvider';
 
-interface LanguageToggleProps {
-  currentLocale?: Locale;
-  onLocaleChange?: (locale: Locale) => void;
-}
-
-export default function LanguageToggle({ 
-  currentLocale = defaultLocale,
-  onLocaleChange 
-}: LanguageToggleProps) {
-  const [locale, setLocale] = useState<Locale>(currentLocale);
-
-  useEffect(() => {
-    // Загружаем сохранённую локаль из localStorage
-    const savedLocale = localStorage.getItem('locale') as Locale;
-    if (savedLocale && supportedLocales.includes(savedLocale)) {
-      setLocale(savedLocale);
-      if (onLocaleChange) {
-        onLocaleChange(savedLocale);
-      }
-    }
-  }, []);
-
-  const handleLocaleChange = (newLocale: Locale) => {
-    setLocale(newLocale);
-    localStorage.setItem('locale', newLocale);
-    if (onLocaleChange) {
-      onLocaleChange(newLocale);
-    }
-    // Перезагружаем страницу для применения изменений
-    window.location.reload();
+export default function LanguageToggle() {
+  const { locale, setLocale } = useLocale();
+  const accessibleNames: Record<Locale, string> = {
+    ru: 'Русский',
+    en: 'English',
   };
-
   const localeNames: Record<Locale, string> = {
     ru: 'Рус',
     en: 'Eng',
@@ -45,13 +19,14 @@ export default function LanguageToggle({
       {supportedLocales.map((loc) => (
         <button
           key={loc}
-          onClick={() => handleLocaleChange(loc)}
+          onClick={() => setLocale(loc)}
           className={`px-2.5 py-1 rounded text-xs sm:text-sm font-medium transition ${
             locale === loc
               ? 'bg-oss-red text-white light:bg-oss-red light:text-white'
               : 'text-white/70 hover:text-white light:text-gray-700 light:hover:text-gray-900'
           }`}
-          aria-label={`Switch to ${loc}`}
+          aria-label={accessibleNames[loc]}
+          aria-pressed={locale === loc}
         >
           {localeNames[loc]}
         </button>
