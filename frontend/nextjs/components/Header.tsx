@@ -32,7 +32,6 @@ export default function Header() {
       light:shadow-[0_2px_12px_rgba(0,0,0,0.08),0_1px_3px_rgba(0,0,0,0.05)]
       light:bg-opacity-95
       animate-fade-in-down
-      relative overflow-hidden
       winter-header">
       {/* Декоративный градиентный акцент */}
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-oss-red/5 to-transparent 
@@ -46,7 +45,7 @@ export default function Header() {
             <Logo size={40} showText={true} useImage={false} />
           </span>
         </Link>
-        <nav className="hidden md:flex items-center gap-4 lg:gap-5">
+        <nav aria-label={t('navigation.menu')} className="hidden md:flex items-center gap-4 lg:gap-5">
           <NavLink href="/directions">{t('navigation.directions')}</NavLink>
           <NavLink href="/statistics">{t('navigation.statistics')}</NavLink>
           <NavLink href="/content">{t('navigation.content')}</NavLink>

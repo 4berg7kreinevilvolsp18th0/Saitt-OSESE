@@ -4,6 +4,7 @@ import Badge from './Badge';
 type ContentCardProps = {
   title: string;
   slug: string;
+  href?: string;
   type: 'news' | 'guide' | 'faq';
   direction?: string;
   publishedAt?: string;
@@ -13,6 +14,7 @@ type ContentCardProps = {
 export default function ContentCard({
   title,
   slug,
+  href = `/content/${slug}`,
   type,
   direction,
   publishedAt,
@@ -32,7 +34,7 @@ export default function ContentCard({
 
   return (
     <Link
-      href={`/content/${slug}`}
+      href={href}
       className="professional-card block rounded-xl sm:rounded-2xl p-5 sm:p-7 hover-lift focus-ring animate-fade-in-up border border-white/10 bg-white/5 light:border-gray-200 light:bg-white/90"
     >
       <div className="flex items-start justify-between gap-3 sm:gap-4">

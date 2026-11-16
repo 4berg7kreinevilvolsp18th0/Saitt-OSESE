@@ -1,71 +1,40 @@
-// Утилиты для интернационализации
+import ru from '../locales/ru.json';
+import en from '../locales/en.json';
 
 export type Locale = 'ru' | 'en';
-
 export const defaultLocale: Locale = 'ru';
 export const supportedLocales: Locale[] = ['ru', 'en'];
 
-// Кэш переводов
-let translationsCache: Record<Locale, any> = {
-  ru: {},
-  en: {},
-};
+const dictionaries = { ru, en };
 
-// Функция для загрузки переводов
+export function getDictionary(locale: Locale) {
+  return dictionaries[locale];
+}
+
 export async function loadTranslations(locale: Locale) {
-  if (translationsCache[locale] && Object.keys(translationsCache[locale]).length > 0) {
-    return translationsCache[locale];
-  }
-
-  try {
-    const localeModule = await import(`../locales/${locale}.json`);
-    translationsCache[locale] = localeModule.default;
-    return translationsCache[locale];
-  } catch (error) {
-    console.error(`Failed to load translations for locale: ${locale}`, error);
-    // Fallback на русский
-    if (locale !== 'ru') {
-      return loadTranslations('ru');
-    }
-    return {};
-  }
+  return getDictionary(locale);
 }
 
-// Функция для получения перевода по ключу (синхронная версия для использования с кэшем)
-export function t(key: string, translations: any, params?: Record<string, string | number>): string {
-  const keys = key.split('.');
-  let value: any = translations || {};
+type TranslationValue = string | { [key: string]: TranslationValue };
 
-  for (const k of keys) {
-    value = value?.[k];
-    if (value === undefined) {
-      return key; // Возвращаем ключ, если перевод не найден
-    }
+export function t(key: string, translations: TranslationValue, params?: Record<string, string | number>): string {
+  function resolve(dictionary: TranslationValue) {
+    return key.split('.').reduce<TranslationValue | undefined>((value, part) => (
+      typeof value === 'object' ? value[part] : undefined
+    ), dictionary);
   }
 
-  if (typeof value !== 'string') {
-    return key;
-  }
-
-  // Замена параметров в строке
-  if (params) {
-    return value.replace(/\{\{(\w+)\}\}/g, (match: string, paramKey: string) => {
-      return params[paramKey]?.toString() || match;
-    });
-  }
-
-  return value;
+  const translated = resolve(translations);
+  const value = typeof translated === 'string' ? translated : resolve(ru);
+  if (typeof value !== 'string') return key;
+  if (!params) return value;
+  return value.replace(/\{\{(\w+)\}\}/g, (match, name) => params[name]?.toString() ?? match);
 }
 
-// Инициализация переводов для серверных компонентов
 export async function getTranslations(locale: Locale = defaultLocale) {
-  const translations = await loadTranslations(locale);
-  
+  const translations = getDictionary(locale);
   return {
-    t: (key: string, params?: Record<string, string | number>) => {
-      return t(key, translations, params);
-    },
+    t: (key: string, params?: Record<string, string | number>) => t(key, translations, params),
     locale,
   };
 }
-

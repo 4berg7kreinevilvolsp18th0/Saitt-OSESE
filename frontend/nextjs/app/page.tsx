@@ -2,22 +2,18 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
 import { DIRECTIONS } from '../lib/directions';
 import DirectionCard from '../components/DirectionCard';
 import ContentCard from '../components/ContentCard';
+import TelegramPosts from '../components/TelegramPosts';
+import { getPublishedGuides } from '../lib/guides';
 import Logo from '../components/Logo';
 import StudentOrganizationsCard from '../components/StudentOrganizationsCard';
+import StudentOrganizations from '../components/StudentOrganizations';
 
-const TelegramPosts = dynamic(() => import('../components/TelegramPosts'), {
-  ssr: false,
-  loading: () => <div className="text-white/50 text-sm">Загрузка Telegram...</div>,
-});
-
-const StudentOrganizations = dynamic(() => import('../components/StudentOrganizations'), {
-  ssr: false,
-  loading: () => null,
-});
+const featuredGuides = getPublishedGuides()
+  .filter((guide) => guide.level === 'basic' || guide.committee === 'Правовой комитет')
+  .slice(0, 3);
 
 type HomeNewsItem = {
   id: string;
@@ -48,31 +44,29 @@ function parseHomeNewsList(raw: unknown): HomeNewsItem[] {
 export default function Home() {
   const [latestNews, setLatestNews] = useState<HomeNewsItem[]>([]);
   const [loadingNews, setLoadingNews] = useState(true);
-  const [supabaseError, setSupabaseError] = useState<string | null>(null);
+  const [newsUnavailable, setNewsUnavailable] = useState(false);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     async function loadLatestNews() {
       try {
-        const response = await fetch('/api/data/content?type=news&limit=3', { cache: 'no-store' });
+        const response = await fetch('/api/data/content?type=news&limit=3', {
+          cache: 'no-store',
+          signal: controller.signal,
+        });
+        if (!response.ok) throw new Error('News request failed');
         const payload = await response.json();
-        if (!response.ok) {
-          setSupabaseError(payload?.error || 'Ошибка загрузки новостей');
-          setLoadingNews(false);
-          return;
-        }
-
-        const data = parseHomeNewsList(payload?.data);
-        setLatestNews(data);
-      } catch (err: unknown) {
-        console.error('Неожиданная ошибка:', err);
-        const message = err instanceof Error ? err.message : 'Неизвестная ошибка';
-        setSupabaseError(`Неожиданная ошибка: ${message}`);
+        setLatestNews(parseHomeNewsList(payload?.data));
+      } catch {
+        if (!controller.signal.aborted) setNewsUnavailable(true);
       } finally {
-        setLoadingNews(false);
+        if (!controller.signal.aborted) setLoadingNews(false);
       }
     }
 
-    loadLatestNews();
+    void loadLatestNews();
+    return () => controller.abort();
   }, []);
 
   return (
@@ -122,64 +116,27 @@ export default function Home() {
           </div>
           <p className="text-sm sm:text-base md:text-lg max-w-3xl mx-auto text-white/80 mb-6 sm:mb-8 px-4 
             light:text-gray-700 light:font-medium light:leading-relaxed animate-fade-in-up animate-delay-200">
-            Высший орган студенческого самоуправления ДВФУ. Решаем правовые,
-            инфраструктурные, стипендиальные, адаптационные и консультационные вопросы.
+            Помогаем студентам ДВФУ разобраться с вопросами учёбы, общежития, стипендий и адаптации.
           </p>
-          <div className="mt-8 sm:mt-10 flex flex-wrap justify-center gap-3 sm:gap-4 px-4">
-            <Link
-              href="/directions"
-              className="professional-button professional-button-secondary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-100
-                light:bg-white light:border-2 light:border-gray-300 light:text-gray-900 
-                light:hover:bg-gray-50 light:hover:border-oss-red/40 light:hover:text-oss-red
-                light:shadow-[0_2px_8px_rgba(0,0,0,0.08)] light:hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)]"
-            >
-              Направления
-            </Link>
+          <div className="mt-8 sm:mt-10 flex flex-wrap justify-center gap-3 sm:gap-4">
             <Link
               href="/contacts"
-              className="professional-button professional-button-secondary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-200
-                light:bg-white light:border-2 light:border-gray-300 light:text-gray-900 
-                light:hover:bg-gray-50 light:hover:border-oss-red/40 light:hover:text-oss-red
-                light:shadow-[0_2px_8px_rgba(0,0,0,0.08)] light:hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)]"
+              className="professional-button professional-button-primary px-6 sm:px-8 py-3 rounded-xl text-sm sm:text-base font-semibold focus-ring"
             >
               Связаться с ОСС
             </Link>
-            <a 
-              href={process.env.NEXT_PUBLIC_TELEGRAM_BOT_URL || "https://t.me/oss_dvfu_bot"}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="professional-button professional-button-primary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-300
-                light:shadow-[0_4px_12px_rgba(209,31,42,0.25)] light:hover:shadow-[0_8px_24px_rgba(209,31,42,0.35)]
-                flex items-center justify-center gap-2"
+            <Link
+              href="/directions"
+              className="professional-button professional-button-secondary px-6 sm:px-8 py-3 rounded-xl text-sm sm:text-base font-semibold focus-ring"
             >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.169 0-.315.06-.459.19l-1.15.956-2.22 1.851c-.09.08-.18.15-.27.22-.09.07-.18.13-.27.18-.09.05-.18.09-.27.12-.09.03-.18.05-.27.05-.09 0-.18-.02-.27-.05-.09-.03-.18-.07-.27-.12-.09-.05-.18-.11-.27-.18-.09-.07-.18-.14-.27-.22l-2.22-1.851-1.15-.956c-.144-.13-.29-.19-.459-.19-.169 0-.315.06-.459.19-.144.13-.229.31-.229.52 0 .21.085.39.229.52l1.15.956 2.22 1.851c.09.08.18.15.27.22.09.07.18.13.27.18.09.05.18.09.27.12.09.03.18.05.27.05.09 0 .18-.02.27-.05.09-.03.18-.07.27-.12.09-.05.18-.11.27-.18.09-.07.18-.14.27-.22l2.22-1.851 1.15-.956c.144-.13.229-.31.229-.52 0-.21-.085-.39-.229-.52-.144-.13-.29-.19-.459-.19z"/>
-              </svg>
-              Telegram ОСС
-            </a>
-            <Link 
-              href="/statistics" 
-              className="professional-button professional-button-secondary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-400
-                light:bg-white light:border-2 light:border-gray-300 light:text-gray-900 
-                light:hover:bg-gray-50 light:hover:border-oss-red/40 light:hover:text-oss-red
-                light:shadow-[0_2px_8px_rgba(0,0,0,0.08)] light:hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)]"
-            >
-              Статистика
+              Найти своё направление
             </Link>
-            <Link 
-              href="/documents" 
-              className="professional-button professional-button-secondary px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold focus-ring animate-fade-in-up animate-delay-500
-                light:bg-white light:border-2 light:border-gray-300 light:text-gray-900 
-                light:hover:bg-gray-50 light:hover:border-oss-red/40 light:hover:text-oss-red
-                light:shadow-[0_2px_8px_rgba(0,0,0,0.08)] light:hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)]"
+            <Link
+              href="/content"
+              className="professional-button professional-button-secondary px-6 sm:px-8 py-3 rounded-xl text-sm sm:text-base font-semibold focus-ring"
             >
-              Документы ОСС
+              Открыть гайды
             </Link>
-          </div>
-          <div className="mt-4 text-center">
-            <p className="text-xs sm:text-sm text-white/60 light:text-gray-500 px-4">
-              В Telegram публикуются оперативные обновления и полезные ссылки от ОСС
-            </p>
           </div>
           <div className="mt-4 sm:mt-6 flex justify-center">
             <Link 
@@ -203,7 +160,7 @@ export default function Home() {
           <div className="animate-fade-in-up">
             <h2 className="text-xl sm:text-2xl font-semibold text-white light:text-gray-900 light:font-bold">Направления</h2>
             <p className="mt-2 text-sm sm:text-base text-white/70 light:text-gray-600 max-w-2xl light:font-medium leading-relaxed">
-              Цвет каждого раздела — часть навигации: он помогает быстро понять, в каком блоке вы находитесь.
+              Выберите тему вопроса: учёба и права, общежитие, стипендии или адаптация.
             </p>
           </div>
           <Link href="/directions" className="elegant-link text-sm sm:text-base text-white/70 hover:text-white whitespace-nowrap
@@ -231,30 +188,29 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
           <div className="lg:col-span-2">
             <div className="flex items-end justify-between gap-4 flex-wrap mb-6">
-              <div>
-                <h2 className="text-xl sm:text-2xl font-semibold text-white light:text-gray-900">Новости и гайды</h2>
-                <p className="mt-2 text-sm sm:text-base text-white/70 light:text-gray-600 max-w-2xl">
-                  Публикуем актуальную информацию и инструкции по направлениям. Цель — чтобы часть вопросов решалась без обращения.
-                </p>
-              </div>
+              <h2 className="text-xl sm:text-2xl font-semibold text-white light:text-gray-900">Новости и гайды</h2>
               <Link href="/content" className="text-sm sm:text-base text-white/80 hover:text-white transition whitespace-nowrap light:text-oss-red light:hover:text-oss-red/80">
                 Все материалы →
               </Link>
             </div>
 
-            {supabaseError ? (
-              <div className="rounded-2xl sm:rounded-3xl border border-yellow-500/50 bg-yellow-500/10 p-6 sm:p-8 md:p-10 text-center">
-                <div className="text-yellow-400 font-semibold mb-2 text-sm sm:text-base">⚠️ Предупреждение</div>
-                <div className="text-white/80 mb-4 text-sm sm:text-base">{supabaseError}</div>
-                <div className="text-xs sm:text-sm text-white/60 light:text-gray-600">
-                  Проверьте переменные окружения и настройку БД. Инструкция в репозитории:{' '}
-                  <code className="rounded bg-black/20 px-1.5 py-0.5 text-yellow-200/90 light:bg-gray-200 light:text-gray-800">
-                    docs/SUPABASE_SETUP.md
-                  </code>
-                </div>
-              </div>
-            ) : loadingNews ? (
-              <div className="text-center text-white/50 py-8 text-sm sm:text-base">Загрузка новостей...</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {featuredGuides.map((guide) => (
+                <ContentCard
+                  key={guide.slug}
+                  href={`/guides/${guide.slug}`}
+                  slug={guide.slug}
+                  title={guide.title}
+                  type="guide"
+                  direction={guide.committee}
+                  excerpt={guide.description}
+                />
+              ))}
+            </div>
+
+            <h3 className="mt-8 mb-4 text-lg font-semibold light:text-gray-900">Последние новости</h3>
+            {loadingNews ? (
+              <p role="status" className="text-sm text-white/70 light:text-gray-600">Загрузка новостей…</p>
             ) : latestNews.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {latestNews.map((item) => (
@@ -263,14 +219,14 @@ export default function Home() {
                     title={item.title}
                     slug={item.slug}
                     type={item.type}
-                    direction={item.direction_title}
-                    publishedAt={item.published_at}
+                    direction={item.direction_title ?? undefined}
+                    publishedAt={item.published_at ?? undefined}
                   />
                 ))}
               </div>
             ) : (
               <div className="rounded-2xl sm:rounded-3xl border border-white/15 bg-white/5 p-6 sm:p-8 md:p-10 text-center text-white/70 text-sm sm:text-base light:text-gray-600">
-                Пока нет опубликованных новостей
+                {newsUnavailable ? 'Новости на сайте временно недоступны. Обновления есть в Telegram.' : 'Пока нет опубликованных новостей.'}
               </div>
             )}
           </div>
@@ -283,9 +239,7 @@ export default function Home() {
         </div>
       </section>
 
-      <div id="student-organizations">
-        <StudentOrganizations />
-      </div>
+      <StudentOrganizations />
     </main>
   );
 }
